@@ -21,7 +21,8 @@ jobs:
         run: |
           cp packages/server/appspec.yml ./appspec.yml
           cp -r packages/server/appspec-scripts ./appspec-scripts
-          tar -cpvzf ./$GITHUB_SHA.tgz packages/server/package.json packages/server/dist ./node_modules ./appspec.yml ./appspec-scripts packages/server/node_modules
+          cp -r packages/server/appspec-extensions ./appspec-extensions
+          tar -cpvzf ./$GITHUB_SHA.tgz packages/server/package.json packages/server/dist ./node_modules ./appspec.yml ./appspec-scripts ./appspec-extensions packages/server/node_modules
         shell: bash
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1

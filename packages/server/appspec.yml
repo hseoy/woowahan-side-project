@@ -4,6 +4,9 @@ files:
   - source: /
     destination: /home/ec2-user/woowahan-side-project
     overwrite: yes
+  - source: /appspec-extensions/nginx.conf
+    destination: /etc/nginx
+    overwrite: yes
 permissions:
   - object: /home/ec2-user
     pattern: '**'
