@@ -1,0 +1,39 @@
+name: Deploy
+on:
+  push:
+    branches: main
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7.1.1
+      - name: Install Server Dependencies
+        run: |
+          pnpm install --filter @woowahan-side-project/server --prod
+          npm i -g @nestjs/cli
+      - name: Build Server Files
+        run: |
+          pnpm --filter @woowahan-side-project/server build
+      - name: Make Bundle File
+        run: |
+          cp packages/server/appspec.yml ./appspec.yml
+          cp -r packages/server/appspec-scripts ./appspec-scripts
+          tar -cpvzf ./$GITHUB_SHA.tgz packages/server/package.json packages/server/dist ./node_modules ./appspec.yml ./appspec-scripts packages/server/node_modules
+        shell: bash
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+      - name: Upload to S3
+        run: |
+          aws s3 cp \
+            --region ap-northeast-2 \
+            ./$GITHUB_SHA.tgz s3://woowahan-side-project-build/$GITHUB_SHA.tgz
+      - name: Deploy with Code Deploy
+        run: |
+          aws deploy create-deployment --application-name 	woowahan-side-project --file-exists-behavior OVERWRITE --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name woowahan-side-project --s3-location bucket=woowahan-side-project-build,bundleType=tgz,key=$GITHUB_SHA.tgz

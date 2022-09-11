@@ -1,0 +1,23 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/woowahan-side-project
+    overwrite: yes
+permissions:
+  - object: /home/ec2-user
+    pattern: '**'
+    owner: ec2-user
+    group: ec2-user
+hooks:
+  BeforeInstall:
+    - location: appspec-scripts/stop_service.sh
+      timeout: 300
+  ApplicationStart:
+    - location: appspec-scripts/start_service.sh
+      timeout: 300
+      runas: root
+  ValidateService:
+    - location: appspec-scripts/app_health_check.sh
+      timeout: 300
+      runas: root

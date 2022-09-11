@@ -1,0 +1,43 @@
+{
+  "name": "woowahan-side-project",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "packageManager": "pnpm@7.1.1",
+  "scripts": {
+    "prepare": "husky install",
+    "lint:fix": "eslint --ext .tsx --ext .ts . --fix",
+    "prettier:write": "prettier --write .",
+    "precommit": "lint-staged"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.1.1",
+    "@testing-library/react-hooks": "^8.0.0",
+    "@testing-library/user-event": "^14.1.1",
+    "@types/jest": "^27.4.1",
+    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "babel-jest": "^27.5.1",
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "eslint-plugin-storybook": "^0.5.11",
+    "eslint-plugin-testing-library": "^5.3.1",
+    "husky": "^7.0.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest-transform-stub": "^2.0.0",
+    "lint-staged": "^12.4.1",
+    "prettier": "^2.6.2",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^27.1.4",
+    "jest": "^27.2.5"
+  }
+}
