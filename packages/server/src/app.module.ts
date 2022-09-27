@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import databaseConfig from './config/database.config';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -17,12 +18,13 @@ import databaseConfig from './config/database.config';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         type: 'mysql',
-        url: configService.get<string>('database.url'),
         entities: [path.join(__dirname, '/**/*.entity{.ts,.js}')],
+        url: configService.get<string>('database.url'),
         logging: configService.get<boolean>('database.logging'),
         synchronize: configService.get<boolean>('database.autoDDL'),
       }),
     }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
