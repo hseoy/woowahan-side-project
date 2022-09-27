@@ -12,7 +12,7 @@ if [[ -f $PID_PATH_NAME ]]; then
     sudo rm $PID_PATH_NAME
 
     cd /home/ec2-user/woowahan-side-project/packages/server
-    if pgrep node; then npm run stop; fi
+    if pgrep node; then pnpm stop; fi
 
     sleep 3
 else
