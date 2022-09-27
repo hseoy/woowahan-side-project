@@ -12,7 +12,7 @@ jobs:
           version: 7.1.1
       - name: Install Server Dependencies
         run: |
-          pnpm install --filter @woowahan-side-project/server --prod
+          pnpm install --filter @woowahan-side-project/server
           npm i -g @nestjs/cli
       - name: Build Server Files
         run: |
