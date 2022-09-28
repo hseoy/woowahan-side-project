@@ -12,8 +12,7 @@ jobs:
           version: 7.1.1
       - name: Install Server Dependencies
         run: |
-          cd packages/server
-          pnpm install
+          pnpm install --filter @woowahan-side-project/server
           npm i -g @nestjs/cli
       - name: Build Server Files
         run: |
@@ -23,7 +22,7 @@ jobs:
           cp packages/server/appspec.yml ./appspec.yml
           cp -r packages/server/appspec-scripts ./appspec-scripts
           cp -r packages/server/appspec-extensions ./appspec-extensions
-          tar -cpvzf ./$GITHUB_SHA.tgz packages/server/package.json packages/server/dist ./node_modules ./appspec.yml ./appspec-scripts ./appspec-extensions packages/server/node_modules
+          tar -cpvzf ./$GITHUB_SHA.tgz ./packages/server/package.json ./packages/server/dist ./node_modules ./appspec.yml ./appspec-scripts ./appspec-extensions ./packages/server/node_modules ./.npmrc ./pnpm-workspace.yaml ./pnpm-lock.yaml
         shell: bash
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -38,4 +37,4 @@ jobs:
             ./$GITHUB_SHA.tgz s3://woowahan-side-project-build/$GITHUB_SHA.tgz
       - name: Deploy with Code Deploy
         run: |
-          aws deploy create-deployment --application-name 	woowahan-side-project --file-exists-behavior OVERWRITE --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name woowahan-side-project --s3-location bucket=woowahan-side-project-build,bundleType=tgz,key=$GITHUB_SHA.tgz
+          aws deploy create-deployment --application-name woowahan-side-project --file-exists-behavior OVERWRITE --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name woowahan-side-project --s3-location bucket=woowahan-side-project-build,bundleType=tgz,key=$GITHUB_SHA.tgz
