@@ -12,6 +12,7 @@ jobs:
           version: 7.1.1
       - name: Build Server Files
         run: |
+          rm -rf packages/web-client
           pnpm install --filter @woowahan-side-project/server --ignore-scripts
           pnpm --filter @woowahan-side-project/server build
       - name: Make Bundle File
