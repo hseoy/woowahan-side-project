@@ -6,7 +6,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 
 @Injectable()
-export class UserService {
+export class UsersService {
   @InjectRepository(User)
   private userRepository: Repository<User>;
 
@@ -19,8 +19,12 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  findOne(id: number) {
+  findOneById(id: number) {
     return this.userRepository.findOneBy({ id });
+  }
+
+  findOneByEmail(email: string) {
+    return this.userRepository.findOneBy({ email });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

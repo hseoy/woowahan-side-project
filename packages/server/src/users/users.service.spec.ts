@@ -4,13 +4,14 @@ import { getMockRepository, MockRepository } from '@test/test-helper';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { UserService } from './user.service';
+import { UsersService } from './users.service';
 
 const mockUserList: User[] = [
   {
     id: 1,
     username: 'user 1',
     email: 'user1@example.com',
+    accountType: 'woowa',
     createdAt: new Date('2000-01-01'),
     updatedAt: new Date('2000-02-02'),
   },
@@ -18,6 +19,7 @@ const mockUserList: User[] = [
     id: 2,
     username: 'user 2',
     email: 'user2@example.com',
+    accountType: 'woowa',
     createdAt: new Date('2001-01-01'),
     updatedAt: new Date('2001-02-02'),
   },
@@ -33,15 +35,16 @@ const mockUpdateUser: UpdateUserDto = {
 };
 
 const mockId = 1;
+const mockEmail = 'someone@example.com';
 
-describe('UserService', () => {
-  let service: UserService;
+describe('UsersService', () => {
+  let service: UsersService;
   let userRepository: MockRepository<User>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        UserService,
+        UsersService,
         {
           provide: getRepositoryToken(User),
           useValue: getMockRepository(),
@@ -49,7 +52,7 @@ describe('UserService', () => {
       ],
     }).compile();
 
-    service = module.get<UserService>(UserService);
+    service = module.get<UsersService>(UsersService);
     userRepository = module.get<MockRepository<User>>(getRepositoryToken(User));
   });
 
@@ -58,7 +61,7 @@ describe('UserService', () => {
     expect(userRepository).toBeDefined();
   });
 
-  describe('UserService.create', () => {
+  describe('UsersService.create', () => {
     it('사용자를 생성할 수 있어야 합니다.', async () => {
       userRepository.save.mockResolvedValueOnce(mockCreateUser);
 
@@ -71,7 +74,7 @@ describe('UserService', () => {
     });
   });
 
-  describe('UserService.findAll', () => {
+  describe('UsersService.findAll', () => {
     it('전체 사용자 목록을 가지고 올 수 있어야 합니다.', async () => {
       userRepository.find.mockResolvedValueOnce(mockUserList);
 
@@ -81,18 +84,29 @@ describe('UserService', () => {
     });
   });
 
-  describe('UserService.findOne', () => {
+  describe('UsersService.findOneBy~', () => {
     it('해당하는 id를 지닌 사용자를 가지고 올 수 있어야 합니다.', async () => {
       userRepository.findOneBy.mockResolvedValueOnce(mockUserList[0]);
 
-      const user = await service.findOne(mockId);
+      const user = await service.findOneById(mockId);
 
       expect(userRepository.findOneBy).toHaveBeenCalledWith({ id: mockId });
       expect(user).toEqual(mockUserList[0]);
     });
+
+    it('해당하는 email를 지닌 사용자를 가지고 올 수 있어야 합니다.', async () => {
+      userRepository.findOneBy.mockResolvedValueOnce(mockUserList[0]);
+
+      const user = await service.findOneByEmail(mockEmail);
+
+      expect(userRepository.findOneBy).toHaveBeenCalledWith({
+        email: mockEmail,
+      });
+      expect(user).toEqual(mockUserList[0]);
+    });
   });
 
-  describe('UserService.update', () => {
+  describe('UsersService.update', () => {
     it('해당하는 id를 지닌 사용자를 업데이트할 수 있어야 합니다.', async () => {
       await service.update(mockId, mockUpdateUser);
 
@@ -103,7 +117,7 @@ describe('UserService', () => {
     });
   });
 
-  describe('UserService.remove', () => {
+  describe('UsersService.remove', () => {
     it('사용자를 삭제할 수 있어야 합니다.', async () => {
       service.remove(mockId);
 

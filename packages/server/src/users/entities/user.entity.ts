@@ -17,6 +17,9 @@ export class User {
   @Column({ type: 'varchar', length: 320 })
   email: string;
 
+  @Column({ type: 'varchar', length: 45 })
+  accountType: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
