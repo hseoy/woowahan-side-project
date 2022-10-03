@@ -1,7 +1,7 @@
 import { Text } from '@chakra-ui/react';
 import { serviceName } from '@/constants/service';
 
-type LogoProps = {
+export type LogoProps = {
   fontSize?: number;
 };
 

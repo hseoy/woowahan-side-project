@@ -6,11 +6,9 @@ function Fonts() {
       styles={`
         @font-face {
           font-family: 'Spoqa Han Sans Neo';
-          src: url('/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.woff2') format('woff2'),
-            url('/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.woff') format('woff'),
-            url('/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.ttf') format('truetype');
-          font-weight: 400;
-          font-style: 400;
+          src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Regular.woff') format('woff');
+          font-weight: normal;
+          font-style: normal;
         }
         @font-face {
           font-family: 'BMEuljiro10yearslater';

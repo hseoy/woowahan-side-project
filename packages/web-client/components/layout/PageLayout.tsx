@@ -12,7 +12,7 @@ function PageLayout({ children }: PageLayoutProps): JSX.Element {
   return (
     <Stack>
       <Header>
-        <LogoLink href="/" withText otherFor="우아한형제들" />
+        <LogoLink href="/" />
         <Nav />
         <Text>사용자</Text>
       </Header>
