@@ -12,6 +12,12 @@ function Fonts() {
           font-weight: 400;
           font-style: 400;
         }
+        @font-face {
+          font-family: 'BMEuljiro10yearslater';
+          src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.0/BMEuljiro10yearslater.woff') format('woff');
+          font-weight: normal;
+          font-style: normal;
+        }
       `}
     />
   );
