@@ -15,7 +15,8 @@
     "framer-motion": "^6",
     "next": "12.1.5",
     "react": "18.0.0",
-    "react-dom": "18.0.0"
+    "react-dom": "18.0.0",
+    "@woowahan-side-project/http-client": "link:../http-client"
   },
   "devDependencies": {
     "@types/node": "17.0.24",
