@@ -12,6 +12,7 @@ function ContentWrapper({ children }: ContentWrapperProps): JSX.Element {
         maxWidth="1200px"
         width="100%"
         margin="0 auto"
+        paddingTop="25px"
       >
         {children}
       </Box>

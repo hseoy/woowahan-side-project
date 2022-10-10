@@ -1,11 +1,11 @@
 import React from 'react';
-import SideProjectListContainer from '@/components/side-project/SideProjectListContainer';
+import ProjectListContainer from '@/components/project/ProjectListContainer';
 import PageLayout from '@/components/layout/PageLayout';
 
 function Home() {
   return (
     <PageLayout>
-      <SideProjectListContainer />
+      <ProjectListContainer />
     </PageLayout>
   );
 }
