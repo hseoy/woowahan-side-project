@@ -4,6 +4,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import Fonts from '../styles/Fonts';
 import theme from '../styles/theme';
 import { serviceName } from '@/constants/service';
+import GlobalStyle from '@/styles/GlobalStyle';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -12,6 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>{serviceName}</title>
       </Head>
       <Fonts />
+      <GlobalStyle />
       <Component {...pageProps} />
     </ChakraProvider>
   );

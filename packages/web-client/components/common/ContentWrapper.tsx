@@ -6,13 +6,13 @@ type ContentWrapperProps = {
 
 function ContentWrapper({ children }: ContentWrapperProps): JSX.Element {
   return (
-    <Flex justifyContent="center">
+    <Flex justifyContent="center" height="100%">
       <Box
         boxSizing="border-box"
         maxWidth="1200px"
         width="100%"
         margin="0 auto"
-        paddingTop="25px"
+        padding="25px 0"
       >
         {children}
       </Box>

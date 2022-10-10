@@ -15,7 +15,7 @@ function Nav(): JSX.Element {
           <StyledLink variant="noUnderline">
             <Text
               color={isActiveLink(item.path) ? 'brandAccent' : 'brandPrimary'}
-              fontWeight={isActiveLink(item.path) ? 'bold' : 'medium'}
+              fontSize="20px"
             >
               {item.name}
             </Text>
