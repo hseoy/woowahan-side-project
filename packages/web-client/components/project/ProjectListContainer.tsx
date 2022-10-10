@@ -10,6 +10,7 @@ const mockItems = [
       description: '우아한수다타임을 위해 직접 만든 우수타 웹 플랫폼',
     },
     commentCnt: 3,
+    deployLink: 'https://woowahan-side-project.hseoy.xyz/',
   },
   {
     id: 1,
@@ -19,6 +20,7 @@ const mockItems = [
       description: '우아한수다타임을 위해 직접 만든 우수타 웹 플랫폼',
     },
     commentCnt: 20,
+    deployLink: 'https://woowahan-side-project.hseoy.xyz/',
   },
   {
     id: 2,
@@ -28,6 +30,7 @@ const mockItems = [
       description: '우아한수다타임을 위해 직접 만든 우수타 웹 플랫폼',
     },
     commentCnt: 14,
+    deployLink: 'https://woowahan-side-project.hseoy.xyz/',
   },
   {
     id: 3,
@@ -37,6 +40,7 @@ const mockItems = [
       description: '우아한수다타임을 위해 직접 만든 우수타 웹 플랫폼',
     },
     commentCnt: 15,
+    deployLink: 'https://woowahan-side-project.hseoy.xyz/',
   },
 ];
 
