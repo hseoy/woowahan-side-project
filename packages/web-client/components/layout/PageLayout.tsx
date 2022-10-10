@@ -1,4 +1,4 @@
-import { Flex, Stack, Text } from '@chakra-ui/react';
+import { Center, Flex, Stack, Text } from '@chakra-ui/react';
 import ContentWrapper from '@/components/common/ContentWrapper';
 import Header from '@/components/common/Header';
 import Nav from '@/components/common/Nav';
@@ -6,6 +6,8 @@ import LogoLink from '../service/LogoLink';
 import Sidebar from './Sidebar';
 import WoowaBanner from '../banner/WoowaBanner';
 import WoowaconBanner from '../banner/WoowaconBanner';
+import ProjectAddButton from '../project/ProjectAddButton';
+import ProjectItemModifyModal from '../project/ProjectItemModifyModal';
 
 type PageLayoutProps = {
   children: React.ReactNode;
@@ -17,7 +19,12 @@ function PageLayout({ children }: PageLayoutProps): JSX.Element {
       <Header>
         <LogoLink href="/" />
         <Nav />
-        <Text fontSize="18px">사용자</Text>
+        <Center>
+          <ProjectAddButton />
+          <Text paddingLeft="20px" fontSize="18px">
+            사용자
+          </Text>
+        </Center>
       </Header>
       <ContentWrapper>
         <Flex height="100%">
@@ -28,6 +35,7 @@ function PageLayout({ children }: PageLayoutProps): JSX.Element {
           </Sidebar>
         </Flex>
       </ContentWrapper>
+      <ProjectItemModifyModal />
     </Stack>
   );
 }

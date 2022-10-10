@@ -23,12 +23,7 @@ function WoowaconBanner(): JSX.Element {
       </Box>
 
       <Center paddingTop="20px">
-        <Button
-          onClick={toHref}
-          backgroundColor="logo"
-          color="white"
-          width="250px"
-        >
+        <Button onClick={toHref} colorScheme="mint" width="250px">
           Click
         </Button>
       </Center>

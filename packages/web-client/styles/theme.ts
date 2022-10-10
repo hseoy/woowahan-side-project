@@ -15,6 +15,13 @@ const theme = extendTheme({
     veryLightGray: '#EAEAEA',
     mediumLightGray: '#D3D3D3',
     lightGray: '#5B5B5B',
+    mint: {
+      100: '#EDFDFC',
+      300: '#83E8E2',
+      500: '#2AC1BC',
+      700: '#1E8A86',
+      900: '#125351',
+    },
   },
   components: {
     Link: {
