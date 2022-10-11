@@ -38,6 +38,7 @@ function ProjectItemModifyModal(): JSX.Element {
       name: !name,
       description: !description,
     });
+    return author && name && description;
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,8 +49,9 @@ function ProjectItemModifyModal(): JSX.Element {
   const onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    validateRequiredFields();
-    onModalSubmit();
+    if (validateRequiredFields()) {
+      onModalSubmit();
+    }
   };
 
   const onCloseModal = () => {
