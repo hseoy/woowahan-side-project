@@ -1,24 +1,22 @@
-import { Flex, Stack, Text, Icon, Center } from '@chakra-ui/react';
+import { Flex, Stack, Text, Icon, Center, Link } from '@chakra-ui/react';
 import Image from 'next/image';
 // import ChatRightFill from '@/assets/svg/chat-right-fill.svg';
-import Link from 'next/link';
 import { mockImage } from '@/mock';
-import ArrowRightSquareFill from '@/assets/svg/arrow-right-square-fill.svg';
+import Link45degIcon from '@/assets/svg/link-45deg.svg';
+import GithubIcon from '@/assets/svg/github.svg';
+import { ProjectDto } from '@/apis/projects';
 
 type ProjectItemProps = {
-  author: string;
-  name: string;
-  description: string;
-  deployLink?: string;
   /** @todo 현재 아직 구현되지 않은 기능입니다. */
   // commentCnt?: number;
-};
+} & ProjectDto;
 
 function ProjectItem({
   author,
   name,
   description,
   deployLink,
+  githubLink,
 }: ProjectItemProps): JSX.Element {
   return (
     <Flex width="100%" position="relative" paddingRight="25px">
@@ -50,18 +48,33 @@ function ProjectItem({
         </Flex> */}
       </Stack>
 
-      {deployLink && (
-        <Link href={deployLink} passHref>
-          <Center marginLeft="auto" cursor="pointer">
-            <Icon
-              as={ArrowRightSquareFill}
-              color="logo"
-              width="30px"
-              height="30px"
-            />
+      <Center marginLeft="auto" gap="10px">
+        {githubLink && (
+          <Center>
+            <Link href={githubLink} target="_blank" rel="noopener noreferrer">
+              <Icon
+                as={GithubIcon}
+                width="25px"
+                height="25px"
+                color="lightGray"
+              />
+            </Link>
           </Center>
-        </Link>
-      )}
+        )}
+
+        {deployLink && (
+          <Center>
+            <Link href={deployLink} target="_blank" rel="noopener noreferrer">
+              <Icon
+                as={Link45degIcon}
+                color="logo"
+                width="25px"
+                height="25px"
+              />
+            </Link>
+          </Center>
+        )}
+      </Center>
     </Flex>
   );
 }
