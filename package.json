@@ -33,11 +33,13 @@
     "eslint-plugin-testing-library": "^5.3.1",
     "husky": "^7.0.0",
     "identity-obj-proxy": "^3.0.0",
+    "jest": "^27.2.5",
     "jest-transform-stub": "^2.0.0",
     "lint-staged": "^12.4.1",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.1.4",
-    "jest": "^27.2.5"
+    "ttypescript": "^1.5.13",
+    "typescript-transform-paths": "^3.3.1"
   }
 }

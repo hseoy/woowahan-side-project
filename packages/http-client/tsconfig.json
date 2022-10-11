@@ -11,7 +11,12 @@
     "declaration": true,
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "plugins": [
+      {
+        "transform": "typescript-transform-paths"
+      }
+    ]
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "**/*.js", "dist"]

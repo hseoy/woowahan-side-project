@@ -1,16 +1,9 @@
 import { atom, useRecoilState } from 'recoil';
-
-type ProjectItem = {
-  author: string;
-  name: string;
-  description?: string;
-  deployLink?: string;
-  githubLink?: string;
-};
+import { CreateProjectDto, requestCreateProject } from '@/apis/projects';
 
 type ProjectItemModalState = {
   isOpen: boolean;
-  projectItem: ProjectItem;
+  projectItem: CreateProjectDto;
 };
 
 const initialProjectItem = {
@@ -32,28 +25,31 @@ const useProjectItemModal = () => {
   const [projectItemModalState, setProjectItemModalState] =
     useRecoilState(projectItemModalAtom);
 
-  const openModal = (projectItem?: ProjectItem) => {
+  const openModal = (projectItem?: CreateProjectDto) => {
     setProjectItemModalState({
       isOpen: true,
       projectItem: { ...initialProjectItem, ...projectItem },
     });
   };
 
-  const closeModal = (projectItem?: ProjectItem) => {
+  const closeModal = (projectItem?: CreateProjectDto) => {
     setProjectItemModalState({
       isOpen: false,
       projectItem: { ...initialProjectItem, ...projectItem },
     });
   };
 
-  const modifyProjectItem = (projectItem: Partial<ProjectItem>) => {
+  const modifyProjectItem = (projectItem: Partial<CreateProjectDto>) => {
     setProjectItemModalState(prev => ({
       ...prev,
       projectItem: { ...prev.projectItem, ...projectItem },
     }));
   };
 
-  const onModalSubmit = () => {};
+  const onModalSubmit = async () => {
+    await requestCreateProject(projectItemModalState.projectItem);
+    closeModal();
+  };
 
   const { isOpen, projectItem } = projectItemModalState;
 

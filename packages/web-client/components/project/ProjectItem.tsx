@@ -6,19 +6,18 @@ import { mockImage } from '@/mock';
 import ArrowRightSquareFill from '@/assets/svg/arrow-right-square-fill.svg';
 
 type ProjectItemProps = {
-  userName: string;
-  project: {
-    name: string;
-    description: string;
-  };
+  author: string;
+  name: string;
+  description: string;
   deployLink?: string;
   /** @todo 현재 아직 구현되지 않은 기능입니다. */
   // commentCnt?: number;
 };
 
 function ProjectItem({
-  userName,
-  project,
+  author,
+  name,
+  description,
   deployLink,
 }: ProjectItemProps): JSX.Element {
   return (
@@ -32,15 +31,15 @@ function ProjectItem({
             color="brandAccent"
             paddingRight="5px"
           >
-            {project.name}
+            {name}
           </Text>
           <Text fontSize="12px" color="brandPrimary">
-            @{userName}
+            @{author}
           </Text>
         </Flex>
 
         <Text fontSize="14px" color="brandPrimary" style={{ margin: 0 }}>
-          {project.description}
+          {description}
         </Text>
 
         {/* <Flex alignItems="center" marginTop="20px">
