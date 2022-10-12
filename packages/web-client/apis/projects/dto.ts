@@ -11,9 +11,10 @@ export type ProjectDto = {
 
 export type ProjectListDto = ProjectDto[];
 
-export type CreateProjectDto = Omit<
-  ProjectDto,
-  'id' | 'createdAt' | 'updatedAt'
->;
+export type ProjectItemDto = Omit<ProjectDto, 'createdAt' | 'updatedAt'>;
+
+export type ProjectItemListDto = ProjectItemDto[];
+
+export type CreateProjectDto = ProjectItemDto;
 
 export type UpdateProjectDto = Partial<CreateProjectDto>;

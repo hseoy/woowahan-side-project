@@ -1,6 +1,6 @@
 import { HTTPResponse } from '@/../http-client/dist';
 import { client } from '../client';
-import { CreateProjectDto, ProjectListDto } from './dto';
+import { CreateProjectDto, ProjectDto, ProjectListDto } from './dto';
 
 export const requestGetProjectList = async (): Promise<
   HTTPResponse<ProjectListDto>
@@ -9,5 +9,7 @@ export const requestGetProjectList = async (): Promise<
   return response;
 };
 
-export const requestCreateProject = async (data: CreateProjectDto) =>
+export const requestCreateProject = async (
+  data: CreateProjectDto,
+): Promise<HTTPResponse<ProjectDto>> =>
   client.post<void, CreateProjectDto>('/projects', data);

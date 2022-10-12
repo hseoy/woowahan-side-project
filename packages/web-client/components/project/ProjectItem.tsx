@@ -4,12 +4,12 @@ import Image from 'next/image';
 import { mockImage } from '@/mock';
 import Link45degIcon from '@/assets/svg/link-45deg.svg';
 import GithubIcon from '@/assets/svg/github.svg';
-import { ProjectDto } from '@/apis/projects';
+import { ProjectItemDto } from '@/apis/projects';
 
 type ProjectItemProps = {
   /** @todo 현재 아직 구현되지 않은 기능입니다. */
   // commentCnt?: number;
-} & ProjectDto;
+} & ProjectItemDto;
 
 function ProjectItem({
   author,

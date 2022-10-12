@@ -1,19 +1,9 @@
 import { Heading, Stack } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import { ProjectListDto, requestGetProjectList } from '@/apis/projects';
 import ProjectItem from './ProjectItem';
+import useProjectList from '@/hooks/use-project-list';
 
 function ProjectListContainer(): JSX.Element {
-  const [projectItems, setProjectItems] = useState<ProjectListDto>();
-
-  const getProjectList = async () => {
-    const response = await requestGetProjectList();
-
-    setProjectItems(response.data);
-  };
-  useEffect(() => {
-    getProjectList();
-  }, []);
+  const { projectList } = useProjectList();
 
   return (
     <Stack width="100%">
@@ -21,7 +11,7 @@ function ProjectListContainer(): JSX.Element {
         우리 구성원들이 만든 사이드 프로젝트들 👇
       </Heading>
       <Stack gap="25px">
-        {projectItems?.map(item => (
+        {projectList?.map(item => (
           <ProjectItem key={item.id} {...item} />
         ))}
       </Stack>

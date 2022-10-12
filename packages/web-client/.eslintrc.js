@@ -35,6 +35,7 @@ module.exports = {
       1,
       { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
     ],
+    'react-hooks/exhaustive-deps': 'off',
     'react/jsx-props-no-spreading': 'off',
     'no-param-reassign': [
       'error',
