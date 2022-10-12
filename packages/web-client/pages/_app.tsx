@@ -13,6 +13,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ChakraProvider theme={theme}>
         <Head>
           <title>{serviceName}</title>
+          <link rel="icon" href="./favicon/favicon.ico" />
+          <link rel="shortcut icon" href="./favicon/favicon.ico" />
         </Head>
         <Fonts />
         <GlobalStyle />
