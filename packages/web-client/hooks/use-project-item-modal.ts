@@ -50,8 +50,8 @@ const useProjectItemModal = () => {
     }));
   };
 
-  const onModalSubmit = async () => {
-    await addProjectItem(projectItemModalState.projectItem);
+  const onModalSubmit = async (data?: ProjectItemDto) => {
+    await addProjectItem(data || projectItemModalState.projectItem);
     closeModal();
   };
 
