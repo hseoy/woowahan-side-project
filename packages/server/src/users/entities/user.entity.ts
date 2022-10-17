@@ -20,6 +20,9 @@ export class User {
   @Column({ type: 'varchar', length: 45 })
   accountType: string;
 
+  @Column({ type: 'varchar', length: 20 })
+  providerId: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

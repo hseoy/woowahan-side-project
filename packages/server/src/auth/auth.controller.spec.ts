@@ -1,5 +1,13 @@
+import { HashService } from '@/hash/hash.service';
+import { UsersService } from '@/users/users.service';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { getMockRepository } from '@test/test-helper';
 import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+import { UserAuth } from './entities/user-auth.entity';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -7,6 +15,17 @@ describe('AuthController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
+      providers: [
+        AuthService,
+        { provide: ConfigService, useValue: {} },
+        { provide: HashService, useValue: {} },
+        { provide: JwtService, useValue: {} },
+        { provide: UsersService, useValue: {} },
+        {
+          provide: getRepositoryToken(UserAuth),
+          useValue: getMockRepository(),
+        },
+      ],
     }).compile();
 
     controller = module.get<AuthController>(AuthController);

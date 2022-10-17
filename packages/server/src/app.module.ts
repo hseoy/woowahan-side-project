@@ -5,15 +5,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
-// import { AuthModule } from './auth/auth.module';
-import { databaseConfig, oauthConfig } from './config';
+import { AuthModule } from './auth/auth.module';
+import { clientConfig, databaseConfig, jwtConfig, oauthConfig } from './config';
 import { ProjectsModule } from './projects/projects.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig, oauthConfig],
+      load: [databaseConfig, oauthConfig, jwtConfig, clientConfig],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -27,7 +27,7 @@ import { ProjectsModule } from './projects/projects.module';
       }),
     }),
     UsersModule,
-    // AuthModule,
+    AuthModule,
     ProjectsModule,
   ],
   controllers: [AppController],

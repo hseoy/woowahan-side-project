@@ -14,6 +14,7 @@ const mockUserList: User[] = [
     accountType: 'woowa',
     createdAt: new Date('2000-01-01'),
     updatedAt: new Date('2000-02-02'),
+    providerId: 'providerId_1',
   },
   {
     id: 2,
@@ -22,12 +23,15 @@ const mockUserList: User[] = [
     accountType: 'woowa',
     createdAt: new Date('2001-01-01'),
     updatedAt: new Date('2001-02-02'),
+    providerId: 'providerId_2',
   },
 ];
 
 const mockCreateUser: CreateUserDto = {
   username: 'someone',
   email: 'someone@example.com',
+  accountType: 'google',
+  providerId: 'providerId_someone',
 };
 
 const mockUpdateUser: UpdateUserDto = {
