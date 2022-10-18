@@ -1,4 +1,4 @@
-import { HTTPResponse } from '@/../http-client/dist';
+import { HTTPResponse } from '@woowahan-side-project/http-client';
 import { client } from '../client';
 import { CreateProjectDto, ProjectDto, ProjectListDto } from './dto';
 
