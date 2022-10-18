@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosHeaders, AxiosInstance, AxiosRequestConfig } from 'axios';
 
 import { HTTPClient } from './http-client';
 import { HTTPHeaderValue, HTTPRequestConfig, HTTPResponse } from '@/types';
@@ -57,7 +57,11 @@ export class AxiosHTTPClient extends HTTPClient {
 
   getHeaderValue(key: string) {
     const { headers } = this.defaultRequestConfig;
-    return headers?.[key];
+    const result: AxiosHeaders | HTTPHeaderValue | undefined = headers?.[key];
+    if (result instanceof AxiosHeaders) {
+      return null;
+    }
+    return result;
   }
 }
 
