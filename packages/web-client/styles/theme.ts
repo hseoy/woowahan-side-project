@@ -6,6 +6,7 @@ const theme = extendTheme({
     logo: `'BMEuljiro10yearslater', 'Spoqa Han Sans Neo', sans-serif`,
     heading: `'Spoqa Han Sans Neo', sans-serif`,
     body: `'Spoqa Han Sans Neo', sans-serif`,
+    dohyeon: `'BMDOHYEON', 'Spoqa Han Sans Neo', sans-serif`,
   },
   colors: {
     logo: '#40BFB8',

@@ -1,6 +1,17 @@
-import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtPayload } from '@/auth/types';
 
 @Controller('users')
 export class UsersController {
@@ -9,6 +20,14 @@ export class UsersController {
   @Get()
   findAll() {
     return this.usersService.findAll();
+  }
+
+  @Get('/me')
+  @UseGuards(AuthGuard('jwt-access-token'))
+  getMe(@Req() req: { user: JwtPayload }) {
+    const userEmail = req.user.email;
+
+    return this.usersService.findOneByEmail(userEmail);
   }
 
   @Get(':id')

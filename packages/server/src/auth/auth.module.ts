@@ -7,6 +7,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserAuth } from './entities/user-auth.entity';
 import { HashModule } from '@/hash/hash.module';
+import { AccessTokenStrategy } from './strategies/access-token.strategy';
+import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
 
 @Module({
   imports: [
@@ -15,7 +17,12 @@ import { HashModule } from '@/hash/hash.module';
     TypeOrmModule.forFeature([UserAuth]),
     HashModule,
   ],
-  providers: [AuthService, GoogleStrategy],
+  providers: [
+    AuthService,
+    GoogleStrategy,
+    AccessTokenStrategy,
+    RefreshTokenStrategy,
+  ],
   exports: [TypeOrmModule, AuthService],
   controllers: [AuthController],
 })

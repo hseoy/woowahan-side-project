@@ -46,7 +46,7 @@ export class AuthController {
   }
 
   @Get('refresh')
-  @UseGuards(AuthGuard('jwt-refresh'))
+  @UseGuards(AuthGuard('jwt-refresh-token'))
   async refreshAccessToken(
     @Req() req: { user: JwtPayload & { refreshToken: string } },
   ) {
@@ -55,5 +55,12 @@ export class AuthController {
     const accessToken = this.authService.refreshAccessToken(refreshToken);
 
     return accessToken;
+  }
+
+  @Get('logout')
+  async logout(@Res() res: Response) {
+    res.cookie('X-Refresh-Token', undefined);
+
+    res.sendStatus(200);
   }
 }

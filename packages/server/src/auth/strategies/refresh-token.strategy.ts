@@ -8,11 +8,13 @@ import { JwtPayload } from '../types';
 @Injectable()
 export class RefreshTokenStrategy extends PassportStrategy(
   Strategy,
-  'jwt-refresh',
+  'jwt-refresh-token',
 ) {
   constructor(configService: ConfigService) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (request) => request?.cookies?.['X-Refresh-Token'],
+      ]),
       secretOrKey: configService.get('jwt.secret'),
       passReqToCallback: true,
     });
