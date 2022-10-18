@@ -6,6 +6,8 @@ import {
   MenuItem,
   Text,
   Spinner,
+  MenuGroup,
+  MenuDivider,
 } from '@chakra-ui/react';
 import useAuth from '@/hooks/use-auth';
 import useProjectItemModal from '@/hooks/use-project-item-modal';
@@ -33,18 +35,24 @@ function UserMenu({ isLoading }: UserMenuProps): JSX.Element {
         <Avatar src={user.profileImg} size="sm" referrerPolicy="no-referrer" />
       </MenuButton>
       <MenuList>
-        {user.accountType === 'woowahan' && (
+        <MenuGroup title="Project">
           <MenuItem onClick={() => openModal()}>
             <Text fontFamily="body" fontSize="16px">
               프로젝트 추가
             </Text>
           </MenuItem>
-        )}
-        <MenuItem onClick={logout}>
-          <Text fontFamily="body" fontSize="16px">
-            로그아웃
-          </Text>
-        </MenuItem>
+        </MenuGroup>
+        <MenuDivider />
+        <MenuGroup title="User">
+          <MenuItem disabled>
+            {user.username} - {user.accountType}
+          </MenuItem>
+          <MenuItem onClick={logout}>
+            <Text fontFamily="body" fontSize="16px">
+              로그아웃
+            </Text>
+          </MenuItem>
+        </MenuGroup>
       </MenuList>
     </Menu>
   );
