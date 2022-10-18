@@ -14,6 +14,7 @@ function GoogleLoginButton({ ...props }: LoginButtonProps): JSX.Element {
       href={`${config.apiUrl}/auth/google`}
       fontWeight="normal"
       colorScheme="mint"
+      _hover={{ textDecoration: 'none' }}
     >
       로그인
     </Button>

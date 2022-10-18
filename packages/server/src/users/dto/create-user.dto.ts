@@ -3,4 +3,5 @@ export class CreateUserDto {
   email: string;
   accountType: string;
   providerId: string;
+  profileImg?: string;
 }

@@ -10,13 +10,14 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   }
 
   validate(_accessToken: string, _refreshToken: string, profile: Profile) {
-    const { id, name, emails } = profile;
+    const { id, name, emails, photos } = profile;
 
     return {
       provider: 'google',
       providerId: id,
       username: name.givenName,
       email: emails[0].value,
+      profileImg: photos[0]?.value,
     };
   }
 }

@@ -4,6 +4,7 @@ export type UserDto = {
   email: string;
   accountType: string;
   providerId: string;
+  profileImg?: string;
   createdAt: Date;
   updatedAt: Date;
 };
