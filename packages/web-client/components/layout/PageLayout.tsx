@@ -1,4 +1,13 @@
-import { Center, Flex, Stack } from '@chakra-ui/react';
+import {
+  Alert,
+  AlertIcon,
+  Button,
+  Center,
+  Flex,
+  Spinner,
+  Stack,
+} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import ContentWrapper from '@/components/common/ContentWrapper';
 import Header from '@/components/common/Header';
 import Nav from '@/components/common/Nav';
@@ -8,29 +17,68 @@ import WoowaBanner from '../banner/WoowaBanner';
 import WoowaconBanner from '../banner/WoowaconBanner';
 import ProjectItemModifyModal from '../project/ProjectItemModifyModal';
 import UserMenu from '../user/UserMenu';
+import useAuth from '@/hooks/use-auth';
+import GoogleLoginButton from '../auth/GoogleLoginButton';
 
 type PageLayoutProps = {
   children: React.ReactNode;
 };
 
 function PageLayout({ children }: PageLayoutProps): JSX.Element {
+  const [isRequestedAuthInfo, setIsRequestedAuthInfo] = useState(false);
+  const { user, refreshToken, getMe, logout } = useAuth();
+
+  useEffect(() => {
+    refreshToken()
+      .then(getMe)
+      .catch(() => null)
+      .then(() => setIsRequestedAuthInfo(true));
+  }, []);
+
+  const warningComponent = (() => {
+    if (!isRequestedAuthInfo) {
+      return (
+        <Center>
+          <Spinner />
+        </Center>
+      );
+    }
+    return (
+      <Stack>
+        <Alert status={user ? 'error' : 'warning'}>
+          <AlertIcon />
+          현재는 사내 구성원을 대상으로 서비스가 제공되고 있습니다. 사내
+          이메일(@woowahan.com)로 로그인 부탁드립니다.
+        </Alert>
+        {user ? (
+          <Button onClick={logout}>로그아웃하기</Button>
+        ) : (
+          <GoogleLoginButton colorScheme={undefined} />
+        )}
+      </Stack>
+    );
+  })();
   return (
     <Stack width="100%" height="100%">
       <Header>
         <LogoLink href="/" />
         <Nav />
         <Center>
-          <UserMenu />
+          <UserMenu isLoading={!isRequestedAuthInfo} />
         </Center>
       </Header>
       <ContentWrapper>
-        <Flex height="100%">
-          {children}
-          <Sidebar>
-            <WoowaBanner />
-            <WoowaconBanner />
-          </Sidebar>
-        </Flex>
+        {user?.accountType !== 'woowahan' ? (
+          warningComponent
+        ) : (
+          <Flex height="100%">
+            {children}
+            <Sidebar>
+              <WoowaBanner />
+              <WoowaconBanner />
+            </Sidebar>
+          </Flex>
+        )}
       </ContentWrapper>
       <ProjectItemModifyModal />
     </Stack>

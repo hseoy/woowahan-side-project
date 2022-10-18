@@ -7,24 +7,19 @@ import {
   Text,
   Spinner,
 } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
 import useAuth from '@/hooks/use-auth';
 import useProjectItemModal from '@/hooks/use-project-item-modal';
 import GoogleLoginButton from '../auth/GoogleLoginButton';
 
-function UserMenu(): JSX.Element {
-  const [isRequestedAuthInfo, setIsRequestedAuthInfo] = useState(false);
-  const { user, refreshToken, getMe, logout } = useAuth();
+type UserMenuProps = {
+  isLoading?: boolean;
+};
+
+function UserMenu({ isLoading }: UserMenuProps): JSX.Element {
+  const { user, logout } = useAuth();
   const { openModal } = useProjectItemModal();
 
-  useEffect(() => {
-    refreshToken()
-      .then(getMe)
-      .catch(() => null)
-      .then(() => setIsRequestedAuthInfo(true));
-  }, []);
-
-  if (!isRequestedAuthInfo) {
+  if (isLoading) {
     return <Spinner />;
   }
 
