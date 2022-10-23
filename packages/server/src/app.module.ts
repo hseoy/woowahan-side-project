@@ -8,12 +8,14 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { clientConfig, databaseConfig, jwtConfig, oauthConfig } from './config';
 import { ProjectsModule } from './projects/projects.module';
+import { S3Module } from './s3/s3.module';
+import awsConfig from './config/aws.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig, oauthConfig, jwtConfig, clientConfig],
+      load: [databaseConfig, oauthConfig, jwtConfig, clientConfig, awsConfig],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -29,6 +31,7 @@ import { ProjectsModule } from './projects/projects.module';
     UsersModule,
     AuthModule,
     ProjectsModule,
+    S3Module,
   ],
   controllers: [AppController],
   providers: [AppService],
