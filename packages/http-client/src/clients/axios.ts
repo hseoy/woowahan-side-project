@@ -56,9 +56,9 @@ export class AxiosHTTPClient extends HTTPClient {
   }
 
   getHeaderValue(key: string) {
-    const { headers } = this.defaultRequestConfig;
+    const { headers = {} } = this.defaultRequestConfig;
     const result: AxiosHeaders | HTTPHeaderValue | undefined = headers?.[key];
-    if (result instanceof AxiosHeaders) {
+    if (typeof result === 'object' && result instanceof AxiosHeaders) {
       return null;
     }
     return result;
