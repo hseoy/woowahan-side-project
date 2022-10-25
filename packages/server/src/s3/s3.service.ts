@@ -9,9 +9,11 @@ import { CopyS3ObjectDto } from './dto/copy-s3-object.dto';
 export class S3Service {
   private s3: S3;
   private bucketName: string;
+  private cloudFrontLink: string;
 
   constructor(configService: ConfigService) {
     this.bucketName = configService.get('aws.bucket.name');
+    this.cloudFrontLink = configService.get('aws.bucket.cloudFrontLink');
     this.s3 = new S3({
       region: configService.get('aws.bucket.region'),
       credentials: this.getS3Credentials(configService.get('aws.credentials')),
@@ -101,5 +103,9 @@ export class S3Service {
         ACL: 'bucket-owner-full-control',
       })
       .promise();
+  }
+
+  getS3FullLink(key: string) {
+    return `${this.cloudFrontLink}/${key}`;
   }
 }

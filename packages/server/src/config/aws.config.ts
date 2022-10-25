@@ -4,6 +4,7 @@ const awsConfig = registerAs('aws', () => ({
   bucket: {
     name: process.env.AWS_BUCKET_NAME,
     region: process.env.AWS_BUCKET_REGION,
+    cloudFrontLink: process.env.AWS_BUCKET_CLOUD_FRONT_LINK,
   },
   credentials: {
     profile: process.env.AWS_CREDENTIALS_PROFILE,

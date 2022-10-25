@@ -86,15 +86,18 @@ importers:
       '@types/bcryptjs': ^2.4.2
       '@types/cookie-parser': ^1.4.3
       '@types/express': ^4.17.13
+      '@types/multer': ^1.4.7
       '@types/node': ^16.0.0
       '@types/passport': ^1.0.11
       '@types/passport-google-oauth20': ^2.0.11
       '@types/passport-jwt': ^3.0.7
       '@types/supertest': ^2.0.11
+      '@types/uuid': ^8.3.4
       aws-sdk: ^2.1238.0
       bcryptjs: ^2.4.3
       cookie-parser: ^1.4.6
       express: ^4.18.1
+      multer: 1.4.5-lts.1
       mysql2: ^2.3.3
       passport: ^0.6.0
       passport-google-oauth20: ^2.0.0
@@ -110,6 +113,7 @@ importers:
       tsconfig-paths: 4.0.0
       typeorm: ^0.3.10
       typescript: ^4.3.5
+      uuid: ^9.0.0
     dependencies:
       '@nestjs/common': 9.1.4_yzt46al3aifnexifjjdb4dxxja
       '@nestjs/config': 2.2.0_6fl4rox5ofo3yz2h7ukpny327a
@@ -123,6 +127,7 @@ importers:
       bcryptjs: 2.4.3
       cookie-parser: 1.4.6
       express: 4.18.2
+      multer: 1.4.5-lts.1
       mysql2: 2.3.3
       passport: 0.6.0
       passport-google-oauth20: 2.0.0
@@ -132,6 +137,7 @@ importers:
       rxjs: 7.5.7
       swagger-ui-express: 4.5.0_express@4.18.2
       typeorm: 0.3.10_pa4ea3wjef6s4gsskhbyci3cte
+      uuid: 9.0.0
     devDependencies:
       '@nestjs/cli': 9.1.4
       '@nestjs/schematics': 9.0.3_typescript@4.6.3
@@ -139,11 +145,13 @@ importers:
       '@types/bcryptjs': 2.4.2
       '@types/cookie-parser': 1.4.3
       '@types/express': 4.17.14
+      '@types/multer': 1.4.7
       '@types/node': 16.11.64
       '@types/passport': 1.0.11
       '@types/passport-google-oauth20': 2.0.11
       '@types/passport-jwt': 3.0.7
       '@types/supertest': 2.0.12
+      '@types/uuid': 8.3.4
       source-map-support: 0.5.21
       supertest: 6.3.0
       ts-loader: 9.4.1_typescript@4.6.3
@@ -4034,6 +4042,12 @@ packages:
     resolution: {integrity: sha512-Y4XFY5VJAuw0FgAqPNd6NNoV44jbq9Bz2L7Rh/J6jLTiHBSBJa9fxqQIvkIld4GsoDOcCbvzOUAbLPsSKKg+uA==}
     dev: true
 
+  /@types/multer/1.4.7:
+    resolution: {integrity: sha512-/SNsDidUFCvqqcWDwxv2feww/yqhNeTRL5CVoL3jU4Goc4kKEL10T7Eye65ZqPNi4HRx8sAEX59pV1aEH7drNA==}
+    dependencies:
+      '@types/express': 4.17.14
+    dev: true
+
   /@types/node/16.11.64:
     resolution: {integrity: sha512-z5hPTlVFzNwtJ2LNozTpJcD1Cu44c4LNuzaq1mwxmiHWQh2ULdR6Vjwo1UGldzRpzL0yUEdZddnfqGW2G70z6Q==}
     dev: true
@@ -4167,6 +4181,10 @@ packages:
     resolution: {integrity: sha512-SBwbxYoyPIvxHbeHxTZX2Pe/74F/tX2/D3mMvzabdeJ25bBojfW0TyB8BHrbq/9zaaKICJZjLP+8r6AeZMFCuQ==}
     dependencies:
       '@types/jest': 27.5.2
+    dev: true
+
+  /@types/uuid/8.3.4:
+    resolution: {integrity: sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==}
     dev: true
 
   /@types/yargs-parser/21.0.0:
@@ -8369,6 +8387,19 @@ packages:
 
   /multer/1.4.4-lts.1:
     resolution: {integrity: sha512-WeSGziVj6+Z2/MwQo3GvqzgR+9Uc+qt8SwHKh3gvNPiISKfsMfG4SvCOFYlxxgkXt7yIV2i1yczehm0EOKIxIg==}
+    engines: {node: '>= 6.0.0'}
+    dependencies:
+      append-field: 1.0.0
+      busboy: 1.6.0
+      concat-stream: 1.6.2
+      mkdirp: 0.5.6
+      object-assign: 4.1.1
+      type-is: 1.6.18
+      xtend: 4.0.2
+    dev: false
+
+  /multer/1.4.5-lts.1:
+    resolution: {integrity: sha512-ywPWvcDMeH+z9gQq5qYHCCy+ethsk4goepZ45GLD63fOu0YcNecQxi64nDs3qluZB+murG3/D4dJ7+dGctcCQQ==}
     engines: {node: '>= 6.0.0'}
     dependencies:
       append-field: 1.0.0
