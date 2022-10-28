@@ -22,9 +22,17 @@ import GoogleLoginButton from '../auth/GoogleLoginButton';
 
 type PageLayoutProps = {
   children: React.ReactNode;
+  /** @default false */
+  withSide?: boolean;
+  /** @default false */
+  withContentWrapper?: boolean;
 };
 
-function PageLayout({ children }: PageLayoutProps): JSX.Element {
+function PageLayout({
+  children,
+  withSide,
+  withContentWrapper,
+}: PageLayoutProps): JSX.Element | null {
   const [isRequestedAuthInfo, setIsRequestedAuthInfo] = useState(false);
   const { user, refreshToken, getMe, logout } = useAuth();
 
@@ -58,6 +66,22 @@ function PageLayout({ children }: PageLayoutProps): JSX.Element {
       </Stack>
     );
   })();
+
+  const contentComponent =
+    user?.accountType !== 'woowahan' ? (
+      warningComponent
+    ) : (
+      <Flex height="100%" style={{ margin: 0 }}>
+        {children}
+        {withSide && (
+          <Sidebar>
+            <WoowaBanner />
+            <WoowaconBanner />
+          </Sidebar>
+        )}
+      </Flex>
+    );
+
   return (
     <Stack width="100%" height="100%">
       <Header>
@@ -67,19 +91,11 @@ function PageLayout({ children }: PageLayoutProps): JSX.Element {
           <UserMenu isLoading={!isRequestedAuthInfo} />
         </Center>
       </Header>
-      <ContentWrapper>
-        {user?.accountType !== 'woowahan' ? (
-          warningComponent
-        ) : (
-          <Flex height="100%">
-            {children}
-            <Sidebar>
-              <WoowaBanner />
-              <WoowaconBanner />
-            </Sidebar>
-          </Flex>
-        )}
-      </ContentWrapper>
+      {withContentWrapper ? (
+        <ContentWrapper withPadding>{contentComponent}</ContentWrapper>
+      ) : (
+        contentComponent
+      )}
       <ProjectItemModifyModal />
     </Stack>
   );

@@ -16,7 +16,7 @@ function Home({ projectList }: { projectList: ProjectListDto }) {
   }, [projectList]);
 
   return (
-    <PageLayout>
+    <PageLayout withSide withContentWrapper>
       <ProjectListContainer />
     </PageLayout>
   );
