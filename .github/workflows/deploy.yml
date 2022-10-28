@@ -1,7 +1,7 @@
 name: Deploy
 on:
   push:
-    branches: main
+    branches: 'server-releases/**'
 jobs:
   build:
     runs-on: ubuntu-20.04
