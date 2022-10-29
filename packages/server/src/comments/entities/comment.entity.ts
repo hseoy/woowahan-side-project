@@ -4,7 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -14,12 +14,12 @@ export class Comment {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => User, (user) => user.id, {
+  @ManyToOne(() => User, (user) => user.id, {
     nullable: false,
   })
   user: User;
 
-  @OneToMany(() => Project, (project) => project.id, { nullable: false })
+  @ManyToOne(() => Project, (project) => project.id, { nullable: false })
   project: Project;
 
   @Column({ type: 'varchar', length: 255 })
