@@ -14,10 +14,8 @@ export const requestRefreshToken = async (): Promise<
   return response;
 };
 
-export const requestLogout = async (): Promise<HTTPResponse<void>> => {
-  const response = await client.get('/auth/logout');
+export const requestLogout = async (): Promise<void> => {
+  await client.get('/auth/logout');
 
-  client.setHeaderValue('Authorization', undefined);
-
-  return response;
+  client.setHeaderValue('Authorization', '');
 };
