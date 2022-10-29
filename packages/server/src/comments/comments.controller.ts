@@ -67,11 +67,16 @@ export class CommentsController {
 
   @Get(':id')
   @UseGuards(AuthGuard('jwt-access-token'))
-  findOne(@Param('id') id: string) {
-    return this.commentsService.findOneById(+id);
+  async findOne(@Param('id') id: string) {
+    const comment = await this.commentsService.findOneById(+id);
+    if (!comment) {
+      throw new NotFoundException();
+    }
+    return comment;
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt-access-token'))
   update(
     @Param('id') id: string,
     @Body() updateCommentDto: UpdateCommentDto,
@@ -86,8 +91,13 @@ export class CommentsController {
 
   @Delete(':id')
   @UseGuards(AuthGuard('jwt-access-token'))
-  remove(@Param('id') id: string, @Req() req: { user: JwtPayload }) {
+  async remove(@Param('id') id: string, @Req() req: { user: JwtPayload }) {
     const userId = req.user.sub;
+
+    const comment = await this.commentsService.findOneById(+id);
+    if (!comment) {
+      throw new NotFoundException();
+    }
 
     this.throwWhenIsNotCommentOwn(userId, +id);
 

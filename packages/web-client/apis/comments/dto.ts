@@ -13,3 +13,8 @@ export type CreateCommentDto = Omit<
   CommentDto,
   'id' | 'createdAt' | 'updatedAt'
 >;
+
+export type UpdateCommentDto = {
+  message?: string;
+  isAnonymous?: boolean;
+};

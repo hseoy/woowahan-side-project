@@ -14,10 +14,16 @@ export class Comment {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ name: 'user_id' })
+  userId: number;
+
   @ManyToOne(() => User, (user) => user.id, {
     nullable: false,
   })
   user: User;
+
+  @Column({ name: 'project_id' })
+  projectId: number;
 
   @ManyToOne(() => Project, (project) => project.id, { nullable: false })
   project: Project;

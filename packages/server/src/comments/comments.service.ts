@@ -20,7 +20,8 @@ export class CommentsService {
 
   async isCommentOfUser(userId: number, commentId: number) {
     const comment = await this.findOneById(commentId);
-    return comment.user.id === userId;
+
+    return comment.userId === userId;
   }
 
   async create(
@@ -45,8 +46,9 @@ export class CommentsService {
     return this.commentRepository.find();
   }
 
-  findOneById(id: number) {
-    return this.commentRepository.findOneBy({ id });
+  async findOneById(id: number) {
+    const comment = await this.commentRepository.findOneBy({ id });
+    return comment;
   }
 
   findByProjectId(projectId: number) {
