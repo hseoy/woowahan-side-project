@@ -10,6 +10,7 @@ const theme = extendTheme({
   },
   colors: {
     logo: '#40BFB8',
+    iconColor: '#a5a5a5',
     brandPrimary: '#4B587C',
     brandAccent: '#21293C',
     brandPrimaryAlpha: 'rgba(75, 88, 124, 0.25)',
