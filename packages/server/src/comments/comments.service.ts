@@ -1,3 +1,4 @@
+import { CreateOrUpdateDto } from '@/dto/CreateOrUpdate.dto';
 import { UsersService } from '@/users/users.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -18,13 +19,16 @@ export class CommentsService {
     return comment.user.id === userId;
   }
 
-  async create(userId: number, createCommentDto: CreateCommentDto) {
+  async create(
+    userId: number,
+    createCommentDto: CreateCommentDto,
+  ): Promise<CreateOrUpdateDto> {
     const user = await this.usersService.findOneById(userId);
-    const newComment = this.commentRepository.create({
+    const { id } = this.commentRepository.create({
       ...createCommentDto,
       user,
     });
-    return newComment;
+    return { id };
   }
 
   findAll() {
@@ -35,8 +39,13 @@ export class CommentsService {
     return this.commentRepository.findOneBy({ id });
   }
 
-  update(id: number, updateCommentDto: UpdateCommentDto) {
-    return this.commentRepository.update(id, updateCommentDto);
+  async update(
+    id: number,
+    updateCommentDto: UpdateCommentDto,
+  ): Promise<CreateOrUpdateDto> {
+    await this.commentRepository.update(id, updateCommentDto);
+
+    return { id };
   }
 
   remove(id: number) {
