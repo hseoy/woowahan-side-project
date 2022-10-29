@@ -10,6 +10,11 @@ export class ProjectsService {
   @InjectRepository(Project)
   private projectRepository: Repository<Project>;
 
+  async exists(id: number) {
+    const cnt = await this.projectRepository.countBy({ id });
+    return cnt > 0;
+  }
+
   create(createProjectDto: CreateProjectDto) {
     const newProject = this.projectRepository.create(createProjectDto);
     return this.projectRepository.save(newProject);
