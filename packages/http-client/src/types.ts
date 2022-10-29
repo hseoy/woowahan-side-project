@@ -8,10 +8,14 @@ export type HTTPMethod = 'GET' | 'DELETE' | 'POST' | 'PUT' | 'PATCH';
 export type HTTPHeaderValue = string | string[] | number | boolean | null;
 export type RequestHeaders = Record<string, HTTPHeaderValue>;
 
-export interface HTTPRequestConfig<RequestBodyT = unknown> {
+export interface HTTPRequestConfig<
+  RequestQueryT = unknown,
+  RequestBodyT = unknown,
+> {
   url?: string;
   baseURL?: string;
   method?: HTTPMethod;
   data?: RequestBodyT;
+  params?: Record<string, RequestQueryT>;
   headers?: RequestHeaders;
 }

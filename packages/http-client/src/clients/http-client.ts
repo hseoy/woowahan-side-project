@@ -5,38 +5,54 @@ export abstract class HTTPClient {
 
   abstract getHeaderValue(key: string): HTTPHeaderValue | undefined;
 
-  abstract request<ResponseBodyT = unknown, RequestBodyT = unknown>(
-    config: HTTPRequestConfig<RequestBodyT>,
+  abstract request<
+    ResponseBodyT = unknown,
+    RequestQueryT = unknown,
+    RequestBodyT = unknown,
+  >(
+    config: HTTPRequestConfig<RequestQueryT, RequestBodyT>,
   ): Promise<HTTPResponse<ResponseBodyT>>;
 
-  async get<ResponseBodyT = unknown, RequestBodyT = unknown>(
+  async get<
+    ResponseBodyT = unknown,
+    RequestQueryT = unknown,
+    RequestBodyT = unknown,
+  >(
     url: string,
-    config?: HTTPRequestConfig<RequestBodyT>,
+    config?: HTTPRequestConfig<RequestQueryT, RequestBodyT>,
   ): Promise<HTTPResponse<ResponseBodyT>> {
-    return this.request<ResponseBodyT, RequestBodyT>({
+    return this.request<ResponseBodyT, RequestQueryT, RequestBodyT>({
       ...config,
       url,
       method: 'GET',
     });
   }
 
-  async delete<ResponseBodyT = unknown, RequestBodyT = unknown>(
+  async delete<
+    ResponseBodyT = unknown,
+    RequestQueryT = unknown,
+    RequestBodyT = unknown,
+  >(
     url: string,
-    config?: HTTPRequestConfig<RequestBodyT>,
+    config?: HTTPRequestConfig<RequestQueryT, RequestBodyT>,
   ): Promise<HTTPResponse<ResponseBodyT>> {
-    return this.request<ResponseBodyT, RequestBodyT>({
+    return this.request<ResponseBodyT, RequestQueryT, RequestBodyT>({
       ...config,
       url,
       method: 'DELETE',
     });
   }
 
-  async post<ResponseBodyT = unknown, RequestBodyT = unknown>(
+  async post<
+    ResponseBodyT = unknown,
+    RequestQueryT = unknown,
+    RequestBodyT = unknown,
+  >(
     url: string,
     data: RequestBodyT,
-    config?: HTTPRequestConfig<RequestBodyT>,
+    config?: HTTPRequestConfig<RequestQueryT, RequestBodyT>,
   ): Promise<HTTPResponse<ResponseBodyT>> {
-    return this.request<ResponseBodyT, RequestBodyT>({
+    return this.request<ResponseBodyT, RequestQueryT, RequestBodyT>({
       ...config,
       url,
       data,
@@ -44,12 +60,16 @@ export abstract class HTTPClient {
     });
   }
 
-  async put<ResponseBodyT = unknown, RequestBodyT = unknown>(
+  async put<
+    ResponseBodyT = unknown,
+    RequestQueryT = unknown,
+    RequestBodyT = unknown,
+  >(
     url: string,
     data: RequestBodyT,
-    config?: HTTPRequestConfig<RequestBodyT>,
+    config?: HTTPRequestConfig<RequestQueryT, RequestBodyT>,
   ): Promise<HTTPResponse<ResponseBodyT>> {
-    return this.request<ResponseBodyT, RequestBodyT>({
+    return this.request<ResponseBodyT, RequestQueryT, RequestBodyT>({
       ...config,
       url,
       data,
@@ -57,12 +77,16 @@ export abstract class HTTPClient {
     });
   }
 
-  async patch<ResponseBodyT = unknown, RequestBodyT = unknown>(
+  async patch<
+    ResponseBodyT = unknown,
+    RequestQueryT = unknown,
+    RequestBodyT = unknown,
+  >(
     url: string,
     data: Partial<RequestBodyT>,
-    config?: HTTPRequestConfig<RequestBodyT>,
+    config?: HTTPRequestConfig<RequestQueryT, RequestBodyT>,
   ): Promise<HTTPResponse<ResponseBodyT>> {
-    return this.request<ResponseBodyT, Partial<RequestBodyT>>({
+    return this.request<ResponseBodyT, RequestQueryT, Partial<RequestBodyT>>({
       ...config,
       url,
       data,
