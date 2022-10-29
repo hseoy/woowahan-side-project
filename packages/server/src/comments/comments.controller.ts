@@ -12,6 +12,7 @@ import {
   Req,
   UnauthorizedException,
   NotFoundException,
+  Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CommentsService } from './comments.service';
@@ -56,11 +57,16 @@ export class CommentsController {
   }
 
   @Get()
-  findAll() {
-    return this.commentsService.findAll();
+  @UseGuards(AuthGuard('jwt-access-token'))
+  findAll(@Query('projectId') projectId?: string) {
+    if (!projectId) {
+      return this.commentsService.findAll();
+    }
+    return this.commentsService.findByProjectId(+projectId);
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard('jwt-access-token'))
   findOne(@Param('id') id: string) {
     return this.commentsService.findOneById(+id);
   }

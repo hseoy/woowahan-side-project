@@ -39,6 +39,10 @@ export class CommentsService {
     return this.commentRepository.findOneBy({ id });
   }
 
+  findByProjectId(projectId: number) {
+    return this.commentRepository.findBy({ project: { id: projectId } });
+  }
+
   async update(
     id: number,
     updateCommentDto: UpdateCommentDto,
