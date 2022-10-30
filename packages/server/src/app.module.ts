@@ -1,5 +1,12 @@
 import * as path from 'path';
-import { Module } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  MiddlewareConsumer,
+  Module,
+  NestMiddleware,
+  NestModule,
+} from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
@@ -10,6 +17,28 @@ import { clientConfig, databaseConfig, jwtConfig, oauthConfig } from './config';
 import { ProjectsModule } from './projects/projects.module';
 import { S3Module } from './s3/s3.module';
 import awsConfig from './config/aws.config';
+import { NextFunction, Request, Response } from 'express';
+
+@Injectable()
+export class LoggerMiddleware implements NestMiddleware {
+  private logger = new Logger('HTTP');
+
+  use(req: Request, res: Response, next: NextFunction) {
+    const { ip, method, originalUrl } = req;
+
+    const userAgent = req.get('user-agent') || '';
+
+    res.on('finish', () => {
+      const { statusCode } = res;
+
+      this.logger.log(
+        `${method} ${statusCode} - ${originalUrl} - ${ip} - ${userAgent}`,
+      );
+    });
+
+    next();
+  }
+}
 
 @Module({
   imports: [
@@ -36,4 +65,8 @@ import awsConfig from './config/aws.config';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}

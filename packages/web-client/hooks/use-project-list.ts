@@ -55,6 +55,8 @@ const useProjectList = () => {
     const createdProjectItem = itemResponse.data;
 
     setProjectListState(prev => [...prev, createdProjectItem]);
+
+    return createdItemId;
   };
 
   const setProjectList = (projectList: ProjectItemListDto) => {

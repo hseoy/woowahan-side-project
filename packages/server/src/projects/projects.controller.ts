@@ -63,6 +63,8 @@ export class ProjectsController {
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
+    console.log(file);
+
     const backgroundImageLink =
       await this.projectsService.uploadBackgroundImage({
         ...file,

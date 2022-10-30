@@ -18,7 +18,7 @@ type ImageUploadControlProps<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>;
   label: string;
   placeholder?: string;
-  onChangeValue?: (value: unknown) => void;
+  onChangeValue?: (value?: File) => void;
 } & UseControllerProps['rules'];
 
 function ImageUploadControl<TFieldValues extends FieldValues>({
@@ -44,11 +44,9 @@ function ImageUploadControl<TFieldValues extends FieldValues>({
     },
   });
 
-  const onChangeHandler = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
+  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onChangeValue) {
-      onChangeValue(e.target.value);
+      onChangeValue(e.target.files?.[0]);
     }
     onControlChange(e);
   };

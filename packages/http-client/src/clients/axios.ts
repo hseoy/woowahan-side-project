@@ -22,6 +22,7 @@ export class AxiosHTTPClient extends HTTPClient {
       const requestConfig: AxiosRequestConfig = {
         ...this.defaultRequestConfig,
         ...config,
+        headers: { ...this.defaultRequestConfig.headers, ...config.headers },
       };
       const response = await this.client(requestConfig);
 
