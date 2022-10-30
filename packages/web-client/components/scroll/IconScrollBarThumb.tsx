@@ -51,6 +51,7 @@ function IconScrollbarThumb({
 
   useEffect(() => {
     moveThumb();
+    calculateIsThumbHidden();
   }, [
     scrollContainerRef,
     scrollContainerRef.current?.offsetHeight,

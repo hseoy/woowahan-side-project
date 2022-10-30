@@ -4,14 +4,15 @@ import useProjectList from '@/hooks/use-project-list';
 import Scrollbar from '../scroll/ScrollBar';
 import ProjectBlock from './ProjectBlock';
 import ProjectCommentsModal from './ProjectCommentsModal';
+import { ProjectItemDto } from '@/apis/projects';
 
 function ProjectListContainer(): JSX.Element {
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
-    projectId: number;
+    project: ProjectItemDto | null;
   }>({
     isOpen: false,
-    projectId: -1,
+    project: null,
   });
   const { projectList, getProjectList } = useProjectList();
 
@@ -19,11 +20,11 @@ function ProjectListContainer(): JSX.Element {
     getProjectList();
   }, []);
   const onClose = () => {
-    setModalState({ isOpen: false, projectId: -1 });
+    setModalState({ isOpen: false, project: null });
   };
 
-  const onOpen = (projectId: number) => {
-    setModalState({ isOpen: true, projectId });
+  const onOpen = (project: ProjectItemDto) => {
+    setModalState({ isOpen: true, project });
   };
 
   return (
@@ -31,10 +32,10 @@ function ProjectListContainer(): JSX.Element {
       <Heading as="h2" fontSize="24px" paddingBottom="20px">
         우리 구성원들이 만든 사이드 프로젝트들 👇
       </Heading>
-      <Scrollbar withWindowScroll>
+      <Scrollbar withWindowScroll={!modalState.isOpen}>
         <Flex gap="30px" flexWrap="wrap">
           {projectList?.map(item => (
-            <Box key={item.id} onClick={() => onOpen(item.id)}>
+            <Box key={item.id} onClick={() => onOpen(item)}>
               <ProjectBlock key={item.id} {...item} />
             </Box>
           ))}
@@ -42,7 +43,7 @@ function ProjectListContainer(): JSX.Element {
       </Scrollbar>
       <ProjectCommentsModal
         isOpen={modalState.isOpen}
-        projectId={modalState.projectId}
+        project={modalState.project}
         onClose={onClose}
       />
     </Stack>
