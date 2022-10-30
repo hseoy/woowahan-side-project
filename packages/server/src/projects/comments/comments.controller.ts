@@ -1,5 +1,4 @@
 import { JwtPayload } from '@/auth/types';
-import { ProjectsService } from '@/projects/projects.service';
 import {
   Controller,
   Get,
@@ -21,10 +20,7 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 
 @Controller('comments')
 export class CommentsController {
-  constructor(
-    private readonly commentsService: CommentsService,
-    private readonly projectsService: ProjectsService,
-  ) {}
+  constructor(private readonly commentsService: CommentsService) {}
 
   private throwWhenIsNotCommentOwn(userId: number, commentId: number) {
     const isOwnComment = this.commentsService.isCommentOfUser(
@@ -36,13 +32,6 @@ export class CommentsController {
     }
   }
 
-  private throwWhenIsNotExistProject(projectId: number) {
-    const isExistProject = this.projectsService.exists(projectId);
-    if (!isExistProject) {
-      throw new NotFoundException();
-    }
-  }
-
   @Post()
   @UseGuards(AuthGuard('jwt-access-token'))
   create(
@@ -50,8 +39,6 @@ export class CommentsController {
     @Req() req: { user: JwtPayload },
   ) {
     const userId = req.user.sub;
-
-    this.throwWhenIsNotExistProject(createCommentDto.projectId);
 
     return this.commentsService.create(userId, createCommentDto);
   }

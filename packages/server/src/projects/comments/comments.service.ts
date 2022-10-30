@@ -1,9 +1,9 @@
 import { CreateOrUpdateDto } from '@/dto/CreateOrUpdate.dto';
-import { ProjectsService } from '@/projects/projects.service';
 import { UsersService } from '@/users/users.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Project } from '../entities/project.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { Comment } from './entities/comment.entity';
@@ -13,10 +13,10 @@ export class CommentsService {
   @InjectRepository(Comment)
   private commentRepository: Repository<Comment>;
 
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly projectsService: ProjectsService,
-  ) {}
+  @InjectRepository(Project)
+  private projectRepository: Repository<Project>;
+
+  constructor(private readonly usersService: UsersService) {}
 
   async isCommentOfUser(userId: number, commentId: number) {
     const comment = await this.findOneById(commentId);
@@ -24,14 +24,22 @@ export class CommentsService {
     return comment.userId === userId;
   }
 
+  async countCommentCntByProjectId(projectId: number) {
+    const cnt = await this.commentRepository.countBy({ projectId });
+    return cnt;
+  }
+
   async create(
     userId: number,
     createCommentDto: CreateCommentDto,
   ): Promise<CreateOrUpdateDto> {
     const user = await this.usersService.findOneById(userId);
-    const project = await this.projectsService.findOneById(
-      createCommentDto.projectId,
-    );
+    const project = await this.projectRepository.findOneBy({
+      id: createCommentDto.projectId,
+    });
+    if (!project) {
+      throw new NotFoundException();
+    }
 
     const newComment = this.commentRepository.create({
       ...createCommentDto,

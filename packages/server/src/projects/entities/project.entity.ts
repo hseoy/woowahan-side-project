@@ -48,6 +48,9 @@ export class Project {
   @Column({ type: 'varchar', length: 2083, nullable: true })
   backgroundImg?: string;
 
+  @Column({ type: 'boolean', default: false })
+  isWsp: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

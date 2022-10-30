@@ -1,4 +1,3 @@
-import { User } from '@/users/entities/user.entity';
 import {
   Column,
   Entity,
@@ -16,10 +15,6 @@ export class ProjectContributor {
   @Column({ name: 'contributor_id', nullable: true })
   contributorId?: number;
 
-  @ManyToOne(() => User, (user) => user.id, { nullable: true })
-  @JoinColumn({ name: 'contributor_id' })
-  contributor?: User;
-
   @Column({
     name: 'contributor_name',
     type: 'varchar',
@@ -32,5 +27,6 @@ export class ProjectContributor {
   projectId: number;
 
   @ManyToOne(() => Project, (project) => project.id, { nullable: false })
+  @JoinColumn({ name: 'project_id' })
   project: Project;
 }

@@ -1,5 +1,5 @@
 import { Box, Flex, Heading, Stack } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useProjectList from '@/hooks/use-project-list';
 import Scrollbar from '../scroll/ScrollBar';
 import ProjectBlock from './ProjectBlock';
@@ -13,8 +13,11 @@ function ProjectListContainer(): JSX.Element {
     isOpen: false,
     projectId: -1,
   });
-  const { projectList } = useProjectList();
+  const { projectList, getProjectList } = useProjectList();
 
+  useEffect(() => {
+    getProjectList();
+  }, []);
   const onClose = () => {
     setModalState({ isOpen: false, projectId: -1 });
   };

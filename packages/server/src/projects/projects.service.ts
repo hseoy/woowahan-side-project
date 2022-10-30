@@ -1,7 +1,9 @@
 import { CreateOrUpdateDto } from '@/dto/CreateOrUpdate.dto';
+import { UsersService } from '@/users/users.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CommentsService } from './comments/comments.service';
 import { CreateProjectItemDto } from './dto/create-project-item.dto';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { ProjectDto } from './dto/project.dto';
@@ -16,6 +18,11 @@ export class ProjectsService {
 
   @InjectRepository(ProjectContributor)
   private projectContributorRepository: Repository<ProjectContributor>;
+
+  constructor(
+    private readonly commentsService: CommentsService,
+    private readonly usersService: UsersService,
+  ) {}
 
   async exists(id: number) {
     const cnt = await this.projectRepository.countBy({ id });
@@ -91,14 +98,42 @@ export class ProjectsService {
     const contributorList = await this.projectContributorRepository.findBy({
       projectId: project.id,
     });
-    const contributorIdOrNameList = contributorList.map(
-      (contributor) => contributor.contributorId || contributor.contributorName,
+    const commentCnt = await this.commentsService.countCommentCntByProjectId(
+      project.id,
+    );
+    const contributorUserList = await Promise.all(
+      contributorList.map(async (contributor) => {
+        if (contributor.contributorId) {
+          const contributorUser = await this.usersService.findOneById(
+            contributor.contributorId,
+          );
+          return {
+            username: contributorUser.username,
+            profileImg: contributorUser.profileImg,
+          };
+        }
+        return { username: contributor.contributorName || '' };
+      }),
     );
 
     const projectDto: ProjectDto = {
-      ...project,
-      authorUserId: project.userId,
-      contributorIdOrNameList,
+      id: project.id,
+      name: project.name,
+      description: project.description,
+      platform: project.platform,
+      etcDeployLink: project.etcDeployLink,
+      webDeployLink: project.webDeployLink,
+      androidDeployLink: project.androidDeployLink,
+      iosDeployLink: project.iosDeployLink,
+      githubLink: project.githubLink,
+      backgroundImg: project.backgroundImg,
+      createdAt: project.createdAt,
+      updatedAt: project.updatedAt,
+      isWsp: project.isWsp,
+      authorUsername: project.user.username,
+      authorUserId: project.user.id,
+      contributorList: contributorUserList,
+      commentCnt,
     };
 
     return projectDto;
@@ -115,7 +150,9 @@ export class ProjectsService {
   }
 
   async findAll(): Promise<ProjectDto[]> {
-    const projects = await this.projectRepository.find();
+    const projects = await this.projectRepository.find({
+      relations: { user: true },
+    });
 
     const projectDtoList = await Promise.all(
       projects.map((project) => this.projectEntityToProjectDto(project)),
@@ -125,7 +162,10 @@ export class ProjectsService {
   }
 
   async findOneById(id: number): Promise<ProjectDto> {
-    const project = await this.projectRepository.findOneBy({ id });
+    const project = await this.projectRepository.findOne({
+      where: { id },
+      relations: { user: true },
+    });
 
     const projectDto = this.projectEntityToProjectDto(project);
 
