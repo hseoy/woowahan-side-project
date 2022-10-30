@@ -29,8 +29,8 @@ function PlatformDeployLink({
   return (
     <Flex gap="12px" onClick={stopPropagation}>
       {githubLink && (
-        <Link href={githubLink} target="_blank" rel="noopener noreferrer">
-          <Tooltip content={<Text>Github Repo</Text>}>
+        <Tooltip content={<Text>Github Repo</Text>}>
+          <Link href={githubLink} target="_blank" rel="noopener noreferrer">
             <Icon
               as={IconGithub}
               _hover={{ color: '#1a1a1a' }}
@@ -39,17 +39,17 @@ function PlatformDeployLink({
               width="32px"
               height="32px"
             />
-          </Tooltip>
-        </Link>
+          </Link>
+        </Tooltip>
       )}
 
       {androidDeployLink && (
-        <Link
-          href={androidDeployLink}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Tooltip content={<Text>안드로이드 다운로드</Text>}>
+        <Tooltip content={<Text>안드로이드 다운로드</Text>}>
+          <Link
+            href={androidDeployLink}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Icon
               as={IconAndroid}
               _hover={{ color: '#35a700' }}
@@ -58,13 +58,13 @@ function PlatformDeployLink({
               width="32px"
               height="32px"
             />
-          </Tooltip>
-        </Link>
+          </Link>
+        </Tooltip>
       )}
 
       {iosDeployLink && (
-        <Link href={iosDeployLink} target="_blank" rel="noopener noreferrer">
-          <Tooltip content={<Text>앱스토어 다운로드</Text>}>
+        <Tooltip content={<Text>앱스토어 다운로드</Text>}>
+          <Link href={iosDeployLink} target="_blank" rel="noopener noreferrer">
             <Icon
               as={IconIos}
               _hover={{ color: '#555555' }}
@@ -73,13 +73,13 @@ function PlatformDeployLink({
               width="32px"
               height="32px"
             />
-          </Tooltip>
-        </Link>
+          </Link>
+        </Tooltip>
       )}
 
       {webDeployLink && (
-        <Link href={webDeployLink} target="_blank" rel="noopener noreferrer">
-          <Tooltip content={<Text>웹페이지</Text>}>
+        <Tooltip content={<Text>웹페이지</Text>}>
+          <Link href={webDeployLink} target="_blank" rel="noopener noreferrer">
             <Icon
               as={IconWeb}
               _hover={{ color: '#005ed1' }}
@@ -88,13 +88,13 @@ function PlatformDeployLink({
               width="32px"
               height="32px"
             />
-          </Tooltip>
-        </Link>
+          </Link>
+        </Tooltip>
       )}
 
       {etcDeployLink && (
-        <Link href={etcDeployLink} target="_blank" rel="noopener noreferrer">
-          <Tooltip content={<Text>링크 이동</Text>}>
+        <Tooltip content={<Text>링크 이동</Text>}>
+          <Link href={etcDeployLink} target="_blank" rel="noopener noreferrer">
             <Icon
               as={IconLink}
               _hover={{ color: 'logo' }}
@@ -103,8 +103,8 @@ function PlatformDeployLink({
               width="32px"
               height="32px"
             />
-          </Tooltip>
-        </Link>
+          </Link>
+        </Tooltip>
       )}
     </Flex>
   );

@@ -12,6 +12,7 @@ const Container = styled(Box)`
   height: 32px;
 
   #tooltip-content {
+    visibility: hidden;
     position: absolute;
     background-color: #505050;
     width: max-content;
@@ -31,6 +32,7 @@ const Container = styled(Box)`
     background-color: #00000016;
 
     #tooltip-content {
+      visibility: visible;
       transform: translateX(-50%) translateY(-5px);
       opacity: 1;
     }
