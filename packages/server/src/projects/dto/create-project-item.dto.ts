@@ -1,7 +1,7 @@
 export class CreateProjectItemDto {
   name: string;
   description: string;
-  authorUserId: number;
+  userId: number;
   platform: 'app' | 'web' | 'etc';
   etcDeployLink?: string;
   webDeployLink?: string;

@@ -1,8 +1,10 @@
 import { atom, useRecoilState } from 'recoil';
 import {
+  CreateProjectDto,
   ProjectItemDto,
   ProjectItemListDto,
   requestCreateProject,
+  requestGetProjectItem,
   requestGetProjectList,
 } from '@/apis/projects';
 
@@ -23,9 +25,36 @@ const useProjectList = () => {
     setProjectListState(response.data);
   };
 
+  const projectItemDtoToCreateProjectDto = (
+    item: ProjectItemDto,
+  ): CreateProjectDto => {
+    const createProjectDto: CreateProjectDto = {
+      name: item.name,
+      description: item.description,
+      authorUserId: item.authorUserId,
+      contributorIdOrNameList: [],
+      platform: item.platform,
+      etcDeployLink: item.etcDeployLink,
+      webDeployLink: item.webDeployLink,
+      androidDeployLink: item.androidDeployLink,
+      iosDeployLink: item.iosDeployLink,
+      githubLink: item.githubLink,
+      backgroundImg: item.backgroundImg,
+    };
+
+    return createProjectDto;
+  };
+
   const addProjectItem = async (item: ProjectItemDto) => {
-    const response = await requestCreateProject(item);
-    setProjectListState(prev => [...prev, response.data]);
+    const createResponse = await requestCreateProject(
+      projectItemDtoToCreateProjectDto(item),
+    );
+    const createdItemId = createResponse.data.id;
+
+    const itemResponse = await requestGetProjectItem(createdItemId);
+    const createdProjectItem = itemResponse.data;
+
+    setProjectListState(prev => [...prev, createdProjectItem]);
   };
 
   const setProjectList = (projectList: ProjectItemListDto) => {

@@ -3,7 +3,9 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  Select,
 } from '@chakra-ui/react';
+import React from 'react';
 import {
   Control,
   Path,
@@ -18,6 +20,9 @@ type FormControlProps<TFieldValues extends FieldValues> = {
   label: string;
   placeholder?: string;
   type?: React.HTMLInputTypeAttribute;
+  inputType?: 'input' | 'select';
+  selectOptions?: { name: string; value: string }[];
+  onChangeValue?: (value: string) => void;
 } & UseControllerProps['rules'];
 
 function FormControl<TFieldValues extends FieldValues>({
@@ -26,10 +31,13 @@ function FormControl<TFieldValues extends FieldValues>({
   label,
   placeholder = '',
   type = 'text',
+  inputType = 'input',
+  selectOptions = [],
+  onChangeValue,
   ...rules
 }: FormControlProps<TFieldValues>): JSX.Element {
   const {
-    field: { ref, onChange, value, ...inputProps },
+    field: { ref, onChange: onControlChange, value, ...inputProps },
     fieldState: { error },
   } = useController<TFieldValues>({
     name,
@@ -43,22 +51,49 @@ function FormControl<TFieldValues extends FieldValues>({
     },
   });
 
+  const onChangeHandler = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    if (onChangeValue) {
+      onChangeValue(e.target.value);
+    }
+    onControlChange(e);
+  };
+
   return (
     <ChakraFormControl
       isRequired={!!rules.required}
       isInvalid={!!error?.message}
     >
       <FormLabel htmlFor={name}>{label}</FormLabel>
-      <Input
-        {...inputProps}
-        name={name}
-        ref={ref}
-        placeholder={placeholder}
-        onChange={onChange}
-        value={value || ''}
-        focusBorderColor="mint.500"
-        type={type}
-      />
+      {inputType === 'input' ? (
+        <Input
+          {...inputProps}
+          name={name}
+          ref={ref}
+          placeholder={placeholder}
+          onChange={onChangeHandler}
+          value={value || ''}
+          focusBorderColor="mint.500"
+          type={type}
+        />
+      ) : (
+        <Select
+          {...inputProps}
+          name={name}
+          ref={ref}
+          placeholder={placeholder}
+          onChange={onChangeHandler}
+          value={value || ''}
+          focusBorderColor="mint.500"
+        >
+          {selectOptions.map(option => (
+            <option key={option.value} value={option.value}>
+              {option.name}
+            </option>
+          ))}
+        </Select>
+      )}
       {error && <FormErrorMessage>{error?.message}</FormErrorMessage>}
     </ChakraFormControl>
   );

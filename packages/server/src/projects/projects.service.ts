@@ -72,6 +72,11 @@ export class ProjectsService {
     const contributorList = await this.projectContributorRepository.findBy({
       projectId,
     });
+    if (contributorList && contributorList.length > 0) {
+      await this.addProjectContributors(projectId, contributorIdOrNameList);
+      return;
+    }
+
     const previousContributorIdOrNameList = contributorList.map(
       (contributor) => contributor.contributorId || contributor.contributorName,
     );
@@ -143,7 +148,13 @@ export class ProjectsService {
     const { contributorIdOrNameList, ...createProjectItemDto } =
       createProjectDto;
 
-    const newProject = await this.createProject(createProjectItemDto);
+    const authorUser = await this.usersService.findOneById(
+      createProjectDto.authorUserId,
+    );
+    const newProject = await this.createProject({
+      ...createProjectItemDto,
+      userId: authorUser.id,
+    });
     await this.addProjectContributors(newProject.id, contributorIdOrNameList);
 
     return { id: newProject.id };

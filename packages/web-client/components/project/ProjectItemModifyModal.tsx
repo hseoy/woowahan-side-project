@@ -10,15 +10,31 @@ import {
   ModalFooter,
   Button,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useProjectItemModal from '@/hooks/use-project-item-modal';
 import { ProjectItemDto } from '@/apis/projects';
 // import UrlControl from '../form/UrlControl';
 import TextControl from '../form/TextControl';
 import GithubUrlControl from '../form/GithubUrlControl';
+import SelectControl from '../form/SelectControl';
+import UrlControl from '../form/UrlControl';
+
+type ProjectItemInput = Omit<ProjectItemDto, 'platform'> & {
+  platform: string;
+};
 
 function ProjectItemModifyModal(): JSX.Element {
+  const platformSelectOptions = [
+    { name: 'WEB', value: 'web' },
+    { name: 'Android', value: 'android' },
+    { name: 'IOS', value: 'ios' },
+    { name: 'Mobile(Android & IOS)', value: 'mobile' },
+    { name: '배포하지 않았음', value: 'none' },
+    { name: '기타', value: 'etc' },
+  ];
+
+  const [platform, setPlatform] = useState(platformSelectOptions[0].value);
   const { isOpen, closeModal, projectItem, onModalSubmit } =
     useProjectItemModal();
   const {
@@ -26,16 +42,32 @@ function ProjectItemModifyModal(): JSX.Element {
     reset,
     control,
     formState: { isValid },
-  } = useForm({ mode: 'onChange', defaultValues: { ...projectItem } });
+  } = useForm<ProjectItemInput>({
+    mode: 'onChange',
+    defaultValues: { ...projectItem },
+  });
 
   const onCloseModal = () => {
     reset();
     closeModal();
   };
 
-  const onSubmit = async (data: ProjectItemDto) => {
-    await onModalSubmit(data);
+  const onSubmit = async (data: ProjectItemInput) => {
+    const platformData = (() => {
+      if (data.platform === 'web') {
+        return 'web';
+      }
+      if (data.platform === 'mobile') {
+        return 'app';
+      }
+      return 'etc';
+    })();
+    await onModalSubmit({ ...data, platform: platformData });
     reset();
+  };
+
+  const onPlatformChange = (value: string) => {
+    setPlatform(value);
   };
 
   return (
@@ -52,14 +84,14 @@ function ProjectItemModifyModal(): JSX.Element {
 
           <ModalBody>
             <Stack gap="5px" padding="10px 0">
-              {/* <TextControl
-                name="author"
-                label="개발자"
+              <SelectControl
+                name="platform"
+                label="배포 방법"
                 control={control}
-                placeholder="개발자 이름을 입력해주세요"
                 required
-              /> */}
-
+                selectOptions={platformSelectOptions}
+                onChangeValue={onPlatformChange}
+              />
               <TextControl
                 name="name"
                 label="프로젝트명"
@@ -67,7 +99,6 @@ function ProjectItemModifyModal(): JSX.Element {
                 placeholder="프로젝트명을 입력해주세요"
                 required
               />
-
               <TextControl
                 name="description"
                 label="프로젝트 설명"
@@ -75,20 +106,48 @@ function ProjectItemModifyModal(): JSX.Element {
                 placeholder="프로젝트 설명을 입력해주세요"
                 required
               />
-
-              {/* <UrlControl
-                name="deployLink"
-                label="배포 링크"
-                control={control}
-                placeholder="배포 링크를 입력해주세요"
-              /> */}
-
               <GithubUrlControl
                 name="githubLink"
                 label="깃허브 링크"
                 control={control}
                 placeholder="깃허브 링크를 입력해주세요"
               />
+              {platform === 'web' && (
+                <UrlControl
+                  name="webDeployLink"
+                  label="웹 배포 링크"
+                  control={control}
+                  placeholder="웹 배포 링크"
+                  required
+                />
+              )}
+              {(platform === 'android' || platform === 'mobile') && (
+                <UrlControl
+                  name="androidDeployLink"
+                  label="안드로이드 배포 링크"
+                  control={control}
+                  placeholder="안드로이드 앱 다운로드 링크"
+                  required
+                />
+              )}
+              {(platform === 'ios' || platform === 'mobile') && (
+                <UrlControl
+                  name="iosDeployLink"
+                  label="IOS 배포 링크"
+                  control={control}
+                  placeholder="IOS 앱 다운로드 링크"
+                  required
+                />
+              )}
+              {platform === 'etc' && (
+                <UrlControl
+                  name="etcDeployLink"
+                  label="배포 링크"
+                  control={control}
+                  placeholder="프로젝트 배포 링크"
+                  required
+                />
+              )}
             </Stack>
           </ModalBody>
 

@@ -12,21 +12,21 @@ export class ProjectContributor {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'contributor_id', nullable: true })
+  @Column({ name: 'contributorId', nullable: true })
   contributorId?: number;
 
   @Column({
-    name: 'contributor_name',
+    name: 'contributorName',
     type: 'varchar',
     length: 45,
     nullable: true,
   })
   contributorName?: string;
 
-  @Column({ name: 'project_id' })
+  @Column({ name: 'projectId' })
   projectId: number;
 
   @ManyToOne(() => Project, (project) => project.id, { nullable: false })
-  @JoinColumn({ name: 'project_id' })
+  @JoinColumn({ name: 'projectId' })
   project: Project;
 }
