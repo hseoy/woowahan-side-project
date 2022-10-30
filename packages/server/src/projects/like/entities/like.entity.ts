@@ -15,7 +15,7 @@ export class Like {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'user_id' })
+  @Column({ name: 'userId' })
   userId: number;
 
   @ManyToOne(() => User, (user) => user.id, {
@@ -26,7 +26,7 @@ export class Like {
   @Column({ type: 'enum', name: 'like', enum: LikeEnum })
   like: LikeEnum;
 
-  @Column({ name: 'project_id' })
+  @Column({ name: 'projectId' })
   projectId: number;
 
   @ManyToOne(() => Project, (project) => project.id, { nullable: false })
