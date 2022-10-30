@@ -24,6 +24,29 @@ export type ProjectItemDto = Omit<ProjectDto, 'createdAt' | 'updatedAt'>;
 
 export type ProjectItemListDto = ProjectItemDto[];
 
-export type CreateProjectDto = ProjectItemDto;
+export type CreateProjectDto = {
+  name: string;
+  description: string;
+  authorUserId: number;
+  contributorIdOrNameList: (string | number)[];
+  platform: 'app' | 'web' | 'etc';
+  etcDeployLink?: string;
+  webDeployLink?: string;
+  androidDeployLink?: string;
+  iosDeployLink?: string;
+  githubLink?: string;
+  backgroundImg?: string;
+};
 
-export type UpdateProjectDto = Partial<CreateProjectDto>;
+export type UpdateProjectDto = {
+  name?: string;
+  description?: string;
+  contributorIdOrNameList?: (string | number)[];
+  platform?: 'app' | 'web' | 'etc';
+  etcDeployLink?: string;
+  webDeployLink?: string;
+  androidDeployLink?: string;
+  iosDeployLink?: string;
+  githubLink?: string;
+  backgroundImg?: string;
+};

@@ -43,9 +43,14 @@ export class CommentsService {
 
     const newComment = this.commentRepository.create({
       ...createCommentDto,
+      userId: user.id,
+      projectId: project.id,
       user,
       project,
     });
+
+    console.log(newComment);
+
     const { id } = await this.commentRepository.save(newComment);
     return { id };
   }

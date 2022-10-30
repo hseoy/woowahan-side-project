@@ -11,6 +11,7 @@ type GithubUrlControlProps<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>;
   label: string;
   placeholder?: string;
+  onChangeValue?: (value: string) => void;
 } & Omit<UseControllerProps['rules'], 'pattern'>;
 
 function GithubUrlControl<TFieldValues extends FieldValues>(

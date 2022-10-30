@@ -8,12 +8,15 @@ import {
   Delete,
   UseGuards,
   Req,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtPayload } from '@/auth/types';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('projects')
 export class ProjectsController {
@@ -48,7 +51,24 @@ export class ProjectsController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt-access-token'))
   remove(@Param('id') id: string) {
     return this.projectsService.remove(+id);
+  }
+
+  @Post('/:id/background-image')
+  @UseGuards(AuthGuard('jwt-access-token'))
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadBackgroundImage(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const backgroundImageLink =
+      await this.projectsService.uploadBackgroundImage({
+        ...file,
+        projectId: +id,
+      });
+
+    return backgroundImageLink;
   }
 }

@@ -6,18 +6,19 @@ import {
 } from 'react-hook-form';
 import FormControl from './FormControl';
 
-type TextControlProps<TFieldValues extends FieldValues> = {
+type SelectControlProps<TFieldValues extends FieldValues> = {
   name: Path<TFieldValues>;
   control: Control<TFieldValues>;
   label: string;
   placeholder?: string;
+  selectOptions: { name: string; value: string }[];
   onChangeValue?: (value: string) => void;
 } & UseControllerProps['rules'];
 
-function TextControl<TFieldValues extends FieldValues>(
-  props: TextControlProps<TFieldValues>,
+function SelectControl<TFieldValues extends FieldValues>(
+  props: SelectControlProps<TFieldValues>,
 ): JSX.Element {
-  return <FormControl {...props} />;
+  return <FormControl {...props} inputType="select" />;
 }
 
-export default TextControl;
+export default SelectControl;
