@@ -1,6 +1,7 @@
 import { CreateOrUpdateDto } from '@/dto/CreateOrUpdate.dto';
+import { S3Service } from '@/s3/s3.service';
 import { UsersService } from '@/users/users.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CommentsService } from './comments/comments.service';
@@ -8,8 +9,10 @@ import { CreateProjectItemDto } from './dto/create-project-item.dto';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { ProjectDto } from './dto/project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { UploadBackgroundImageDto } from './dto/upload-background-image.dto';
 import { ProjectContributor } from './entities/project-contributors.entity';
 import { Project } from './entities/project.entity';
+import { v4 as uuidV4 } from 'uuid';
 
 @Injectable()
 export class ProjectsService {
@@ -22,6 +25,7 @@ export class ProjectsService {
   constructor(
     private readonly commentsService: CommentsService,
     private readonly usersService: UsersService,
+    private readonly s3Service: S3Service,
   ) {}
 
   async exists(id: number) {
@@ -203,5 +207,29 @@ export class ProjectsService {
     });
 
     await this.projectRepository.delete(id);
+  }
+
+  async uploadBackgroundImage({
+    projectId,
+    buffer,
+    mimetype,
+  }: UploadBackgroundImageDto) {
+    const project = await this.findOneById(projectId);
+    if (!project) {
+      throw new NotFoundException();
+    }
+
+    const key = uuidV4();
+
+    await this.s3Service.createS3Object({
+      key,
+      buffer,
+      mimetype,
+    });
+
+    project.backgroundImg = this.s3Service.getS3FullLink(key);
+    await this.projectRepository.update({ id: projectId }, project);
+
+    return project.backgroundImg;
   }
 }

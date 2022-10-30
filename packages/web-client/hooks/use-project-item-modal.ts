@@ -7,7 +7,7 @@ type ProjectItemModalState = {
   projectItem: ProjectItemDto;
 };
 
-const initialProjectItem: ProjectItemDto = {
+export const initialProjectItem: ProjectItemDto = {
   id: 0,
   name: '',
   description: '',

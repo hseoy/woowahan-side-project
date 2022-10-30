@@ -9,16 +9,21 @@ import {
   Stack,
   ModalFooter,
   Button,
+  Flex,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import useProjectItemModal from '@/hooks/use-project-item-modal';
+import useProjectItemModal, {
+  initialProjectItem,
+} from '@/hooks/use-project-item-modal';
 import { ProjectItemDto } from '@/apis/projects';
-// import UrlControl from '../form/UrlControl';
 import TextControl from '../form/TextControl';
 import GithubUrlControl from '../form/GithubUrlControl';
 import SelectControl from '../form/SelectControl';
 import UrlControl from '../form/UrlControl';
+import ImageUploadControl from '../form/ImageUploadControl';
+import ProjectBlock from './ProjectBlock';
+import useAuth from '@/hooks/use-auth';
 
 type ProjectItemInput = Omit<ProjectItemDto, 'platform'> & {
   platform: string;
@@ -34,12 +39,22 @@ function ProjectItemModifyModal(): JSX.Element {
     { name: '기타', value: 'etc' },
   ];
 
-  const [platform, setPlatform] = useState(platformSelectOptions[0].value);
+  const [deployPlatform, setDeployPlatform] = useState(
+    platformSelectOptions[0].value,
+  );
+  const { user } = useAuth();
+  const [formValue, setFormValue] = useState<ProjectItemDto>({
+    ...initialProjectItem,
+    authorUserId: user?.id || -1,
+    authorUsername: user?.username || '',
+  });
   const { isOpen, closeModal, projectItem, onModalSubmit } =
     useProjectItemModal();
   const {
     handleSubmit,
     reset,
+    getValues,
+    watch,
     control,
     formState: { isValid },
   } = useForm<ProjectItemInput>({
@@ -52,28 +67,49 @@ function ProjectItemModifyModal(): JSX.Element {
     closeModal();
   };
 
+  const deployPlatformTo = (platformStr: string): 'web' | 'app' | 'etc' => {
+    if (platformStr === 'web') {
+      return 'web';
+    }
+    if (platformStr === 'mobile') {
+      return 'app';
+    }
+    return 'etc';
+  };
   const onSubmit = async (data: ProjectItemInput) => {
-    const platformData = (() => {
-      if (data.platform === 'web') {
-        return 'web';
-      }
-      if (data.platform === 'mobile') {
-        return 'app';
-      }
-      return 'etc';
-    })();
+    const platformData = deployPlatformTo(data.platform);
     await onModalSubmit({ ...data, platform: platformData });
     reset();
   };
 
-  const onPlatformChange = (value: string) => {
-    setPlatform(value);
+  const onChange = () => {
+    const values = getValues();
+    setFormValue(prev => ({
+      ...prev,
+      ...values,
+      authorUserId: user?.id || -1,
+      authorUsername: user?.username || '',
+      platform: deployPlatformTo(values.platform),
+    }));
   };
+
+  const onChangePlatform = (value: string) => {
+    setDeployPlatform(value);
+    onChange();
+  };
+
+  useEffect(() => {
+    if (!user) return () => null;
+
+    onChange();
+    const subscription = watch(onChange);
+    return () => subscription.unsubscribe();
+  }, [watch, getValues, user]);
 
   return (
     <Modal isOpen={isOpen} onClose={onCloseModal}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent width="auto" style={{ maxWidth: 'initial' }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalCloseButton />
           <ModalHeader>
@@ -83,72 +119,83 @@ function ProjectItemModifyModal(): JSX.Element {
           </ModalHeader>
 
           <ModalBody>
-            <Stack gap="5px" padding="10px 0">
-              <SelectControl
-                name="platform"
-                label="배포 방법"
-                control={control}
-                required
-                selectOptions={platformSelectOptions}
-                onChangeValue={onPlatformChange}
-              />
-              <TextControl
-                name="name"
-                label="프로젝트명"
-                control={control}
-                placeholder="프로젝트명을 입력해주세요"
-                required
-              />
-              <TextControl
-                name="description"
-                label="프로젝트 설명"
-                control={control}
-                placeholder="프로젝트 설명을 입력해주세요"
-                required
-              />
-              <GithubUrlControl
-                name="githubLink"
-                label="깃허브 링크"
-                control={control}
-                placeholder="깃허브 링크를 입력해주세요"
-              />
-              {platform === 'web' && (
-                <UrlControl
-                  name="webDeployLink"
-                  label="웹 배포 링크"
+            <Flex>
+              <Stack gap="5px" padding="10px 0" marginRight="30px">
+                <ImageUploadControl
+                  name="backgroundImg"
+                  label="배경 이미지"
                   control={control}
-                  placeholder="웹 배포 링크"
+                />
+
+                <SelectControl
+                  name="platform"
+                  label="배포 방법"
+                  control={control}
+                  required
+                  selectOptions={platformSelectOptions}
+                  onChangeValue={onChangePlatform}
+                />
+                <TextControl
+                  name="name"
+                  label="프로젝트명"
+                  control={control}
+                  placeholder="프로젝트명을 입력해주세요"
                   required
                 />
-              )}
-              {(platform === 'android' || platform === 'mobile') && (
-                <UrlControl
-                  name="androidDeployLink"
-                  label="안드로이드 배포 링크"
+                <TextControl
+                  name="description"
+                  label="프로젝트 설명"
                   control={control}
-                  placeholder="안드로이드 앱 다운로드 링크"
+                  placeholder="프로젝트 설명을 입력해주세요"
                   required
                 />
-              )}
-              {(platform === 'ios' || platform === 'mobile') && (
-                <UrlControl
-                  name="iosDeployLink"
-                  label="IOS 배포 링크"
+                <GithubUrlControl
+                  name="githubLink"
+                  label="깃허브 링크"
                   control={control}
-                  placeholder="IOS 앱 다운로드 링크"
-                  required
+                  placeholder="깃허브 링크를 입력해주세요"
                 />
-              )}
-              {platform === 'etc' && (
-                <UrlControl
-                  name="etcDeployLink"
-                  label="배포 링크"
-                  control={control}
-                  placeholder="프로젝트 배포 링크"
-                  required
-                />
-              )}
-            </Stack>
+                {deployPlatform === 'web' && (
+                  <UrlControl
+                    name="webDeployLink"
+                    label="웹 배포 링크"
+                    control={control}
+                    placeholder="웹 배포 링크"
+                    required
+                  />
+                )}
+                {(deployPlatform === 'android' ||
+                  deployPlatform === 'mobile') && (
+                  <UrlControl
+                    name="androidDeployLink"
+                    label="안드로이드 배포 링크"
+                    control={control}
+                    placeholder="안드로이드 앱 다운로드 링크"
+                    required
+                  />
+                )}
+                {(deployPlatform === 'ios' || deployPlatform === 'mobile') && (
+                  <UrlControl
+                    name="iosDeployLink"
+                    label="IOS 배포 링크"
+                    control={control}
+                    placeholder="IOS 앱 다운로드 링크"
+                    required
+                  />
+                )}
+                {deployPlatform === 'etc' && (
+                  <UrlControl
+                    name="etcDeployLink"
+                    label="배포 링크"
+                    control={control}
+                    placeholder="프로젝트 배포 링크"
+                    required
+                  />
+                )}
+              </Stack>
+
+              <ProjectBlock {...formValue} />
+            </Flex>
           </ModalBody>
 
           <ModalFooter>
