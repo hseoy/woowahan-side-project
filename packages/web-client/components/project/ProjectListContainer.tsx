@@ -2,8 +2,8 @@ import { Box, Flex, Heading, Stack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import useProjectList from '@/hooks/use-project-list';
 import Scrollbar from '../scroll/ScrollBar';
-import ProjectBlock from './ProjectBlock';
 import ProjectCommentsModal from './ProjectCommentsModal';
+import ProjectBlock from './ProjectBlock';
 
 function ProjectListContainer(): JSX.Element {
   const [modalState, setModalState] = useState<{

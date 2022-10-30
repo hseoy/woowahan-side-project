@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { mockImage } from '@/mock';
 import { ProjectItemDto } from '@/apis/projects';
 import PlatformDeployLink from './PlatformDeployLink';
+import LikeListContainer from './LikeListContainer';
 
 type ProjectBlockProps = {
   /** @todo 현재 아직 구현되지 않은 기능입니다. */
@@ -11,6 +12,7 @@ type ProjectBlockProps = {
 } & ProjectItemDto;
 
 export default function ProjectBlock({
+  id,
   authorUsername,
   name,
   description,
@@ -72,6 +74,9 @@ ProjectBlockProps): JSX.Element {
             objectFit="cover"
           />
         </Box>
+
+        {/* 좋아요 표기 */}
+        <LikeListContainer projectId={id} />
 
         {/* 그라데이션 박스 */}
         <Flex
