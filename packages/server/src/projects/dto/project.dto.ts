@@ -1,3 +1,5 @@
+import { LikeDto } from '../like/dto/like.dto';
+
 export class ProjectDto {
   id: number;
   name: string;
@@ -14,6 +16,7 @@ export class ProjectDto {
   authorUsername: string;
   authorUserId: number;
   commentCnt: number;
+  likeList: LikeDto[];
   contributorList: { profileImg?: string; username: string }[];
   isWsp: boolean;
 }

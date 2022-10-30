@@ -13,6 +13,7 @@ import { UploadBackgroundImageDto } from './dto/upload-background-image.dto';
 import { ProjectContributor } from './entities/project-contributors.entity';
 import { Project } from './entities/project.entity';
 import { v4 as uuidV4 } from 'uuid';
+import { LikeService } from './like/like.service';
 
 @Injectable()
 export class ProjectsService {
@@ -24,6 +25,7 @@ export class ProjectsService {
 
   constructor(
     private readonly commentsService: CommentsService,
+    private readonly likesService: LikeService,
     private readonly usersService: UsersService,
     private readonly s3Service: S3Service,
   ) {}
@@ -101,11 +103,19 @@ export class ProjectsService {
     return this.projectRepository.save(newProject);
   }
 
-  private async projectEntityToProjectDto(
-    project: Project,
-  ): Promise<ProjectDto> {
+  private async projectEntityToProjectDto({
+    project,
+    userId,
+  }: {
+    project: Project;
+    userId?: number | undefined;
+  }): Promise<ProjectDto> {
     const contributorList = await this.projectContributorRepository.findBy({
       projectId: project.id,
+    });
+    const likeList = await this.likesService.findByProjectId({
+      projectId: project.id,
+      userId: userId,
     });
     const commentCnt = await this.commentsService.countCommentCntByProjectId(
       project.id,
@@ -143,6 +153,7 @@ export class ProjectsService {
       authorUserId: project.user.id,
       contributorList: contributorUserList,
       commentCnt,
+      likeList,
     };
 
     return projectDto;
@@ -164,13 +175,19 @@ export class ProjectsService {
     return { id: newProject.id };
   }
 
-  async findAll(): Promise<ProjectDto[]> {
+  async findAll({
+    userId,
+  }: {
+    userId: number | undefined;
+  }): Promise<ProjectDto[]> {
     const projects = await this.projectRepository.find({
       relations: { user: true },
     });
 
     const projectDtoList = await Promise.all(
-      projects.map((project) => this.projectEntityToProjectDto(project)),
+      projects.map((project) =>
+        this.projectEntityToProjectDto({ project, userId }),
+      ),
     );
 
     return projectDtoList;
@@ -182,7 +199,7 @@ export class ProjectsService {
       relations: { user: true },
     });
 
-    const projectDto = this.projectEntityToProjectDto(project);
+    const projectDto = this.projectEntityToProjectDto({ project });
 
     return projectDto;
   }

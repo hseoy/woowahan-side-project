@@ -34,8 +34,11 @@ export class ProjectsController {
 
   @Get()
   @UseGuards(AuthGuard('jwt-access-token'))
-  findAll() {
-    return this.projectsService.findAll();
+  findAll(@Req() req: { user: JwtPayload }) {
+    const userId = req.user.sub;
+    return this.projectsService.findAll({
+      userId: userId ? Number(userId) : undefined,
+    });
   }
 
   @Get(':id')
