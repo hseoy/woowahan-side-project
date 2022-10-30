@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -13,11 +14,12 @@ export class Project {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'author_id' })
-  authorId: number;
+  @Column({ name: 'user_id' })
+  userId: number;
 
   @ManyToOne(() => User, (user) => user.id, { nullable: false })
-  author: User;
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 
   @Column({ type: 'varchar', length: 45 })
   name: string;
@@ -25,7 +27,7 @@ export class Project {
   @Column({ type: 'varchar', length: 200 })
   description: string;
 
-  @Column({ type: 'enum' })
+  @Column({ type: 'enum', enum: ['app', 'web', 'etc'] })
   platform: 'app' | 'web' | 'etc';
 
   @Column({ type: 'varchar', length: 2083, nullable: true })

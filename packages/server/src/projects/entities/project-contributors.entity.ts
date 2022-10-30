@@ -1,5 +1,11 @@
 import { User } from '@/users/entities/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Project } from './project.entity';
 
 @Entity()
@@ -11,6 +17,7 @@ export class ProjectContributor {
   contributorId?: number;
 
   @ManyToOne(() => User, (user) => user.id, { nullable: true })
+  @JoinColumn({ name: 'contributor_id' })
   contributor?: User;
 
   @Column({

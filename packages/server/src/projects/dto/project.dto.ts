@@ -1,13 +1,6 @@
-export class ProjectDto {
-  name: string;
-  description: string;
+import { Project } from '../entities/project.entity';
+
+export class ProjectDto extends Project {
   authorUserId: number;
   contributorIdOrNameList: (string | number)[];
-  platform: 'app' | 'web' | 'etc';
-  etcDeployLink?: string;
-  webDeployLink?: string;
-  androidDeployLink?: string;
-  iosDeployLink?: string;
-  githubLink?: string;
-  backgroundImg?: string;
 }

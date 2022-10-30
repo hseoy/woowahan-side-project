@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -20,6 +21,7 @@ export class Comment {
   @ManyToOne(() => User, (user) => user.id, {
     nullable: false,
   })
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
   @Column({ name: 'project_id' })

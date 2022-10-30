@@ -24,7 +24,7 @@ export class ProjectsService {
 
   async isProjectOfUser(userId: number, projectId: number) {
     const project = await this.projectRepository.findOneBy({ id: projectId });
-    return project.authorId === userId;
+    return project.userId === userId;
   }
   private async addProjectContributors(
     projectId: number,
@@ -96,16 +96,8 @@ export class ProjectsService {
     );
 
     const projectDto: ProjectDto = {
-      name: project.name,
-      description: project.description,
-      authorUserId: project.authorId,
-      platform: project.platform,
-      etcDeployLink: project.etcDeployLink,
-      webDeployLink: project.webDeployLink,
-      androidDeployLink: project.androidDeployLink,
-      iosDeployLink: project.iosDeployLink,
-      githubLink: project.githubLink,
-      backgroundImg: project.backgroundImg,
+      ...project,
+      authorUserId: project.userId,
       contributorIdOrNameList,
     };
 
