@@ -3,12 +3,16 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { IconColorMapper, IconMapper } from './LikeBlock';
 import { CreateLikeDto, LikeDto, LikeEnum } from '@/apis/liks/dto';
-import { requestCreateLike, requestDeleteLike } from '@/apis/liks/requests';
+import {
+  requestCreateLike,
+  requestDeleteLike,
+  requestGetLikeList,
+} from '@/apis/liks/requests';
+import useProjectList from '@/hooks/use-project-list';
 
 type LinkSelectContainerProps = {
   projectId: number;
   likeList: LikeDto[];
-  onRefetch: () => Promise<void>;
 };
 
 const likeEnumList: LikeEnum[] = [
@@ -50,9 +54,8 @@ const IconContainer = styled(Box)`
 export default function LinkSelectContainer({
   projectId,
   likeList,
-  onRefetch,
 }: LinkSelectContainerProps): JSX.Element {
-  // const {projectList,setProjectList} = useProjectList()
+  const { projectList, setProjectList } = useProjectList();
 
   const isSelected = (like: LikeEnum) =>
     !!likeList.find(item => item.like === like);
@@ -70,14 +73,17 @@ export default function LinkSelectContainer({
     };
 
     try {
-      const response = await requestCreateLike(data);
-      // setProjectList(projectList.map((item)=>{
-      //   if(item.id === projectId){
-      //     return {...item, }
-      //   }
-      // }))
-      console.log(response);
-      onRefetch();
+      await requestCreateLike(data);
+      const newLikeList = await requestGetLikeList(projectId);
+
+      setProjectList(
+        projectList.map(item => {
+          if (item.id === projectId) {
+            return { ...item, likeList: newLikeList.data };
+          }
+          return item;
+        }),
+      );
     } catch (error) {
       console.error(error);
     } finally {
@@ -91,9 +97,16 @@ export default function LinkSelectContainer({
     if (currentLike === undefined) return;
 
     try {
-      const response = await requestDeleteLike(currentLike.id);
-      console.log(response);
-      onRefetch();
+      await requestDeleteLike(currentLike.id);
+      const newLikeList = await requestGetLikeList(projectId);
+      setProjectList(
+        projectList.map(item => {
+          if (item.id === projectId) {
+            return { ...item, likeList: newLikeList.data };
+          }
+          return item;
+        }),
+      );
     } catch (error) {
       console.error(error);
     } finally {

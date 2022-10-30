@@ -2,14 +2,12 @@ import { Flex, Stack, Text, Box } from '@chakra-ui/react';
 import Image from 'next/image';
 // import ChatRightFill from '@/assets/svg/chat-right-fill.svg';
 import styled from '@emotion/styled';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { mockImage } from '@/mock';
 import { ProjectItemDto } from '@/apis/projects';
 import PlatformDeployLink from './PlatformDeployLink';
 import LikeListContainer from './LikeListContainer';
 import LinkSelectContainer from './LinkSelectContainer';
-import { LikeDto } from '@/apis/liks/dto';
-import { requestGetLikeList } from '@/apis/liks/requests';
 
 type ProjectBlockProps = {
   /** @todo 현재 아직 구현되지 않은 기능입니다. */
@@ -45,26 +43,11 @@ export default function ProjectBlock({
   androidDeployLink,
   iosDeployLink,
   webDeployLink,
+  likeList,
   etcDeployLink,
   commentCnt,
   backgroundImg = undefined,
-}: // deployLink,
-// githubLink,
-
-ProjectBlockProps): JSX.Element {
-  const [likeList, setLikeList] = useState<LikeDto[]>([]);
-
-  const requestLikes = async () => {
-    const response = await requestGetLikeList(id);
-    console.log('뭐오냐', response.data);
-
-    setLikeList(response.data || []);
-  };
-
-  useEffect(() => {
-    requestLikes();
-  }, [id]);
-
+}: ProjectBlockProps): JSX.Element {
   return (
     <Container position="relative">
       <Flex
@@ -162,11 +145,7 @@ ProjectBlockProps): JSX.Element {
         style={{ marginTop: 9, marginLeft: 9 }}
         position="absolute"
       >
-        <LinkSelectContainer
-          likeList={likeList}
-          projectId={id}
-          onRefetch={requestLikes}
-        />
+        <LinkSelectContainer likeList={likeList} projectId={id} />
       </Box>
     </Container>
   );
