@@ -14,7 +14,7 @@ function Scrollbar({
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <Flex overflow="auto" position="relative">
+    <Flex overflow="auto" position="relative" style={{ margin: 0 }}>
       <Box
         ref={scrollContainerRef}
         overflow="auto"

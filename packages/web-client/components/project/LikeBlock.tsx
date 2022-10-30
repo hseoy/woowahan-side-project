@@ -31,7 +31,6 @@ export default function LikeBlock({ like }: LikeDto): JSX.Element {
       as={IconMapper[like]}
       color={IconColorMapper[like]}
       borderRadius="50%"
-      transition="0.2s all ease"
       backdropFilter="blur(10px)"
       backgroundColor="#ffffff14"
       width="32px"
