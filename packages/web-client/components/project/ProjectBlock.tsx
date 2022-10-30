@@ -20,6 +20,7 @@ export default function ProjectBlock({
   webDeployLink,
   etcDeployLink,
   commentCnt,
+  backgroundImg = undefined,
 }: // deployLink,
 // githubLink,
 ProjectBlockProps): JSX.Element {
@@ -51,7 +52,7 @@ ProjectBlockProps): JSX.Element {
           filter="blur(30px)"
         >
           <Image
-            src={mockImage}
+            src={backgroundImg || mockImage}
             alt="project name"
             layout="fill"
             objectFit="cover"
@@ -66,7 +67,7 @@ ProjectBlockProps): JSX.Element {
           width="calc(100% - 40px)"
         >
           <Image
-            src={mockImage}
+            src={backgroundImg || mockImage}
             alt="project name"
             layout="fill"
             objectFit="cover"

@@ -9,6 +9,9 @@ const nextConfig = {
 
     return config;
   },
+  images: {
+    domains: ['woowahan-side-project-cdn.hseoy.xyz'],
+  },
 };
 
 module.exports = nextConfig;

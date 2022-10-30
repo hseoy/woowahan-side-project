@@ -214,7 +214,7 @@ export class ProjectsService {
     buffer,
     mimetype,
   }: UploadBackgroundImageDto) {
-    const project = await this.findOneById(projectId);
+    const project = await this.projectRepository.findOneBy({ id: projectId });
     if (!project) {
       throw new NotFoundException();
     }
