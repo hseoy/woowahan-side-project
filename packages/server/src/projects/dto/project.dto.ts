@@ -1,8 +1,7 @@
-export class CreateProjectDto {
+export class ProjectDto {
+  id: number;
   name: string;
   description: string;
-  authorUserId: number;
-  contributorIdOrNameList: (string | number)[];
   platform: 'app' | 'web' | 'etc';
   etcDeployLink?: string;
   webDeployLink?: string;
@@ -10,4 +9,11 @@ export class CreateProjectDto {
   iosDeployLink?: string;
   githubLink?: string;
   backgroundImg?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  authorUsername: string;
+  authorUserId: number;
+  commentCnt: number;
+  contributorList: { profileImg?: string; username: string }[];
+  isWsp: boolean;
 }

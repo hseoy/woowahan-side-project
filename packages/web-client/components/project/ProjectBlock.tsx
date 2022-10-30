@@ -1,12 +1,9 @@
-import { Flex, Stack, Text, Icon, Box } from '@chakra-ui/react';
+import { Flex, Stack, Text, Box } from '@chakra-ui/react';
 import Image from 'next/image';
 // import ChatRightFill from '@/assets/svg/chat-right-fill.svg';
 import { mockImage } from '@/mock';
-import IconAndroid from '@/assets/svg/icon_android.svg';
-import IconIos from '@/assets/svg/icon_ios.svg';
-import IconWeb from '@/assets/svg/icon_web.svg';
-import IconGithub from '@/assets/svg/icon_github.svg';
 import { ProjectItemDto } from '@/apis/projects';
+import PlatformDeployLink from './PlatformDeployLink';
 
 type ProjectBlockProps = {
   /** @todo 현재 아직 구현되지 않은 기능입니다. */
@@ -14,9 +11,15 @@ type ProjectBlockProps = {
 } & ProjectItemDto;
 
 export default function ProjectBlock({
-  author,
+  authorUsername,
   name,
   description,
+  githubLink,
+  androidDeployLink,
+  iosDeployLink,
+  webDeployLink,
+  etcDeployLink,
+  commentCnt,
 }: // deployLink,
 // githubLink,
 ProjectBlockProps): JSX.Element {
@@ -85,7 +88,7 @@ ProjectBlockProps): JSX.Element {
             {name}
           </Text>
           <Text bottom={0} fontSize="20px" fontWeight="bold" color="#ffffff">
-            {15}
+            {commentCnt}
           </Text>
         </Flex>
       </Flex>
@@ -98,42 +101,15 @@ ProjectBlockProps): JSX.Element {
         {/* 제작자 + 플랫폼 아이콘 */}
         <Flex justifyContent="space-between">
           <Text fontSize="16px" fontWeight="bold" color="brandPrimary">
-            {author}
+            {authorUsername}
           </Text>
-          <Flex gap="12px">
-            <Icon
-              as={IconGithub}
-              _hover={{ color: '#1a1a1a' }}
-              transition="0.2s color ease"
-              color="iconColor"
-              width="32px"
-              height="32px"
-            />
-            <Icon
-              as={IconAndroid}
-              _hover={{ color: '#35a700' }}
-              transition="0.2s color ease"
-              color="iconColor"
-              width="32px"
-              height="32px"
-            />
-            <Icon
-              as={IconIos}
-              _hover={{ color: '#555555' }}
-              transition="0.2s color ease"
-              color="iconColor"
-              width="32px"
-              height="32px"
-            />
-            <Icon
-              as={IconWeb}
-              _hover={{ color: '#005ed1' }}
-              transition="0.2s color ease"
-              color="iconColor"
-              width="32px"
-              height="32px"
-            />
-          </Flex>
+          <PlatformDeployLink
+            etcDeployLink={etcDeployLink}
+            githubLink={githubLink}
+            androidDeployLink={androidDeployLink}
+            iosDeployLink={iosDeployLink}
+            webDeployLink={webDeployLink}
+          />
         </Flex>
         <Text fontSize="16px" color="brandPrimary" style={{ margin: 0 }}>
           {description}

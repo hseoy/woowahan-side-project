@@ -14,7 +14,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import useProjectItemModal from '@/hooks/use-project-item-modal';
 import { ProjectItemDto } from '@/apis/projects';
-import UrlControl from '../form/UrlControl';
+// import UrlControl from '../form/UrlControl';
 import TextControl from '../form/TextControl';
 import GithubUrlControl from '../form/GithubUrlControl';
 
@@ -52,13 +52,13 @@ function ProjectItemModifyModal(): JSX.Element {
 
           <ModalBody>
             <Stack gap="5px" padding="10px 0">
-              <TextControl
+              {/* <TextControl
                 name="author"
                 label="개발자"
                 control={control}
                 placeholder="개발자 이름을 입력해주세요"
                 required
-              />
+              /> */}
 
               <TextControl
                 name="name"
@@ -76,12 +76,12 @@ function ProjectItemModifyModal(): JSX.Element {
                 required
               />
 
-              <UrlControl
+              {/* <UrlControl
                 name="deployLink"
                 label="배포 링크"
                 control={control}
                 placeholder="배포 링크를 입력해주세요"
-              />
+              /> */}
 
               <GithubUrlControl
                 name="githubLink"

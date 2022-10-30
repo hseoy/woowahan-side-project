@@ -7,13 +7,16 @@ type ProjectItemModalState = {
   projectItem: ProjectItemDto;
 };
 
-const initialProjectItem = {
+const initialProjectItem: ProjectItemDto = {
   id: 0,
-  author: '',
   name: '',
   description: '',
-  deployLink: '',
-  githubLink: '',
+  platform: 'web',
+  authorUsername: '',
+  authorUserId: 0,
+  commentCnt: 0,
+  contributorList: [],
+  isWsp: false,
 };
 
 const projectItemModalAtom = atom<ProjectItemModalState>({
