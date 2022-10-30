@@ -1,5 +1,4 @@
-import { Box, Flex, Icon, Text } from '@chakra-ui/react';
-import styled from '@emotion/styled';
+import { Flex, Icon, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 import { IconColorMapper, IconMapper } from './LikeBlock';
 import { CreateLikeDto, LikeDto, LikeEnum } from '@/apis/liks/dto';
@@ -9,6 +8,7 @@ import {
   requestGetLikeList,
 } from '@/apis/liks/requests';
 import useProjectList from '@/hooks/use-project-list';
+import Tooltip from '../common/Tooltip';
 
 type LinkSelectContainerProps = {
   projectId: number;
@@ -24,33 +24,6 @@ const likeEnumList: LikeEnum[] = [
   LikeEnum.SHARE,
   LikeEnum.LIKE,
 ];
-
-const IconContainer = styled(Box)`
-  transition: 0.2s all ease;
-  border-radius: 50%;
-  height: 32px;
-
-  #icon-tooltip {
-    transition: 0.2s all ease;
-    left: 50%;
-    top: -30px;
-    padding: 4px 8px;
-    color: #ffffff;
-    border-radius: 5px;
-    font-size: 14px;
-    transform: translateX(-50%) translateY(0px);
-    opacity: 0;
-  }
-
-  :hover {
-    background-color: #00000016;
-
-    #icon-tooltip {
-      transform: translateX(-50%) translateY(-5px);
-      opacity: 1;
-    }
-  }
-`;
 
 export default function LinkSelectContainer({
   projectId,
@@ -146,8 +119,8 @@ export default function LinkSelectContainer({
           }
           return true;
         })
-        .map(like => (
-          <IconContainer key={like} position="relative">
+        .map((like, _) => (
+          <Tooltip key={like} content={<Text>{like}</Text>}>
             <Icon
               as={IconMapper[like]}
               color={isSelected(like) ? IconColorMapper[like] : 'gray'}
@@ -157,15 +130,7 @@ export default function LinkSelectContainer({
               width="32px"
               height="32px"
             />
-            <Box
-              id="icon-tooltip"
-              position="absolute"
-              backgroundColor="#505050"
-              width="max-content"
-            >
-              <Text>{like}</Text>
-            </Box>
-          </IconContainer>
+          </Tooltip>
         ))}
     </Flex>
   );
