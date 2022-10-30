@@ -43,7 +43,9 @@ function ProjectItemModifyModal(): JSX.Element {
     platformSelectOptions[0].value,
   );
   const { user } = useAuth();
-  const [formValue, setFormValue] = useState<ProjectItemDto>({
+  const [formValue, setFormValue] = useState<
+    ProjectItemDto & { backgroundImgFile?: File }
+  >({
     ...initialProjectItem,
     authorUserId: user?.id || -1,
     authorUsername: user?.username || '',
@@ -76,9 +78,11 @@ function ProjectItemModifyModal(): JSX.Element {
     }
     return 'etc';
   };
-  const onSubmit = async (data: ProjectItemInput) => {
-    const platformData = deployPlatformTo(data.platform);
-    await onModalSubmit({ ...data, platform: platformData });
+  const onSubmit = async () => {
+    await onModalSubmit({
+      ...formValue,
+      backgroundImg: undefined,
+    });
     reset();
   };
 
@@ -87,6 +91,7 @@ function ProjectItemModifyModal(): JSX.Element {
     setFormValue(prev => ({
       ...prev,
       ...values,
+      backgroundImg: prev.backgroundImg,
       authorUserId: user?.id || -1,
       authorUsername: user?.username || '',
       platform: deployPlatformTo(values.platform),
@@ -96,6 +101,32 @@ function ProjectItemModifyModal(): JSX.Element {
   const onChangePlatform = (value: string) => {
     setDeployPlatform(value);
     onChange();
+  };
+
+  const onChangeBackgroundImageFile = (value?: File) => {
+    if (!value) {
+      setFormValue(prev => ({
+        ...prev,
+        backgroundImg: undefined,
+        backgroundImgFile: undefined,
+      }));
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = event => {
+      const result = event.target?.result?.toString();
+      if (result) {
+        setFormValue(prev => ({
+          ...prev,
+          backgroundImg: result,
+          backgroundImgFile: value,
+        }));
+      }
+    };
+
+    reader.readAsDataURL(value);
   };
 
   useEffect(() => {
@@ -125,6 +156,7 @@ function ProjectItemModifyModal(): JSX.Element {
                   name="backgroundImg"
                   label="배경 이미지"
                   control={control}
+                  onChangeValue={onChangeBackgroundImageFile}
                 />
 
                 <SelectControl

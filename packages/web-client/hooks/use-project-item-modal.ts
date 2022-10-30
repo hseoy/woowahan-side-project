@@ -1,5 +1,8 @@
 import { atom, useRecoilState } from 'recoil';
-import { ProjectItemDto } from '@/apis/projects';
+import {
+  ProjectItemDto,
+  requestUploadBackgroundImgFile,
+} from '@/apis/projects';
 import useProjectList from './use-project-list';
 
 type ProjectItemModalState = {
@@ -53,8 +56,14 @@ const useProjectItemModal = () => {
     }));
   };
 
-  const onModalSubmit = async (data?: ProjectItemDto) => {
-    await addProjectItem(data || projectItemModalState.projectItem);
+  const onModalSubmit = async (
+    data: ProjectItemDto & { backgroundImgFile?: File },
+  ) => {
+    const { backgroundImgFile, ...projectData } = data;
+    const projectId = await addProjectItem(projectData);
+    if (backgroundImgFile) {
+      await requestUploadBackgroundImgFile(projectId, backgroundImgFile);
+    }
     closeModal();
   };
 
