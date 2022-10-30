@@ -1,8 +1,8 @@
-export class UpdateProjectDto {
-  name?: string;
-  description?: string;
-  contributorIdOrNameList?: (string | number)[];
-  platform?: 'app' | 'web' | 'etc';
+export class CreateProjectItemDto {
+  name: string;
+  description: string;
+  authorUserId: number;
+  platform: 'app' | 'web' | 'etc';
   etcDeployLink?: string;
   webDeployLink?: string;
   androidDeployLink?: string;

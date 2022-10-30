@@ -1,7 +1,3 @@
-export class CreateProjectDto {
-  author: string;
-  name: string;
-  description: string;
-  deployLink?: string;
-  githubLink?: string;
-}
+import { ProjectDto } from './project.dto';
+
+export class CreateProjectDto extends ProjectDto {}
