@@ -13,6 +13,7 @@ import useProjectList from '@/hooks/use-project-list';
 type LinkSelectContainerProps = {
   projectId: number;
   likeList: LikeDto[];
+  isWsp: boolean;
 };
 
 const likeEnumList: LikeEnum[] = [
@@ -54,6 +55,7 @@ const IconContainer = styled(Box)`
 export default function LinkSelectContainer({
   projectId,
   likeList,
+  isWsp,
 }: LinkSelectContainerProps): JSX.Element {
   const { projectList, setProjectList } = useProjectList();
 
@@ -137,27 +139,34 @@ export default function LinkSelectContainer({
       alignItems="center"
       onClick={e => e.stopPropagation()}
     >
-      {likeEnumList.map(like => (
-        <IconContainer key={like} position="relative">
-          <Icon
-            as={IconMapper[like]}
-            color={isSelected(like) ? IconColorMapper[like] : 'gray'}
-            borderRadius="50%"
-            onClick={() => handleLike(like)}
-            backdropFilter="blur(10px)"
-            width="32px"
-            height="32px"
-          />
-          <Box
-            id="icon-tooltip"
-            position="absolute"
-            backgroundColor="#505050"
-            width="max-content"
-          >
-            <Text>{like}</Text>
-          </Box>
-        </IconContainer>
-      ))}
+      {likeEnumList
+        .filter(item => {
+          if (!isWsp) {
+            return item === LikeEnum.LIKE;
+          }
+          return true;
+        })
+        .map(like => (
+          <IconContainer key={like} position="relative">
+            <Icon
+              as={IconMapper[like]}
+              color={isSelected(like) ? IconColorMapper[like] : 'gray'}
+              borderRadius="50%"
+              onClick={() => handleLike(like)}
+              backdropFilter="blur(10px)"
+              width="32px"
+              height="32px"
+            />
+            <Box
+              id="icon-tooltip"
+              position="absolute"
+              backgroundColor="#505050"
+              width="max-content"
+            >
+              <Text>{like}</Text>
+            </Box>
+          </IconContainer>
+        ))}
     </Flex>
   );
 }

@@ -46,6 +46,7 @@ export default function ProjectBlock({
   likeList,
   etcDeployLink,
   commentCnt,
+  isWsp,
   backgroundImg = undefined,
 }: ProjectBlockProps): JSX.Element {
   return (
@@ -145,7 +146,7 @@ export default function ProjectBlock({
         style={{ marginTop: 9, marginLeft: 9 }}
         position="absolute"
       >
-        <LinkSelectContainer likeList={likeList} projectId={id} />
+        <LinkSelectContainer isWsp={isWsp} likeList={likeList} projectId={id} />
       </Box>
     </Container>
   );
