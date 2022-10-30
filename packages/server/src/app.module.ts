@@ -16,6 +16,8 @@ import { AuthModule } from './auth/auth.module';
 import { clientConfig, databaseConfig, jwtConfig, oauthConfig } from './config';
 import { ProjectsModule } from './projects/projects.module';
 import { S3Module } from './s3/s3.module';
+import { CommentsModule } from './projects/comments/comments.module';
+import { LikeModule } from './projects/like/like.module';
 import awsConfig from './config/aws.config';
 import { NextFunction, Request, Response } from 'express';
 
@@ -61,6 +63,8 @@ export class LoggerMiddleware implements NestMiddleware {
     AuthModule,
     ProjectsModule,
     S3Module,
+    CommentsModule,
+    LikeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

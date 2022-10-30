@@ -1,17 +1,43 @@
 import { Flex, Stack, Text, Box } from '@chakra-ui/react';
 import Image from 'next/image';
 // import ChatRightFill from '@/assets/svg/chat-right-fill.svg';
-import React from 'react';
+import styled from '@emotion/styled';
+import React, { useEffect, useState } from 'react';
 import { mockImage } from '@/mock';
 import { ProjectItemDto } from '@/apis/projects';
 import PlatformDeployLink from './PlatformDeployLink';
+import LikeListContainer from './LikeListContainer';
+import LinkSelectContainer from './LinkSelectContainer';
+import { LikeDto } from '@/apis/liks/dto';
+import { requestGetLikeList } from '@/apis/liks/requests';
 
 type ProjectBlockProps = {
   /** @todo 현재 아직 구현되지 않은 기능입니다. */
   // commentCnt?: number;
 } & ProjectItemDto;
 
+const Container = styled(Stack)`
+  width: 420px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s all ease;
+
+  #link-select-container {
+    transition: 0.2s all ease;
+    opacity: 0;
+  }
+
+  :hover {
+    box-shadow: 0 0 3px 2px #48e7e1;
+    #link-select-container {
+      opacity: 1;
+    }
+  }
+`;
+
 export default function ProjectBlock({
+  id,
   authorUsername,
   name,
   description,
@@ -26,17 +52,21 @@ export default function ProjectBlock({
 // githubLink,
 
 ProjectBlockProps): JSX.Element {
+  const [likeList, setLikeList] = useState<LikeDto[]>([]);
+
+  const requestLikes = async () => {
+    const response = await requestGetLikeList(id);
+    console.log('뭐오냐', response.data);
+
+    setLikeList(response.data || []);
+  };
+
+  useEffect(() => {
+    requestLikes();
+  }, [id]);
+
   return (
-    <Stack
-      width="420px"
-      backgroundColor="#ffffff"
-      borderRadius={10}
-      cursor="pointer"
-      transition="0.3s all ease"
-      _hover={{
-        transform: 'scale(1.03)',
-      }}
-    >
+    <Container position="relative">
       <Flex
         height="240px"
         borderTopLeftRadius="10px"
@@ -76,6 +106,9 @@ ProjectBlockProps): JSX.Element {
           />
         </Box>
 
+        {/* 좋아요 표기 */}
+        <LikeListContainer likeList={likeList} />
+
         {/* 그라데이션 박스 */}
         <Flex
           position="absolute"
@@ -101,11 +134,13 @@ ProjectBlockProps): JSX.Element {
         height="fit-content"
         style={{ marginTop: 0 }}
       >
-        {/* 제작자 + 플랫폼 아이콘 */}
         <Flex justifyContent="space-between">
+          {/* 제작자  */}
           <Text fontSize="16px" fontWeight="bold" color="brandPrimary">
             {authorUsername}
           </Text>
+
+          {/* 플랫폼 아이콘 */}
           <PlatformDeployLink
             etcDeployLink={etcDeployLink}
             githubLink={githubLink}
@@ -114,45 +149,25 @@ ProjectBlockProps): JSX.Element {
             webDeployLink={webDeployLink}
           />
         </Flex>
+
+        {/* 프로젝트 설명 */}
         <Text fontSize="16px" color="brandPrimary" style={{ margin: 0 }}>
           {description}
         </Text>
-
-        {/* <Flex alignItems="center" marginTop="20px">
-          <ChatRightFill color="#4B587C" width="12px" height="12px" />
-          <Text fontSize="12px" color="brandPrimary" paddingLeft="5px">
-            {`현재 구현되지 않은 기능입니다.(댓글 수 - ${commentCnt})`}
-          </Text>
-        </Flex> */}
       </Stack>
 
-      {/* <Center marginLeft="auto" gap="10px">
-        {githubLink && (
-          <Center>
-            <Link href={githubLink} target="_blank" rel="noopener noreferrer">
-              <Icon
-                as={GithubIcon}
-                width="25px"
-                height="25px"
-                color="lightGray"
-              />
-            </Link>
-          </Center>
-        )}
-
-        {deployLink && (
-          <Center>
-            <Link href={deployLink} target="_blank" rel="noopener noreferrer">
-              <Icon
-                as={Link45degIcon}
-                color="logo"
-                width="25px"
-                height="25px"
-              />
-            </Link>
-          </Center>
-        )}
-      </Center> */}
-    </Stack>
+      {/* 좋아요 hover Container */}
+      <Box
+        id="link-select-container"
+        style={{ marginTop: 9, marginLeft: 9 }}
+        position="absolute"
+      >
+        <LinkSelectContainer
+          likeList={likeList}
+          projectId={id}
+          onRefetch={requestLikes}
+        />
+      </Box>
+    </Container>
   );
 }
