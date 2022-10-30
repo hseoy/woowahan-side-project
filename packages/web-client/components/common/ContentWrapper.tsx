@@ -20,7 +20,7 @@ function ContentWrapper({
     >
       <Box
         boxSizing="border-box"
-        maxWidth="1366px"
+        maxWidth="1320px"
         width="100%"
         margin="0 auto"
         padding={withPadding ? '20px 20px' : undefined}

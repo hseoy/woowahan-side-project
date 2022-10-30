@@ -4,7 +4,7 @@ import PageLayout from '@/components/layout/PageLayout';
 
 function Home() {
   return (
-    <PageLayout withContentWrapper>
+    <PageLayout>
       <ProjectListContainer />
     </PageLayout>
   );
