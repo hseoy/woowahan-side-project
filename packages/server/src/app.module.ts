@@ -10,6 +10,7 @@ import { clientConfig, databaseConfig, jwtConfig, oauthConfig } from './config';
 import { ProjectsModule } from './projects/projects.module';
 import { S3Module } from './s3/s3.module';
 import { CommentsModule } from './comments/comments.module';
+import { LikeModule } from './like/like.module';
 import awsConfig from './config/aws.config';
 
 @Module({
@@ -34,6 +35,7 @@ import awsConfig from './config/aws.config';
     ProjectsModule,
     S3Module,
     CommentsModule,
+    LikeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
