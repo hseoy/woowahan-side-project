@@ -7,6 +7,7 @@ import {
   Delete,
   UseGuards,
   Req,
+  Query,
 } from '@nestjs/common';
 import { LikeService } from './like.service';
 import { CreateLikeDto } from './dto/create-like.dto';
@@ -30,8 +31,12 @@ export class LikeController {
 
   @Get()
   @UseGuards(AuthGuard('jwt-access-token'))
-  findAll() {
-    return this.likeService.findAll();
+  findAll(@Query('projectId') projectId?: string) {
+    if (!projectId) {
+      return this.likeService.findAll();
+    }
+
+    return this.likeService.findByProjectId(+projectId);
   }
 
   @Get(':id')
@@ -41,7 +46,7 @@ export class LikeController {
   }
 
   @Delete(':id')
-  // @UseGuards(AuthGuard('jwt-access-token'))
+  @UseGuards(AuthGuard('jwt-access-token'))
   remove(@Param('id') id: string) {
     return this.likeService.remove(+id);
   }

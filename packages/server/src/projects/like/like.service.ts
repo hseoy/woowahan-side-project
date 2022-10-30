@@ -37,9 +37,6 @@ export class LikeService {
       user,
       project,
     });
-
-    console.log(newLike);
-
     const { id } = await this.likeRepository.save(newLike);
     return { id };
   }

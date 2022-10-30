@@ -17,4 +17,4 @@ export enum LikeEnum {
 
 export type LikeListDto = LikeDto[];
 
-export type CreateLikeDto = Omit<LikeDto, 'id' | 'createdAt' | 'updatedAt'>;
+export type CreateLikeDto = Pick<LikeDto, 'projectId' | 'like'>;
