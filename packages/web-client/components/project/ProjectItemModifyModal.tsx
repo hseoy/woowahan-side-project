@@ -66,6 +66,11 @@ function ProjectItemModifyModal(): JSX.Element {
 
   const onCloseModal = () => {
     reset();
+    setFormValue({
+      ...initialProjectItem,
+      authorUserId: user?.id || -1,
+      authorUsername: user?.username || '',
+    });
     closeModal();
   };
 
@@ -82,6 +87,11 @@ function ProjectItemModifyModal(): JSX.Element {
     await onModalSubmit({
       ...formValue,
       backgroundImg: undefined,
+    });
+    setFormValue({
+      ...initialProjectItem,
+      authorUserId: user?.id || -1,
+      authorUsername: user?.username || '',
     });
     reset();
   };

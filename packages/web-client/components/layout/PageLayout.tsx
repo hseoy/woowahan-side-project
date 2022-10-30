@@ -91,6 +91,7 @@ function PageLayout({
           <UserMenu isLoading={!isRequestedAuthInfo} />
         </Center>
       </Header>
+
       {withContentWrapper ? (
         <ContentWrapper withPadding>{contentComponent}</ContentWrapper>
       ) : (

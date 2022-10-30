@@ -4,6 +4,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Project } from '../entities/project.entity';
+import { CommentItemDto } from './dto/comment-item.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { Comment } from './entities/comment.entity';
@@ -19,7 +20,7 @@ export class CommentsService {
   constructor(private readonly usersService: UsersService) {}
 
   async isCommentOfUser(userId: number, commentId: number) {
-    const comment = await this.findOneById(commentId);
+    const comment = await this.commentRepository.findOneBy({ id: commentId });
 
     return comment.userId === userId;
   }
@@ -27,6 +28,36 @@ export class CommentsService {
   async countCommentCntByProjectId(projectId: number) {
     const cnt = await this.commentRepository.countBy({ projectId });
     return cnt;
+  }
+
+  async commentEntityToCommentItemDto(
+    comment: Comment,
+  ): Promise<CommentItemDto> {
+    const authorUser = await this.usersService.findOneById(comment.userId);
+    if (!authorUser) {
+      throw new NotFoundException();
+    }
+    const project = await this.projectRepository.findOneBy({
+      id: comment.projectId,
+    });
+    if (!project) {
+      throw new NotFoundException();
+    }
+
+    const commentItemDto: CommentItemDto = {
+      id: comment.id,
+      message: comment.message,
+      projectId: comment.projectId,
+      projectName: project.name,
+      isAnonymous: comment.isAnonymous,
+      createdAt: comment.createdAt,
+      updatedAt: comment.updatedAt,
+      authorUsername: authorUser.username,
+      authorProfileImg: authorUser.profileImg,
+      authorUserId: authorUser.id,
+    };
+
+    return commentItemDto;
   }
 
   async create(
@@ -49,23 +80,37 @@ export class CommentsService {
       project,
     });
 
-    console.log(newComment);
-
     const { id } = await this.commentRepository.save(newComment);
     return { id };
   }
 
-  findAll() {
-    return this.commentRepository.find();
+  async findAll(): Promise<CommentItemDto[]> {
+    const comments = await this.commentRepository.find();
+    const commentItemDtoList = await Promise.all(
+      comments.map((comment) => this.commentEntityToCommentItemDto(comment)),
+    );
+
+    return commentItemDtoList;
   }
 
-  async findOneById(id: number) {
+  async findOneById(id: number): Promise<CommentItemDto> {
     const comment = await this.commentRepository.findOneBy({ id });
-    return comment;
+
+    const commentItemDto = await this.commentEntityToCommentItemDto(comment);
+
+    return commentItemDto;
   }
 
-  findByProjectId(projectId: number) {
-    return this.commentRepository.findBy({ project: { id: projectId } });
+  async findByProjectId(projectId: number): Promise<CommentItemDto[]> {
+    const comments = await this.commentRepository.findBy({
+      project: { id: projectId },
+    });
+
+    const commentItemDtoList = await Promise.all(
+      comments.map((comment) => this.commentEntityToCommentItemDto(comment)),
+    );
+
+    return commentItemDtoList;
   }
 
   async update(

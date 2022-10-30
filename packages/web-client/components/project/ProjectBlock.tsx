@@ -2,7 +2,7 @@ import { Flex, Stack, Text, Box } from '@chakra-ui/react';
 import Image from 'next/image';
 // import ChatRightFill from '@/assets/svg/chat-right-fill.svg';
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { mockImage } from '@/mock';
 import { ProjectItemDto } from '@/apis/projects';
 import PlatformDeployLink from './PlatformDeployLink';
@@ -50,6 +50,7 @@ export default function ProjectBlock({
   backgroundImg = undefined,
 }: // deployLink,
 // githubLink,
+
 ProjectBlockProps): JSX.Element {
   const [likeList, setLikeList] = useState<LikeDto[]>([]);
 

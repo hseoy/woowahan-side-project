@@ -1,11 +1,14 @@
 import {
+  Box,
+  Drawer,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerOverlay,
   Flex,
-  Modal,
-  ModalContent,
-  ModalOverlay,
   Stack,
   Text,
 } from '@chakra-ui/react';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { CommentListDto, CreateCommentDto } from '@/apis/comments/dto';
@@ -14,15 +17,18 @@ import {
   requestGetCommentList,
 } from '@/apis/comments/requests';
 import TextControl from '../form/TextControl';
+import CommentBlock from '../comment/Comment';
+import { ProjectItemDto } from '@/apis/projects';
+import { mockImage } from '@/mock';
 
 type ProjectCommentsModalProps = {
   isOpen: boolean;
-  projectId: number;
+  project: ProjectItemDto | null;
   onClose: () => void;
 };
 function ProjectCommentsModal({
   isOpen,
-  projectId,
+  project,
   onClose,
 }: ProjectCommentsModalProps): JSX.Element {
   const [comments, setComments] = useState<CommentListDto>([]);
@@ -32,35 +38,105 @@ function ProjectCommentsModal({
   });
 
   const requestComments = async () => {
-    const response = await requestGetCommentList(projectId);
-    setComments(response.data);
+    if (!project) return;
+    const response = await requestGetCommentList(project.id);
+    setComments(response.data.reverse());
   };
 
   const onSubmit = async ({ message }: { message: string }) => {
-    const data: CreateCommentDto = { message, projectId, isAnonymous: false };
+    if (!project) return;
+    const data: CreateCommentDto = {
+      message,
+      projectId: project.id,
+      isAnonymous: false,
+    };
     await requestCreateComment(data);
     await requestComments();
     reset();
   };
 
   useEffect(() => {
-    requestComments();
-  }, [projectId]);
+    if (project) {
+      requestComments();
+    }
+  }, [project]);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="6xl">
-      <ModalOverlay />
-      <ModalContent>
-        <Stack height="80vh">
-          {comments.map(comment => (
-            <Flex key={comment.id}>
-              <Text>{comment.message}</Text>
+    <Drawer isOpen={isOpen} onClose={onClose} size="md">
+      <DrawerOverlay />
+      <DrawerContent>
+        <DrawerCloseButton />
+        <Stack height="100%" style={{ padding: '30px 20px' }}>
+          <Stack>
+            <Flex
+              height="240px"
+              borderTopLeftRadius="10px"
+              borderTopRightRadius="10px"
+              position="relative"
+              overflow="hidden"
+            >
+              <Box
+                position="absolute"
+                height="240px"
+                width="100%"
+                borderTopLeftRadius="10px"
+                borderTopRightRadius="10px"
+                backdropFilter="brightness(0.5)"
+                filter="blur(30px)"
+              >
+                <Image
+                  src={project?.backgroundImg || mockImage}
+                  alt="project name"
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </Box>
+              <Box
+                position="absolute"
+                margin="20px"
+                height="200px"
+                borderRadius="5px"
+                boxShadow="0px 0px 6px 2px rgba(255,255,255,0.25)"
+                width="calc(100% - 40px)"
+              >
+                <Image
+                  src={project?.backgroundImg || mockImage}
+                  alt="project name"
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </Box>
+
+              {/* 그라데이션 박스 */}
+              <Flex
+                position="absolute"
+                bottom={0}
+                background="linear-gradient(rgba(0,0,0,0), rgba(75,75,75,60));"
+                height="60px"
+                width="100%"
+                padding="15px 20px"
+                alignItems="baseline"
+              >
+                <Text
+                  bottom={0}
+                  fontSize="24px"
+                  fontWeight="bold"
+                  color="#ffffff"
+                  marginRight="10px"
+                >
+                  {project?.name}
+                </Text>
+                <Text bottom={0} fontWeight="bold" color="#ffffff">
+                  {project?.authorUsername}
+                </Text>
+              </Flex>
             </Flex>
-          ))}
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            style={{ marginTop: 'auto', padding: '30px 20px' }}
-          >
+          </Stack>
+
+          <Box padding="10px 0 20px">
+            <Text color="gray.500">{project?.description}</Text>
+          </Box>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <TextControl
               name="message"
               label="Message"
@@ -69,9 +145,21 @@ function ProjectCommentsModal({
               required
             />
           </form>
+          <Text fontFamily="dohyeon" color="gray.600" padding="10px 0">
+            지금까지 {comments.length}개의 피드백이 달렸어요!
+          </Text>
+          <Stack overflowY="auto" padding="10px 10px">
+            {comments.map(comment => (
+              <CommentBlock
+                // authorName="Hello"
+                {...comment}
+                key={comment.id}
+              />
+            ))}
+          </Stack>
         </Stack>
-      </ModalContent>
-    </Modal>
+      </DrawerContent>
+    </Drawer>
   );
 }
 
