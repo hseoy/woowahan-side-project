@@ -4,6 +4,7 @@ import {
   ProjectItemDto,
   ProjectItemListDto,
   requestCreateProject,
+  requestDeleteProject,
   requestGetProjectItem,
   requestGetProjectList,
 } from '@/apis/projects';
@@ -59,6 +60,12 @@ const useProjectList = () => {
     return createdItemId;
   };
 
+  const removeProjectItem = async (itemId: number) => {
+    await requestDeleteProject(itemId);
+
+    setProjectListState(prev => [...prev.filter(item => item.id !== itemId)]);
+  };
+
   const setProjectList = (projectList: ProjectItemListDto) => {
     setProjectListState(projectList);
   };
@@ -68,6 +75,7 @@ const useProjectList = () => {
     setProjectList,
     getProjectList,
     addProjectItem,
+    removeProjectItem,
   };
 };
 

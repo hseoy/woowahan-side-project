@@ -47,7 +47,7 @@ export default function Tooltip({
     <Container position="relative">
       {children}
       <Box id="tooltip-content">
-        <Text>{content}</Text>
+        <Text as="div">{content}</Text>
       </Box>
     </Container>
   );

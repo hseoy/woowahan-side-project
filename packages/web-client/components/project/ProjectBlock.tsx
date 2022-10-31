@@ -91,7 +91,9 @@ export default function ProjectBlock({
         </Box>
 
         {/* 좋아요 표기 */}
-        <LikeListContainer likeList={likeList} />
+        {likeList && likeList.length > 0 && (
+          <LikeListContainer likeList={likeList} />
+        )}
 
         {/* 그라데이션 박스 */}
         <Flex

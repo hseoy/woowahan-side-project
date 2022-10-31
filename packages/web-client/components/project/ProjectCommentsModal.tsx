@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Drawer,
   DrawerCloseButton,
   DrawerContent,
@@ -7,6 +8,8 @@ import {
   Flex,
   Stack,
   Text,
+  Tooltip,
+  useToast,
 } from '@chakra-ui/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -20,6 +23,7 @@ import TextControl from '../form/TextControl';
 import CommentBlock from '../comment/Comment';
 import { ProjectItemDto } from '@/apis/projects';
 import { mockImage } from '@/mock';
+import useProjectList from '@/hooks/use-project-list';
 
 type ProjectCommentsModalProps = {
   isOpen: boolean;
@@ -36,6 +40,8 @@ function ProjectCommentsModal({
     mode: 'onChange',
     defaultValues: { message: '' },
   });
+  const { removeProjectItem } = useProjectList();
+  const toast = useToast();
 
   const requestComments = async () => {
     if (!project) return;
@@ -55,6 +61,26 @@ function ProjectCommentsModal({
     reset();
   };
 
+  const onRemoveProjectItem = async () => {
+    if (!project) return;
+
+    try {
+      await removeProjectItem(project.id);
+      toast({
+        title: '프로젝트가 삭제되었습니다.',
+        status: 'success',
+        isClosable: true,
+      });
+      onClose();
+    } catch (e) {
+      toast({
+        title: '프로젝트가 삭제에 실패하였습니다.',
+        status: 'error',
+        isClosable: true,
+      });
+    }
+  };
+
   useEffect(() => {
     if (project) {
       requestComments();
@@ -66,7 +92,7 @@ function ProjectCommentsModal({
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <Stack height="100%" style={{ padding: '30px 20px' }}>
+        <Stack height="100%" style={{ padding: '30px 20px' }} marginTop="20px">
           <Stack>
             <Flex
               height="240px"
@@ -136,12 +162,35 @@ function ProjectCommentsModal({
           <Box padding="10px 0 20px">
             <Text color="gray.500">{project?.description}</Text>
           </Box>
+
+          <Box paddingBottom="25px">
+            <Tooltip
+              placement="top"
+              bgColor="#505050"
+              borderRadius="5px"
+              label={
+                project?.isWsp
+                  ? '우아한사이드프로젝트 박람회 이후 삭제 가능합니다'
+                  : '프로젝트를 삭제합니다'
+              }
+            >
+              <Button
+                onClick={onRemoveProjectItem}
+                colorScheme="red"
+                width="full"
+                disabled={project?.isWsp}
+              >
+                프로젝트 삭제
+              </Button>
+            </Tooltip>
+          </Box>
+
           <form onSubmit={handleSubmit(onSubmit)}>
             <TextControl
               name="message"
-              label="Message"
+              label="프로젝트 개발자분들께 피드백을 전달해요"
               control={control}
-              placeholder="프로젝트 개발자분들께 피드백을 전달해요"
+              placeholder="피드백은 큰 힘이 됩니다!"
               required
             />
           </form>

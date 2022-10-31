@@ -219,6 +219,9 @@ export class ProjectsService {
   }
 
   async remove(id: number) {
+    await this.likesService.removeByProjectId(id);
+    await this.commentsService.removeByProjectId(id);
+
     await this.projectContributorRepository.delete({
       projectId: id,
     });

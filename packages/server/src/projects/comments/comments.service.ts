@@ -125,4 +125,8 @@ export class CommentsService {
   remove(id: number) {
     return this.commentRepository.delete(id);
   }
+
+  removeByProjectId(projectId: number) {
+    return this.commentRepository.delete({ projectId });
+  }
 }

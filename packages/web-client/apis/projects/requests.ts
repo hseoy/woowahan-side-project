@@ -15,6 +15,9 @@ export const requestCreateProject = async (data: CreateProjectDto) =>
 export const requestGetProjectItem = async (id: number) =>
   client.get<ProjectItemDto>(`/projects/${id}`);
 
+export const requestDeleteProject = async (id: number) =>
+  client.delete(`/projects/${id}`);
+
 export const requestUploadBackgroundImgFile = async (
   id: number,
   file: File,
