@@ -4,6 +4,7 @@ import useProjectList from '@/hooks/use-project-list';
 import ProjectCommentsModal from './ProjectCommentsModal';
 import ProjectBlock from './ProjectBlock';
 import { ProjectItemDto } from '@/apis/projects';
+import zIndexes from '@/styles/zIndexes';
 
 function ProjectListContainer(): JSX.Element {
   const [modalState, setModalState] = useState<{
@@ -66,7 +67,7 @@ function ProjectListContainer(): JSX.Element {
             textAlign="center"
             backdropFilter="blur(10px)"
             backgroundColor="#f1f2f5d4"
-            zIndex="1"
+            zIndex={zIndexes.projectListHeading}
           >
             <Heading as="h2" fontSize="24px">
               우아한 사이드 프로젝트 기간(3달) 동안 작업한 프로젝트들 👇
@@ -110,7 +111,7 @@ function ProjectListContainer(): JSX.Element {
             textAlign="center"
             backdropFilter="blur(10px)"
             backgroundColor="#f1f2f5d4"
-            zIndex="1"
+            zIndex={zIndexes.projectListHeading}
           >
             <Heading as="h2" fontSize="24px">
               우아한 형제들 구성원들의 프로젝트들 👇

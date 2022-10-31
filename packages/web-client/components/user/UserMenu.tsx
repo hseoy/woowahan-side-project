@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 import useAuth from '@/hooks/use-auth';
 import useProjectItemModal from '@/hooks/use-project-item-modal';
 import GoogleLoginButton from '../auth/GoogleLoginButton';
+import zIndexes from '@/styles/zIndexes';
 
 type UserMenuProps = {
   isLoading?: boolean;
@@ -43,7 +44,7 @@ function UserMenu({ isLoading }: UserMenuProps): JSX.Element {
           boxShadow="rgb(0, 0, 0, 0.5) 0px 0px 8px"
         />
       </MenuButton>
-      <MenuList>
+      <MenuList zIndex={zIndexes.userMenu}>
         <MenuGroup title="Project">
           <MenuItem onClick={() => openModal()}>
             <Text fontFamily="body" fontSize="16px">
