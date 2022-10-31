@@ -5,7 +5,7 @@ import IconLike from '@/assets/svg/fluent-emoji_smiling-face-with-heart-eyes.svg
 import IconNeed from '@/assets/svg/fluent-emoji_face-holding-back-tears.svg';
 import IconShare from '@/assets/svg/fluent-emoji_hugging-face.svg';
 import IconStartUp from '@/assets/svg/fluent-emoji_money-mouth-face.svg';
-import { LikeDto } from '@/apis/liks/dto';
+import { LikeDto } from '@/apis/likes/dto';
 
 export const IconMapper = {
   예뻐요: IconBeauty,

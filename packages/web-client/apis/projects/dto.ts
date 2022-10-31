@@ -1,4 +1,4 @@
-import { LikeDto } from '../liks/dto';
+import { LikeDto } from '../likes/dto';
 
 export type ProjectDto = {
   id: number;

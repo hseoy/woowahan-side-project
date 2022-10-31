@@ -1,12 +1,12 @@
 import { Flex, Icon, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 import { IconMapper } from './LikeBlock';
-import { CreateLikeDto, LikeDto, LikeEnum } from '@/apis/liks/dto';
+import { CreateLikeDto, LikeDto, LikeEnum } from '@/apis/likes/dto';
 import {
   requestCreateLike,
   requestDeleteLike,
   requestGetLikeList,
-} from '@/apis/liks/requests';
+} from '@/apis/likes/requests';
 import useProjectList from '@/hooks/use-project-list';
 import Tooltip from '../common/Tooltip';
 
