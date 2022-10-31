@@ -1,6 +1,6 @@
 import { Flex, Icon, Text } from '@chakra-ui/react';
 import { useState } from 'react';
-import { IconColorMapper, IconMapper } from './LikeBlock';
+import { IconMapper } from './LikeBlock';
 import { CreateLikeDto, LikeDto, LikeEnum } from '@/apis/liks/dto';
 import {
   requestCreateLike,
@@ -123,10 +123,11 @@ export default function LinkSelectContainer({
           <Tooltip key={like} content={<Text>{like}</Text>}>
             <Icon
               as={IconMapper[like]}
-              color={isSelected(like) ? IconColorMapper[like] : 'gray'}
               borderRadius="50%"
               onClick={() => handleLike(like)}
-              backdropFilter="blur(10px)"
+              // backdropFilter="blur(10px)"
+              filter={isSelected(like) ? undefined : 'grayscale(1)'}
+              transition="0.2s all ease"
               width="32px"
               height="32px"
             />
