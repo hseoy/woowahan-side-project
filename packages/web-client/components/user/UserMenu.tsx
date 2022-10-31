@@ -9,7 +9,7 @@ import {
   MenuGroup,
   MenuDivider,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import useAuth from '@/hooks/use-auth';
 import useProjectItemModal from '@/hooks/use-project-item-modal';
 import GoogleLoginButton from '../auth/GoogleLoginButton';
@@ -22,9 +22,9 @@ type UserMenuProps = {
 function UserMenu({ isLoading }: UserMenuProps): JSX.Element {
   const { user, logout } = useAuth();
   const { openModal } = useProjectItemModal();
-  const router = useRouter();
+  // const router = useRouter();
 
-  const toProfile = () => router.push('/profile');
+  // const toProfile = () => router.push('/profile');
 
   if (isLoading) {
     return <Spinner />;
@@ -54,9 +54,9 @@ function UserMenu({ isLoading }: UserMenuProps): JSX.Element {
         </MenuGroup>
         <MenuDivider />
         <MenuGroup title="User">
-          <MenuItem onClick={() => toProfile()}>
+          {/* <MenuItem onClick={() => toProfile()}>
             {user.username} - {user.accountType}
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem onClick={logout}>
             <Text fontFamily="body" fontSize="16px">
               로그아웃
