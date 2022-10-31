@@ -14,11 +14,11 @@ export class Project {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'userId' })
+  @Column({ name: 'user_id' })
   userId: number;
 
   @ManyToOne(() => User, (user) => user.id, { nullable: false })
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
   @Column({ type: 'varchar', length: 45 })

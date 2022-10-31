@@ -66,4 +66,8 @@ export class LikeService {
   remove(id: number) {
     return this.likeRepository.delete(id);
   }
+
+  removeByProjectId(projectId: number) {
+    return this.likeRepository.delete({ projectId });
+  }
 }
