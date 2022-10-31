@@ -24,6 +24,7 @@ import CommentBlock from '../comment/Comment';
 import { ProjectItemDto } from '@/apis/projects';
 import { mockImage } from '@/mock';
 import useProjectList from '@/hooks/use-project-list';
+import useAuth from '@/hooks/use-auth';
 
 type ProjectCommentsModalProps = {
   isOpen: boolean;
@@ -42,6 +43,7 @@ function ProjectCommentsModal({
   });
   const { removeProjectItem, modifyProjectItemState } = useProjectList();
   const toast = useToast();
+  const { user } = useAuth();
 
   const requestComments = async () => {
     if (!project) return;
@@ -86,6 +88,11 @@ function ProjectCommentsModal({
     }
   };
 
+  const closeHandler = () => {
+    onClose();
+    reset();
+  };
+
   useEffect(() => {
     if (project && isOpen) {
       requestComments();
@@ -93,7 +100,7 @@ function ProjectCommentsModal({
   }, [project, isOpen]);
 
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} size="md">
+    <Drawer isOpen={isOpen} onClose={closeHandler} size="md">
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
@@ -193,6 +200,11 @@ function ProjectCommentsModal({
           <form onSubmit={handleSubmit(onSubmit)}>
             <TextControl
               name="message"
+              requiredMsg={
+                user
+                  ? `${user?.username}님께서 피드백을 남겨주시면 개발자분들께서 정말 힘이 날 거에요!`
+                  : `피드백을 남겨주시면 개발자분들께서 정말 힘이 날 거에요!`
+              }
               label="프로젝트 개발자분들께 피드백을 전달해요"
               control={control}
               placeholder="피드백은 큰 힘이 됩니다!"

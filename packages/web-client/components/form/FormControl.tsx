@@ -23,6 +23,7 @@ type FormControlProps<TFieldValues extends FieldValues> = {
   inputType?: 'input' | 'select';
   selectOptions?: { name: string; value: string }[];
   onChangeValue?: (value: string) => void;
+  requiredMsg?: string;
 } & UseControllerProps['rules'];
 
 function FormControl<TFieldValues extends FieldValues>({
@@ -34,6 +35,7 @@ function FormControl<TFieldValues extends FieldValues>({
   inputType = 'input',
   selectOptions = [],
   onChangeValue,
+  requiredMsg,
   ...rules
 }: FormControlProps<TFieldValues>): JSX.Element {
   const {
@@ -46,7 +48,7 @@ function FormControl<TFieldValues extends FieldValues>({
       ...rules,
       required:
         rules.required === true
-          ? `${label} 입력이 누락되었습니다`
+          ? requiredMsg || `${label} 입력이 누락되었습니다`
           : rules.required,
     },
   });

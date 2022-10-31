@@ -12,6 +12,7 @@ type TextControlProps<TFieldValues extends FieldValues> = {
   label: string;
   placeholder?: string;
   onChangeValue?: (value: string) => void;
+  requiredMsg?: string;
 } & UseControllerProps['rules'];
 
 function TextControl<TFieldValues extends FieldValues>(
