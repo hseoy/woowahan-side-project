@@ -10,8 +10,7 @@ import LikeListContainer from './LikeListContainer';
 import LinkSelectContainer from './LinkSelectContainer';
 
 type ProjectBlockProps = {
-  /** @todo 현재 아직 구현되지 않은 기능입니다. */
-  // commentCnt?: number;
+  withoutLikeList?: boolean;
 } & ProjectItemDto;
 
 const Container = styled(Stack)`
@@ -48,6 +47,7 @@ export default function ProjectBlock({
   commentCnt,
   isWsp,
   backgroundImg = undefined,
+  withoutLikeList = false,
 }: ProjectBlockProps): JSX.Element {
   return (
     <Container position="relative">
@@ -91,7 +91,7 @@ export default function ProjectBlock({
         </Box>
 
         {/* 좋아요 표기 */}
-        {likeList && likeList.length > 0 && (
+        {likeList && likeList.length > 0 && !withoutLikeList && (
           <LikeListContainer likeList={likeList} />
         )}
 
@@ -143,13 +143,19 @@ export default function ProjectBlock({
       </Stack>
 
       {/* 좋아요 hover Container */}
-      <Box
-        id="link-select-container"
-        style={{ marginTop: 9, marginLeft: 9 }}
-        position="absolute"
-      >
-        <LinkSelectContainer isWsp={isWsp} likeList={likeList} projectId={id} />
-      </Box>
+      {!withoutLikeList && (
+        <Box
+          id="link-select-container"
+          style={{ marginTop: 9, marginLeft: 9 }}
+          position="absolute"
+        >
+          <LinkSelectContainer
+            isWsp={isWsp}
+            likeList={likeList}
+            projectId={id}
+          />
+        </Box>
+      )}
     </Container>
   );
 }

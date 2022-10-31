@@ -236,7 +236,7 @@ function ProjectItemModifyModal(): JSX.Element {
                 )}
               </Stack>
 
-              <ProjectBlock {...formValue} />
+              <ProjectBlock {...formValue} withoutLikeList />
             </Flex>
           </ModalBody>
 
