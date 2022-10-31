@@ -6,6 +6,7 @@ import Fonts from '../styles/Fonts';
 import theme from '../styles/theme';
 import { serviceName } from '@/constants/service';
 import GlobalStyle from '@/styles/GlobalStyle';
+import AuthContainer from '@/components/auth/AuthContainer';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -18,7 +19,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         </Head>
         <Fonts />
         <GlobalStyle />
-        <Component {...pageProps} />
+        <AuthContainer>
+          <Component {...pageProps} />
+        </AuthContainer>
       </ChakraProvider>
     </RecoilRoot>
   );
