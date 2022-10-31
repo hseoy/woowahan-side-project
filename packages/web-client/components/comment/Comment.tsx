@@ -4,7 +4,7 @@ import { getTimeSince } from '@/utils/date';
 import useAuth from '@/hooks/use-auth';
 
 type CommentBlockProps = {
-  onClickDelete: (commentId: number) => Promise<void>;
+  onClickDelete: (commentId: number) => void;
 } & CommentDto;
 
 function CommentBlock({
