@@ -34,7 +34,7 @@ const projectItemModalAtom = atom<ProjectItemModalState>({
 const useProjectItemModal = () => {
   const [projectItemModalState, setProjectItemModalState] =
     useRecoilState(projectItemModalAtom);
-  const { addProjectItem } = useProjectList();
+  const { addProjectItem, addProjectItemToListState } = useProjectList();
 
   const openModal = (projectItem?: ProjectItemDto) => {
     setProjectItemModalState({
@@ -61,9 +61,20 @@ const useProjectItemModal = () => {
     data: ProjectItemDto & { backgroundImgFile?: File },
   ) => {
     const { backgroundImgFile, ...projectData } = data;
-    const projectId = await addProjectItem(projectData);
+    const createdItem = await addProjectItem(projectData, true);
     if (backgroundImgFile) {
-      await requestUploadBackgroundImgFile(projectId, backgroundImgFile);
+      const response = await requestUploadBackgroundImgFile(
+        createdItem.id,
+        backgroundImgFile,
+      );
+      if (response.data && typeof response.data === 'string') {
+        addProjectItemToListState({
+          ...createdItem,
+          backgroundImg: response.data,
+        });
+      }
+    } else {
+      addProjectItemToListState(createdItem);
     }
     closeModal();
   };

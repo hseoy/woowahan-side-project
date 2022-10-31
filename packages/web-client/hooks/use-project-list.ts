@@ -46,7 +46,14 @@ const useProjectList = () => {
     return createProjectDto;
   };
 
-  const addProjectItem = async (item: ProjectItemDto) => {
+  const addProjectItemToListState = (item: ProjectItemDto) => {
+    setProjectListState(prev => [...prev, item]);
+  };
+
+  const addProjectItem = async (
+    item: ProjectItemDto,
+    withoutUpdateState = false,
+  ) => {
     const createResponse = await requestCreateProject(
       projectItemDtoToCreateProjectDto(item),
     );
@@ -55,9 +62,11 @@ const useProjectList = () => {
     const itemResponse = await requestGetProjectItem(createdItemId);
     const createdProjectItem = itemResponse.data;
 
-    setProjectListState(prev => [...prev, createdProjectItem]);
+    if (!withoutUpdateState) {
+      addProjectItemToListState(createdProjectItem);
+    }
 
-    return createdItemId;
+    return createdProjectItem;
   };
 
   const removeProjectItem = async (itemId: number) => {
@@ -76,6 +85,7 @@ const useProjectList = () => {
     getProjectList,
     addProjectItem,
     removeProjectItem,
+    addProjectItemToListState,
   };
 };
 

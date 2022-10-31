@@ -27,7 +27,7 @@ export const requestUploadBackgroundImgFile = async (
 
   /** @Todo HTTP-Client로 변경 */
   const auth = client.getHeaderValue('Authorization');
-  await axios.post(
+  const response = await axios.post(
     `${config.apiUrl}/projects/${id}/background-image`,
     formData,
     {
@@ -37,4 +37,5 @@ export const requestUploadBackgroundImgFile = async (
       },
     },
   );
+  return response;
 };
