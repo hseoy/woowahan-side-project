@@ -20,6 +20,7 @@ import { CommentsModule } from './projects/comments/comments.module';
 import { LikeModule } from './projects/like/like.module';
 import awsConfig from './config/aws.config';
 import { NextFunction, Request, Response } from 'express';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
@@ -57,6 +58,7 @@ export class LoggerMiddleware implements NestMiddleware {
         url: configService.get<string>('database.url'),
         logging: configService.get<boolean>('database.logging'),
         synchronize: configService.get<boolean>('database.autoDDL'),
+        namingStrategy: new SnakeNamingStrategy(),
       }),
     }),
     UsersModule,

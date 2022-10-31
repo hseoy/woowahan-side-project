@@ -15,20 +15,20 @@ export class Comment {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'userId' })
+  @Column({ name: 'user_id' })
   userId: number;
 
   @ManyToOne(() => User, (user) => user.id, {
     nullable: false,
   })
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column({ name: 'projectId' })
+  @Column({ name: 'project_id' })
   projectId: number;
 
   @ManyToOne(() => Project, (project) => project.id, { nullable: false })
-  @JoinColumn({ name: 'projectId' })
+  @JoinColumn({ name: 'project_id' })
   project: Project;
 
   @Column({ type: 'varchar', length: 255 })
