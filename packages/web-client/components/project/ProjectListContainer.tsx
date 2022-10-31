@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Stack } from '@chakra-ui/react';
+import { Box, Flex, Heading, Stack, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import useProjectList from '@/hooks/use-project-list';
 import ProjectCommentsModal from './ProjectCommentsModal';
@@ -15,12 +15,19 @@ function ProjectListContainer(): JSX.Element {
     project: null,
   });
   const { projectList, getProjectList } = useProjectList();
+  const toast = useToast();
 
   const wspProjectList = projectList.filter(item => item.isWsp);
   const normalProjectList = projectList.filter(item => !item.isWsp);
 
   useEffect(() => {
-    getProjectList();
+    getProjectList().catch(() =>
+      toast({
+        title: '프로젝트 목록을 가지고 오지 못했습니다.',
+        status: 'error',
+        isClosable: true,
+      }),
+    );
   }, []);
   const onClose = () => {
     setModalState({ isOpen: false, project: null });

@@ -1,4 +1,4 @@
-import { Flex, Icon, Text } from '@chakra-ui/react';
+import { Flex, Icon, Text, useToast } from '@chakra-ui/react';
 import { useState } from 'react';
 import { IconMapper } from './LikeBlock';
 import { CreateLikeDto, LikeDto, LikeEnum } from '@/apis/likes/dto';
@@ -38,6 +38,7 @@ export default function LinkSelectContainer({
   const getLike = (like: LikeEnum) => likeList.find(item => item.like === like);
 
   const [loading, setLoading] = useState<boolean>(false);
+  const toast = useToast();
 
   const handleCreateLike = async (like: LikeEnum) => {
     setLoading(true);
@@ -60,7 +61,11 @@ export default function LinkSelectContainer({
         }),
       );
     } catch (error) {
-      console.error(error);
+      toast({
+        title: '이모지를 남기는 데 실패하였습니다.',
+        status: 'error',
+        isClosable: true,
+      });
     } finally {
       setLoading(false);
     }
@@ -83,7 +88,11 @@ export default function LinkSelectContainer({
         }),
       );
     } catch (error) {
-      console.error(error);
+      toast({
+        title: '이모지를 삭제하는 데 실패하였습니다.',
+        status: 'error',
+        isClosable: true,
+      });
     } finally {
       setLoading(false);
     }

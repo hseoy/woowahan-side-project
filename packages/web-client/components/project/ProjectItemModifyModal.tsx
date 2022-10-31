@@ -10,6 +10,7 @@ import {
   ModalFooter,
   Button,
   Flex,
+  useToast,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -63,6 +64,7 @@ function ProjectItemModifyModal(): JSX.Element {
     mode: 'onChange',
     defaultValues: { ...projectItem },
   });
+  const toast = useToast();
 
   const onCloseModal = () => {
     reset();
@@ -84,16 +86,26 @@ function ProjectItemModifyModal(): JSX.Element {
     return 'etc';
   };
   const onSubmit = async () => {
-    await onModalSubmit({
-      ...formValue,
-      backgroundImg: undefined,
-    });
-    setFormValue({
-      ...initialProjectItem,
-      authorUserId: user?.id || -1,
-      authorUsername: user?.username || '',
-    });
-    reset();
+    try {
+      await onModalSubmit({
+        ...formValue,
+        backgroundImg: undefined,
+      });
+      setFormValue({
+        ...initialProjectItem,
+        authorUserId: user?.id || -1,
+        authorUsername: user?.username || '',
+      });
+      reset();
+    } catch {
+      toast({
+        title: '프로젝트를 추가하지 못했습니다.',
+        status: 'error',
+        isClosable: true,
+      });
+      reset();
+      closeModal();
+    }
   };
 
   const onChange = () => {

@@ -58,7 +58,7 @@ function ProjectCommentsModal({
       });
     } catch {
       toast({
-        title: '댓글 목록을 불러오지 못했습니다.',
+        title: '피드백 목록을 불러오지 못했습니다.',
         status: 'error',
         isClosable: true,
       });
@@ -67,13 +67,21 @@ function ProjectCommentsModal({
 
   const onSubmit = async ({ message }: { message: string }) => {
     if (!project) return;
-    const data: CreateCommentDto = {
-      message,
-      projectId: project.id,
-      isAnonymous: false,
-    };
-    await requestCreateComment(data);
-    await requestComments();
+    try {
+      const data: CreateCommentDto = {
+        message,
+        projectId: project.id,
+        isAnonymous: false,
+      };
+      await requestCreateComment(data);
+      await requestComments();
+    } catch {
+      toast({
+        title: '피드백 작성에 실패하였습니다',
+        status: 'error',
+        isClosable: true,
+      });
+    }
     reset();
   };
 
@@ -108,13 +116,13 @@ function ProjectCommentsModal({
       await requestComments();
 
       toast({
-        title: '댓글이 삭제되었습니다.',
+        title: '피드백이 삭제되었습니다.',
         status: 'success',
         isClosable: true,
       });
     } catch (e) {
       toast({
-        title: '댓글을 삭제하지 못했습니다',
+        title: '피드백을 삭제하지 못했습니다',
         status: 'error',
         isClosable: true,
       });
