@@ -1,4 +1,4 @@
-import { LikeEnum } from '@/apis/liks/dto';
+import { LikeEnum } from '@/apis/likes/dto';
 import { ProjectItemDto } from '@/apis/projects';
 
 const url = [' ', ''];
