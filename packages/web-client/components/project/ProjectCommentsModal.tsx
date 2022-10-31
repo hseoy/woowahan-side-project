@@ -17,6 +17,7 @@ import { useForm } from 'react-hook-form';
 import { CommentListDto, CreateCommentDto } from '@/apis/comments/dto';
 import {
   requestCreateComment,
+  requestDeleteComment,
   requestGetCommentList,
 } from '@/apis/comments/requests';
 import TextControl from '../form/TextControl';
@@ -47,13 +48,21 @@ function ProjectCommentsModal({
 
   const requestComments = async () => {
     if (!project) return;
-    const response = await requestGetCommentList(project.id);
-    const responseComments = response.data;
-    setComments(responseComments.reverse());
-    modifyProjectItemState({
-      id: project.id,
-      commentCnt: responseComments.length,
-    });
+    try {
+      const response = await requestGetCommentList(project.id);
+      const responseComments = response.data;
+      setComments(responseComments.reverse());
+      modifyProjectItemState({
+        id: project.id,
+        commentCnt: responseComments.length,
+      });
+    } catch {
+      toast({
+        title: '댓글 목록을 불러오지 못했습니다.',
+        status: 'error',
+        isClosable: true,
+      });
+    }
   };
 
   const onSubmit = async ({ message }: { message: string }) => {
@@ -91,6 +100,25 @@ function ProjectCommentsModal({
   const closeHandler = () => {
     onClose();
     reset();
+  };
+
+  const removeComment = async (commentId: number) => {
+    try {
+      await requestDeleteComment(commentId);
+      await requestComments();
+
+      toast({
+        title: '댓글이 삭제되었습니다.',
+        status: 'success',
+        isClosable: true,
+      });
+    } catch (e) {
+      toast({
+        title: '댓글을 삭제하지 못했습니다',
+        status: 'error',
+        isClosable: true,
+      });
+    }
   };
 
   useEffect(() => {
@@ -220,6 +248,7 @@ function ProjectCommentsModal({
                 // authorName="Hello"
                 {...comment}
                 key={comment.id}
+                onClickDelete={removeComment}
               />
             ))}
           </Stack>
