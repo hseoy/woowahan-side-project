@@ -50,6 +50,16 @@ const useProjectList = () => {
     setProjectListState(prev => [...prev, item]);
   };
 
+  const modifyProjectItemState = (
+    item: Partial<ProjectItemDto> & { id: number },
+  ) => {
+    setProjectListState(prev =>
+      prev.map(prevItem =>
+        prevItem.id === item.id ? { ...prevItem, ...item } : prevItem,
+      ),
+    );
+  };
+
   const addProjectItem = async (
     item: ProjectItemDto,
     withoutUpdateState = false,
@@ -86,6 +96,7 @@ const useProjectList = () => {
     addProjectItem,
     removeProjectItem,
     addProjectItemToListState,
+    modifyProjectItemState,
   };
 };
 

@@ -40,13 +40,18 @@ function ProjectCommentsModal({
     mode: 'onChange',
     defaultValues: { message: '' },
   });
-  const { removeProjectItem } = useProjectList();
+  const { removeProjectItem, modifyProjectItemState } = useProjectList();
   const toast = useToast();
 
   const requestComments = async () => {
     if (!project) return;
     const response = await requestGetCommentList(project.id);
-    setComments(response.data.reverse());
+    const responseComments = response.data;
+    setComments(responseComments.reverse());
+    modifyProjectItemState({
+      id: project.id,
+      commentCnt: responseComments.length,
+    });
   };
 
   const onSubmit = async ({ message }: { message: string }) => {
