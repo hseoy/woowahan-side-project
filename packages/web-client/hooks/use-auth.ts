@@ -24,7 +24,12 @@ const useAuth = () => {
     setUserState(response.data);
   };
 
-  return { user: userState, getMe, refreshToken, logout };
+  return {
+    user: userState,
+    getMe,
+    refreshToken,
+    logout,
+  };
 };
 
 export default useAuth;

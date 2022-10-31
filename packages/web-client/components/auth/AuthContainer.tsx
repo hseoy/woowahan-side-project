@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { useToast } from '@chakra-ui/react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Center, Spinner, useToast } from '@chakra-ui/react';
 import useAuth from '@/hooks/use-auth';
 import LandingPageContainer from '../landing/LandingPageContainer';
 
@@ -11,14 +11,24 @@ export default function AuthContainer({
 }: AuthContainerProps): JSX.Element {
   const toast = useToast();
   const count = useRef<number>(0);
+  const [isLoading, setIsLoading] = useState(true);
   const { user, refreshToken, getMe, logout } = useAuth();
 
+  const getUserInfo = async () => {
+    setIsLoading(true);
+    try {
+      await refreshToken();
+      await getMe();
+    } catch {
+      /* Do Not Anything */
+    } finally {
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
     count.current += 1;
     if (count.current === 1) {
-      refreshToken()
-        .then(getMe)
-        .catch(() => null);
+      getUserInfo();
     }
   }, []);
 
@@ -36,6 +46,13 @@ export default function AuthContainer({
     }
   }, [user]);
 
+  if (isLoading) {
+    return (
+      <Center width="100%" height="100%">
+        <Spinner size="lg" />
+      </Center>
+    );
+  }
   if (!user || user.accountType !== 'woowahan') {
     return <LandingPageContainer />;
   }
