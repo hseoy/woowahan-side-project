@@ -1,14 +1,19 @@
-import { Box, Flex, Icon, Text } from '@chakra-ui/react';
-import styled from '@emotion/styled';
+import { Flex, Icon, Text } from '@chakra-ui/react';
 import { useState } from 'react';
-import { IconColorMapper, IconMapper } from './LikeBlock';
+import { IconMapper } from './LikeBlock';
 import { CreateLikeDto, LikeDto, LikeEnum } from '@/apis/liks/dto';
-import { requestCreateLike, requestDeleteLike } from '@/apis/liks/requests';
+import {
+  requestCreateLike,
+  requestDeleteLike,
+  requestGetLikeList,
+} from '@/apis/liks/requests';
+import useProjectList from '@/hooks/use-project-list';
+import Tooltip from '../common/Tooltip';
 
 type LinkSelectContainerProps = {
   projectId: number;
   likeList: LikeDto[];
-  onRefetch: () => Promise<void>;
+  isWsp: boolean;
 };
 
 const likeEnumList: LikeEnum[] = [
@@ -20,39 +25,12 @@ const likeEnumList: LikeEnum[] = [
   LikeEnum.LIKE,
 ];
 
-const IconContainer = styled(Box)`
-  transition: 0.2s all ease;
-  border-radius: 50%;
-  height: 32px;
-
-  #icon-tooltip {
-    transition: 0.2s all ease;
-    left: 50%;
-    top: -30px;
-    padding: 4px 8px;
-    color: #ffffff;
-    border-radius: 5px;
-    font-size: 14px;
-    transform: translateX(-50%) translateY(0px);
-    opacity: 0;
-  }
-
-  :hover {
-    background-color: #00000016;
-
-    #icon-tooltip {
-      transform: translateX(-50%) translateY(-5px);
-      opacity: 1;
-    }
-  }
-`;
-
 export default function LinkSelectContainer({
   projectId,
   likeList,
-  onRefetch,
+  isWsp,
 }: LinkSelectContainerProps): JSX.Element {
-  // const {projectList,setProjectList} = useProjectList()
+  const { projectList, setProjectList } = useProjectList();
 
   const isSelected = (like: LikeEnum) =>
     !!likeList.find(item => item.like === like);
@@ -70,14 +48,17 @@ export default function LinkSelectContainer({
     };
 
     try {
-      const response = await requestCreateLike(data);
-      // setProjectList(projectList.map((item)=>{
-      //   if(item.id === projectId){
-      //     return {...item, }
-      //   }
-      // }))
-      console.log(response);
-      onRefetch();
+      await requestCreateLike(data);
+      const newLikeList = await requestGetLikeList(projectId);
+
+      setProjectList(
+        projectList.map(item => {
+          if (item.id === projectId) {
+            return { ...item, likeList: newLikeList.data };
+          }
+          return item;
+        }),
+      );
     } catch (error) {
       console.error(error);
     } finally {
@@ -91,9 +72,16 @@ export default function LinkSelectContainer({
     if (currentLike === undefined) return;
 
     try {
-      const response = await requestDeleteLike(currentLike.id);
-      console.log(response);
-      onRefetch();
+      await requestDeleteLike(currentLike.id);
+      const newLikeList = await requestGetLikeList(projectId);
+      setProjectList(
+        projectList.map(item => {
+          if (item.id === projectId) {
+            return { ...item, likeList: newLikeList.data };
+          }
+          return item;
+        }),
+      );
     } catch (error) {
       console.error(error);
     } finally {
@@ -124,27 +112,27 @@ export default function LinkSelectContainer({
       alignItems="center"
       onClick={e => e.stopPropagation()}
     >
-      {likeEnumList.map(like => (
-        <IconContainer key={like} position="relative">
-          <Icon
-            as={IconMapper[like]}
-            color={isSelected(like) ? IconColorMapper[like] : 'gray'}
-            borderRadius="50%"
-            onClick={() => handleLike(like)}
-            backdropFilter="blur(10px)"
-            width="32px"
-            height="32px"
-          />
-          <Box
-            id="icon-tooltip"
-            position="absolute"
-            backgroundColor="#505050"
-            width="max-content"
-          >
-            <Text>{like}</Text>
-          </Box>
-        </IconContainer>
-      ))}
+      {likeEnumList
+        .filter(item => {
+          if (!isWsp) {
+            return item === LikeEnum.LIKE;
+          }
+          return true;
+        })
+        .map((like, _) => (
+          <Tooltip key={like} content={<Text>{like}</Text>}>
+            <Icon
+              as={IconMapper[like]}
+              borderRadius="50%"
+              onClick={() => handleLike(like)}
+              // backdropFilter="blur(10px)"
+              filter={isSelected(like) ? undefined : 'grayscale(1)'}
+              transition="0.2s all ease"
+              width="32px"
+              height="32px"
+            />
+          </Tooltip>
+        ))}
     </Flex>
   );
 }

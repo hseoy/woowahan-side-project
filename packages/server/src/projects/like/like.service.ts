@@ -50,8 +50,17 @@ export class LikeService {
     return comment;
   }
 
-  findByProjectId(projectId: number) {
-    return this.likeRepository.findBy({ project: { id: projectId } });
+  findByProjectId({
+    projectId,
+    userId,
+  }: {
+    projectId: number;
+    userId: number;
+  }) {
+    return this.likeRepository.findBy({
+      project: { id: projectId },
+      user: { id: userId },
+    });
   }
 
   remove(id: number) {

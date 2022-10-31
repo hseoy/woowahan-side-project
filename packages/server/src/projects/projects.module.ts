@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProjectContributor } from './entities/project-contributors.entity';
 import { UsersModule } from '@/users/users.module';
 import { CommentsModule } from './comments/comments.module';
+import { LikeModule } from './like/like.module';
 import { S3Module } from '@/s3/s3.module';
 
 @Module({
@@ -13,6 +14,7 @@ import { S3Module } from '@/s3/s3.module';
     TypeOrmModule.forFeature([Project, ProjectContributor]),
     UsersModule,
     CommentsModule,
+    LikeModule,
     S3Module,
   ],
   exports: [TypeOrmModule, ProjectsService],

@@ -34,8 +34,9 @@ export class ProjectsController {
 
   @Get()
   @UseGuards(AuthGuard('jwt-access-token'))
-  findAll() {
-    return this.projectsService.findAll();
+  findAll(@Req() req: { user: JwtPayload }) {
+    const userId = req.user.sub;
+    return this.projectsService.findAll({ userId });
   }
 
   @Get(':id')
@@ -63,8 +64,6 @@ export class ProjectsController {
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    console.log(file);
-
     const backgroundImageLink =
       await this.projectsService.uploadBackgroundImage({
         ...file,

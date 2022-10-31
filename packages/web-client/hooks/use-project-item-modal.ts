@@ -19,6 +19,7 @@ export const initialProjectItem: ProjectItemDto = {
   authorUserId: 0,
   commentCnt: 0,
   contributorList: [],
+  likeList: [],
   isWsp: false,
 };
 

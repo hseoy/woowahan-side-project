@@ -9,6 +9,7 @@ const theme = extendTheme({
     dohyeon: `'BMDOHYEON', 'Spoqa Han Sans Neo', sans-serif`,
   },
   colors: {
+    background: '#f1f2f5',
     logo: '#40BFB8',
     iconColor: '#a5a5a5',
     brandPrimary: '#4B587C',

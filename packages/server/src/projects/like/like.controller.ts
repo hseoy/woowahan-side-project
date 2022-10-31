@@ -31,12 +31,19 @@ export class LikeController {
 
   @Get()
   @UseGuards(AuthGuard('jwt-access-token'))
-  findAll(@Query('projectId') projectId?: string) {
+  findAll(
+    @Req() req: { user: JwtPayload },
+    @Query('projectId') projectId?: string,
+  ) {
+    const userId = req.user.sub;
     if (!projectId) {
       return this.likeService.findAll();
     }
 
-    return this.likeService.findByProjectId(+projectId);
+    return this.likeService.findByProjectId({
+      projectId: Number(projectId),
+      userId,
+    });
   }
 
   @Get(':id')
