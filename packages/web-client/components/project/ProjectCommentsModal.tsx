@@ -87,10 +87,10 @@ function ProjectCommentsModal({
   };
 
   useEffect(() => {
-    if (project) {
+    if (project && isOpen) {
       requestComments();
     }
-  }, [project]);
+  }, [project, isOpen]);
 
   return (
     <Drawer isOpen={isOpen} onClose={onClose} size="md">
