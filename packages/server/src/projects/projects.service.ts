@@ -151,6 +151,7 @@ export class ProjectsService {
       isWsp: project.isWsp,
       authorUsername: project.user.username,
       authorUserId: project.user.id,
+      authorProfileImg: project.user.profileImg,
       contributorList: contributorUserList,
       commentCnt,
       likeList,
