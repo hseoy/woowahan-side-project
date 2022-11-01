@@ -65,25 +65,21 @@ export default function LandingPageContainer(): JSX.Element {
             <Text style={{ marginTop: 0 }} fontSize="42px" as="b" color="white">
               우아한 사이드 프로젝트!
             </Text>
-            {/* <Text style={{ marginTop: 0 }} fontSize="42px" as="b" color="white">
-            피드백을 전하세요!
-          </Text> */}
           </Stack>
 
           <Text style={{ marginTop: 0 }} as="b" color="gray.200">
-            🎁 이벤트 1 : 리뷰로 구성원들을 응원해주세요!
+            🎁 이벤트 1 : 피드백으로 구성원들을 응원해주세요!
           </Text>
           <Text style={{ marginTop: -10 }} color="gray.200">
-            5개 이상의 리뷰를 남겨주신 구성원 분들에겐 추첨을 통해 배민 선물하기
-            10,000원을 보내드립니다!
+            5개 이상의 피드백(댓글 or 좋아요)를 남겨주신 구성원 분들에겐 추첨을
+            통해 배민 선물하기 <Text as="b">10,000원</Text>을 보내드립니다!
           </Text>
           <Text style={{ marginTop: 0 }} as="b" color="gray.200">
             🎁 이벤트 2 : 개인 프로젝트를 등록해주세요!
           </Text>
           <Text style={{ marginTop: -10 }} color="gray.200">
-            프로젝트를 등록하신 후, 좋아요를 많이 받으신 분에게도 추첨을 통해
-            배민 <br />
-            선물하기 10,000원을 보내드립니다!
+            개인 사이드 프로젝트를 등록한 분에게도 추첨을 통해 배민 선물하기
+            <br /> <Text as="b">10,000원</Text>을 보내드립니다!
           </Text>
           <Stack
             style={{ marginTop: 0 }}
@@ -96,24 +92,6 @@ export default function LandingPageContainer(): JSX.Element {
           </Stack>
         </Stack>
       </Flex>
-
-      {/* Background Image */}
-      {/* <Flex
-        style={{ marginTop: 0 }}
-        position="absolute"
-        alignItems="center"
-        justifyContent="center"
-        flexWrap="wrap"
-        height="100vh"
-        width="100%"
-        padding="40px"
-        gap="30px"
-        zIndex="0"
-      >
-        <Box paddingBottom="500px">
-          <ProjectBlock project={LANDING_PROJECTS[0]} />
-        </Box>
-      </Flex> */}
 
       {/* 그라데이션 */}
       <Flex
