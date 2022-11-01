@@ -1,4 +1,11 @@
-import { Box, Flex, Heading, Stack, useToast } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Heading,
+  Stack,
+  useMediaQuery,
+  useToast,
+} from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import useProjectList from '@/hooks/use-project-list';
 import ProjectCommentsModal from './ProjectCommentsModal';
@@ -15,6 +22,11 @@ function ProjectListContainer(): JSX.Element {
     project: null,
   });
   const { projectList, getProjectList } = useProjectList();
+
+  const [isLargerThan1320] = useMediaQuery('(min-width: 1320px)');
+  const [isLargerThan920] = useMediaQuery('(min-width: 920px)');
+  const [isLargerThan480] = useMediaQuery('(min-width: 480px)');
+
   const toast = useToast();
 
   const wspProjectList = projectList.filter(item => item.isWsp);
@@ -35,6 +47,23 @@ function ProjectListContainer(): JSX.Element {
 
   const onOpen = (project: ProjectItemDto) => {
     setModalState({ isOpen: true, project });
+  };
+
+  const getMaxWidth = () => {
+    const boxWidth = 400;
+    const gap = 30;
+
+    if (isLargerThan1320) {
+      return `${boxWidth * 3 + gap * 4}px`;
+    }
+    if (isLargerThan920) {
+      return `${boxWidth * 2 + gap * 3}px`;
+    }
+    if (isLargerThan480) {
+      return `${boxWidth * 1 + gap * 2}px`;
+    }
+
+    return `${boxWidth * 3 + gap * 4}px`;
   };
 
   return (
@@ -83,11 +112,11 @@ function ProjectListContainer(): JSX.Element {
           <Flex
             gap="30px"
             width="100%"
-            maxW="1320px"
-            justifyContent="center"
+            maxW={getMaxWidth()}
+            justifyContent="start"
             flexWrap="wrap"
-            style={{ marginTop: 0 }}
-            paddingBottom="30px"
+            style={{ marginTop: 8 }}
+            padding="0px 30px 30px 30px"
           >
             {wspProjectList?.map(item => (
               <Box key={item.id} onClick={() => onOpen(item)}>
@@ -101,7 +130,7 @@ function ProjectListContainer(): JSX.Element {
       {wspProjectList.length > 0 && normalProjectList.length > 0 ? (
         <Box
           width="100%"
-          maxW="1320px"
+          maxW="1280px"
           margin="20px 0"
           borderTop="1px solid #e4e4e4"
         />
@@ -127,11 +156,11 @@ function ProjectListContainer(): JSX.Element {
           <Flex
             gap="30px"
             width="100%"
-            maxW="1320px"
-            justifyContent="center"
+            maxW={getMaxWidth()}
+            justifyContent="start"
             flexWrap="wrap"
-            style={{ marginTop: 0 }}
-            paddingBottom="30px"
+            style={{ marginTop: 8 }}
+            padding="0px 30px 30px 30px"
           >
             {normalProjectList?.map(item => (
               <Box key={item.id} onClick={() => onOpen(item)}>

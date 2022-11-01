@@ -15,7 +15,7 @@ type ProjectBlockProps = {
 };
 
 const Container = styled(Stack)`
-  width: 420px;
+  width: 400px;
   background-color: #ffffff;
   border-radius: 10px;
   cursor: pointer;
