@@ -30,6 +30,7 @@ import useAuth from '@/hooks/use-auth';
 import CommentDeleteAlert from '../alert/CommentDeleteAlert';
 import ProjectDeleteAlert from '../alert/ProjectDeleteAlert';
 import CheckboxControl from '../form/CheckboxControl';
+import PlatformDeployLink from './PlatformDeployLink';
 
 type ProjectCommentsModalProps = {
   isOpen: boolean;
@@ -263,7 +264,9 @@ function ProjectCommentsModal({
                 {project?.name}
               </Text>
               <Text color="gray.500">{project?.description}</Text>
+              <PlatformDeployLink {...project} />
             </Stack>
+
             {user?.id === project?.authorUserId && (
               <Box paddingBottom="25px">
                 <Tooltip
