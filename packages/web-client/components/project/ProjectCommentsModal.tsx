@@ -241,28 +241,29 @@ function ProjectCommentsModal({
             <Box padding="10px 0 20px">
               <Text color="gray.500">{project?.description}</Text>
             </Box>
-
-            <Box paddingBottom="25px">
-              <Tooltip
-                placement="top"
-                bgColor="#505050"
-                borderRadius="5px"
-                label={
-                  project?.isWsp
-                    ? '우아한사이드프로젝트 박람회 이후 삭제 가능합니다'
-                    : '프로젝트를 삭제합니다'
-                }
-              >
-                <Button
-                  onClick={onOpenProjectDeleteAlert}
-                  colorScheme="red"
-                  width="full"
-                  disabled={project?.isWsp}
+            {user?.id === project?.authorUserId && (
+              <Box paddingBottom="25px">
+                <Tooltip
+                  placement="top"
+                  bgColor="#505050"
+                  borderRadius="5px"
+                  label={
+                    project?.isWsp
+                      ? '우아한사이드프로젝트 박람회 이후 삭제 가능합니다'
+                      : '프로젝트를 삭제합니다'
+                  }
                 >
-                  프로젝트 삭제
-                </Button>
-              </Tooltip>
-            </Box>
+                  <Button
+                    onClick={onOpenProjectDeleteAlert}
+                    colorScheme="red"
+                    width="full"
+                    disabled={project?.isWsp}
+                  >
+                    프로젝트 삭제
+                  </Button>
+                </Tooltip>
+              </Box>
+            )}
 
             <form onSubmit={handleSubmit(onSubmit)}>
               <TextControl
