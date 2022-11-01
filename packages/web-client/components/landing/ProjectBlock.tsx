@@ -1,11 +1,14 @@
-import { Flex, Stack, Text, Box } from '@chakra-ui/react';
+import { Flex, Stack, Text, Box, Icon } from '@chakra-ui/react';
 import Image from 'next/image';
 // import ChatRightFill from '@/assets/svg/chat-right-fill.svg';
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { useState } from 'react';
 import { mockImage } from '@/mock';
 import { ProjectItemDto } from '@/apis/projects';
 import LikeListContainer from '../project/LikeListContainer';
+import { LikeDto, LikeEnum } from '@/apis/likes/dto';
+import Tooltip from '../common/Tooltip';
+import { IconMapper } from '../project/LikeBlock';
 // import PlatformDeployLink from '../project/PlatformDeployLink';
 
 type ProjectBlockProps = {
@@ -14,11 +17,19 @@ type ProjectBlockProps = {
   project: Partial<ProjectItemDto>;
 };
 
+const likeEnumList: LikeEnum[] = [
+  LikeEnum.BEAUTY,
+  LikeEnum.NEED,
+  LikeEnum.FEEL,
+  LikeEnum.STARTUP,
+  LikeEnum.SHARE,
+  LikeEnum.LIKE,
+];
+
 const Container = styled(Stack)`
-  width: 420px;
+  width: 400px;
   background-color: #ffffff;
   border-radius: 10px;
-  cursor: pointer;
   transition: 0.2s all ease;
 
   #link-select-container {
@@ -45,11 +56,30 @@ export default function ProjectBlock({
     // androidDeployLink,
     // iosDeployLink,
     // webDeployLink,
-    likeList,
     // etcDeployLink,
     // commentCnt,
     backgroundImg = undefined,
   } = project;
+
+  const [likeList, setLikeList] = useState<LikeDto[]>(project.likeList || []);
+  const isSelected = (like: LikeEnum) =>
+    !!likeList.find(item => item.like === like);
+
+  const handleLikeClick = (like: LikeEnum) => {
+    if (isSelected(like)) {
+      setLikeList(prev => prev.filter(item => item.like !== like));
+      return;
+    }
+
+    const newLike: LikeDto = {
+      createdAt: new Date(),
+      id: Date.now(),
+      like,
+      projectId: -1,
+      updatedAt: new Date(),
+    };
+    setLikeList([...likeList, newLike]);
+  };
 
   return (
     <Container position="relative" style={{ marginTop: 0 }}>
@@ -141,6 +171,38 @@ export default function ProjectBlock({
           {description}
         </Text>
       </Stack>
+      <Box
+        id="link-select-container"
+        style={{ marginTop: 9, marginLeft: 9 }}
+        position="absolute"
+      >
+        <Flex
+          height="fit-content"
+          width="fit-content"
+          backgroundColor="#ffffff"
+          borderRadius="10px"
+          padding="10px"
+          gap="10px"
+          alignItems="center"
+          onClick={e => e.stopPropagation()}
+        >
+          {likeEnumList.map((like, _) => (
+            <Tooltip key={like} content={<Text>{like}</Text>}>
+              <Icon
+                as={IconMapper[like]}
+                borderRadius="50%"
+                cursor="pointer"
+                onClick={() => handleLikeClick(like)}
+                // backdropFilter="blur(10px)"
+                filter={isSelected(like) ? undefined : 'grayscale(1)'}
+                transition="0.2s all ease"
+                width="32px"
+                height="32px"
+              />
+            </Tooltip>
+          ))}
+        </Flex>
+      </Box>
     </Container>
   );
 }
