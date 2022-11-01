@@ -51,7 +51,6 @@ export default function ProjectBlock({
     likeList,
     etcDeployLink,
     commentCnt,
-    isWsp,
     backgroundImg = undefined,
   } = project;
 
@@ -173,11 +172,7 @@ export default function ProjectBlock({
           style={{ marginTop: 9, marginLeft: 9 }}
           position="absolute"
         >
-          <LinkSelectContainer
-            isWsp={isWsp}
-            likeList={likeList}
-            projectId={id}
-          />
+          <LinkSelectContainer likeList={likeList} projectId={id} />
         </Box>
       )}
     </Container>
