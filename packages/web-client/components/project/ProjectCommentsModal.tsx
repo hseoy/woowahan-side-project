@@ -230,29 +230,21 @@ function ProjectCommentsModal({
                   padding="15px 20px"
                   alignItems="baseline"
                 >
-                  <Flex alignItems="center" gap="12px">
-                    <Text
-                      bottom={0}
-                      fontSize="24px"
-                      fontWeight="bold"
-                      color="#ffffff"
-                      marginRight="10px"
-                    >
-                      {project?.name}
-                    </Text>
+                  <Flex alignItems="center">
                     {project?.authorProfileImg ? (
                       <Avatar
                         style={{ marginTop: 0 }}
                         src={project?.authorProfileImg}
                         size="sm"
                         referrerPolicy="no-referrer"
+                        marginRight="8px"
                       />
                     ) : null}
                     <Text
                       style={{ marginTop: 0 }}
                       fontSize="16px"
                       fontWeight="bold"
-                      color="#ffffff"
+                      color="white"
                     >
                       {project?.authorUsername}
                     </Text>
@@ -261,9 +253,17 @@ function ProjectCommentsModal({
               </Flex>
             </Stack>
 
-            <Box padding="10px 0 20px">
+            <Stack padding="10px 0 20px">
+              <Text
+                bottom={0}
+                fontSize="24px"
+                fontWeight="bold"
+                marginRight="10px"
+              >
+                {project?.name}
+              </Text>
               <Text color="gray.500">{project?.description}</Text>
-            </Box>
+            </Stack>
             {user?.id === project?.authorUserId && (
               <Box paddingBottom="25px">
                 <Tooltip

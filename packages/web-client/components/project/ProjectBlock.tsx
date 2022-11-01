@@ -111,7 +111,15 @@ export default function ProjectBlock({
           alignItems="center"
           justifyContent="space-between"
         >
-          <Text bottom={0} fontSize="24px" fontWeight="bold" color="#ffffff">
+          <Text
+            bottom={0}
+            fontSize="24px"
+            fontWeight="bold"
+            color="#ffffff"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+            overflow="hidden"
+          >
             {name}
           </Text>
           <Flex alignItems="center">
