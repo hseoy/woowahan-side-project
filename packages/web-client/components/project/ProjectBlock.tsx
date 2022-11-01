@@ -10,8 +10,9 @@ import LikeListContainer from './LikeListContainer';
 import LinkSelectContainer from './LinkSelectContainer';
 
 type ProjectBlockProps = {
+  project: ProjectItemDto;
   withoutLikeList?: boolean;
-} & ProjectItemDto;
+};
 
 const Container = styled(Stack)`
   width: 420px;
@@ -34,21 +35,25 @@ const Container = styled(Stack)`
 `;
 
 export default function ProjectBlock({
-  id,
-  authorUsername,
-  name,
-  description,
-  githubLink,
-  androidDeployLink,
-  iosDeployLink,
-  webDeployLink,
-  likeList,
-  etcDeployLink,
-  commentCnt,
-  isWsp,
-  backgroundImg = undefined,
+  project,
   withoutLikeList = false,
 }: ProjectBlockProps): JSX.Element {
+  const {
+    id,
+    authorUsername,
+    name,
+    description,
+    githubLink,
+    androidDeployLink,
+    iosDeployLink,
+    webDeployLink,
+    likeList,
+    etcDeployLink,
+    commentCnt,
+    isWsp,
+    backgroundImg = undefined,
+  } = project;
+
   return (
     <Container position="relative">
       <Flex

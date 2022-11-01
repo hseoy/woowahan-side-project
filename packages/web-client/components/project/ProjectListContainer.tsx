@@ -91,7 +91,7 @@ function ProjectListContainer(): JSX.Element {
           >
             {wspProjectList?.map(item => (
               <Box key={item.id} onClick={() => onOpen(item)}>
-                <ProjectBlock key={item.id} {...item} />
+                <ProjectBlock key={item.id} project={item} />
               </Box>
             ))}
           </Flex>
@@ -135,7 +135,7 @@ function ProjectListContainer(): JSX.Element {
           >
             {normalProjectList?.map(item => (
               <Box key={item.id} onClick={() => onOpen(item)}>
-                <ProjectBlock key={item.id} {...item} />
+                <ProjectBlock key={item.id} project={item} />
               </Box>
             ))}
           </Flex>
