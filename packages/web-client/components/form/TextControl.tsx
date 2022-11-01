@@ -13,6 +13,7 @@ type TextControlProps<TFieldValues extends FieldValues> = {
   placeholder?: string;
   onChangeValue?: (value: string) => void;
   requiredMsg?: string;
+  renderLabelRight?: React.ReactNode;
 } & UseControllerProps['rules'];
 
 function TextControl<TFieldValues extends FieldValues>(

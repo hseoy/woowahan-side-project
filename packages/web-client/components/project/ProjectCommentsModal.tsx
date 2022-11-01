@@ -29,6 +29,7 @@ import useProjectList from '@/hooks/use-project-list';
 import useAuth from '@/hooks/use-auth';
 import CommentDeleteAlert from '../alert/CommentDeleteAlert';
 import ProjectDeleteAlert from '../alert/ProjectDeleteAlert';
+import CheckboxControl from '../form/CheckboxControl';
 
 type ProjectCommentsModalProps = {
   isOpen: boolean;
@@ -43,7 +44,7 @@ function ProjectCommentsModal({
   const [comments, setComments] = useState<CommentListDto>([]);
   const { handleSubmit, reset, control } = useForm({
     mode: 'onChange',
-    defaultValues: { message: '' },
+    defaultValues: { message: '', isAnonymous: false },
   });
   const { removeProjectItem, modifyProjectItemState } = useProjectList();
   const toast = useToast();
@@ -76,13 +77,19 @@ function ProjectCommentsModal({
     }
   };
 
-  const onSubmit = async ({ message }: { message: string }) => {
+  const onSubmit = async ({
+    message,
+    isAnonymous,
+  }: {
+    message: string;
+    isAnonymous: boolean;
+  }) => {
     if (!project) return;
     try {
       const data: CreateCommentDto = {
         message,
         projectId: project.id,
-        isAnonymous: false,
+        isAnonymous,
       };
       await requestCreateComment(data);
       await requestComments();
@@ -293,6 +300,13 @@ function ProjectCommentsModal({
                 control={control}
                 placeholder="피드백은 큰 힘이 됩니다!"
                 required
+                renderLabelRight={
+                  <CheckboxControl
+                    name="isAnonymous"
+                    label="익명"
+                    control={control}
+                  />
+                }
               />
             </form>
             <Text fontFamily="dohyeon" color="gray.600" padding="10px 0">
@@ -301,7 +315,6 @@ function ProjectCommentsModal({
             <Stack overflowY="auto" padding="10px 10px">
               {comments.map(comment => (
                 <CommentBlock
-                  // authorName="Hello"
                   {...comment}
                   key={comment.id}
                   onClickDelete={onOpenCommentDeleteAlert}

@@ -1,4 +1,5 @@
 import {
+  Flex,
   FormControl as ChakraFormControl,
   FormErrorMessage,
   FormLabel,
@@ -24,6 +25,7 @@ type FormControlProps<TFieldValues extends FieldValues> = {
   selectOptions?: { name: string; value: string }[];
   onChangeValue?: (value: string) => void;
   requiredMsg?: string;
+  renderLabelRight?: React.ReactNode;
 } & UseControllerProps['rules'];
 
 function FormControl<TFieldValues extends FieldValues>({
@@ -36,6 +38,7 @@ function FormControl<TFieldValues extends FieldValues>({
   selectOptions = [],
   onChangeValue,
   requiredMsg,
+  renderLabelRight,
   ...rules
 }: FormControlProps<TFieldValues>): JSX.Element {
   const {
@@ -67,7 +70,16 @@ function FormControl<TFieldValues extends FieldValues>({
       isRequired={!!rules.required}
       isInvalid={!!error?.message}
     >
-      <FormLabel htmlFor={name}>{label}</FormLabel>
+      <Flex
+        alignItems="center"
+        justifyContent="space-between"
+        marginBottom="8px"
+      >
+        <FormLabel htmlFor={name} margin="0px">
+          {label}
+        </FormLabel>
+        {renderLabelRight}
+      </Flex>
       {inputType === 'input' ? (
         <Input
           {...inputProps}

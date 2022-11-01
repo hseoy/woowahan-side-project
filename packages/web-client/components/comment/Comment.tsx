@@ -15,6 +15,7 @@ function CommentBlock({
   onClickDelete,
   message,
   createdAt,
+  isAnonymous,
 }: CommentBlockProps): JSX.Element {
   const { user } = useAuth();
 
@@ -23,7 +24,7 @@ function CommentBlock({
   return (
     <Flex width="100%">
       <Avatar
-        src={authorProfileImg}
+        src={isAnonymous ? undefined : authorProfileImg}
         size="sm"
         marginRight="8px"
         boxShadow="rgb(45, 45, 45, 0.6) 0px 0px 8px"
@@ -36,7 +37,9 @@ function CommentBlock({
           borderTopLeftRadius="0px"
         >
           <Flex alignItems="center" justifyContent="space-between">
-            <Text fontStyle="bold">{authorUsername}</Text>
+            <Text fontStyle="bold">
+              {isAnonymous ? 'Anonymous' : authorUsername}
+            </Text>
             <Text fontSize="sm" color="blackAlpha.600">
               {getTimeSince(createdAt)}
             </Text>
