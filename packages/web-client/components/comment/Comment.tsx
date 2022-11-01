@@ -44,7 +44,9 @@ function CommentBlock({
               {getTimeSince(createdAt)}
             </Text>
           </Flex>
-          <Text color="gray.600">{message}</Text>
+          <Text color="gray.600" wordBreak="break-all">
+            {message}
+          </Text>
         </Stack>
         {user?.id === authorUserId && (
           <Flex>
