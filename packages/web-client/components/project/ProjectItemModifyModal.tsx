@@ -114,6 +114,7 @@ function ProjectItemModifyModal(): JSX.Element {
       ...prev,
       ...values,
       backgroundImg: prev.backgroundImg,
+      authorProfileImg: user?.profileImg || '',
       authorUserId: user?.id || -1,
       authorUsername: user?.username || '',
       platform: deployPlatformTo(values.platform),
@@ -248,7 +249,7 @@ function ProjectItemModifyModal(): JSX.Element {
                 )}
               </Stack>
 
-              <ProjectBlock {...formValue} withoutLikeList />
+              <ProjectBlock project={formValue} withoutLikeList />
             </Flex>
           </ModalBody>
 
