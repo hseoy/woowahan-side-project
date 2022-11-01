@@ -1,4 +1,4 @@
-import { Center, Flex, Stack } from '@chakra-ui/react';
+import { Flex, Stack } from '@chakra-ui/react';
 import ContentWrapper from '@/components/common/ContentWrapper';
 import Header from '@/components/common/Header';
 import Nav from '@/components/common/Nav';
@@ -37,11 +37,15 @@ function PageLayout({
   return (
     <Stack width="100%" height="100%">
       <Header>
-        <LogoLink href="/" />
+        <div style={{ width: 210 }}>
+          <LogoLink href="/" />
+        </div>
         <Nav />
-        <Center>
+        <div
+          style={{ width: 200, display: 'flex', justifyContent: 'flex-end' }}
+        >
           <UserMenu />
-        </Center>
+        </div>
       </Header>
 
       {withContentWrapper ? (
