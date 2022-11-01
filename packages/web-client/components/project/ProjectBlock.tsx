@@ -115,9 +115,12 @@ export default function ProjectBlock({
           <Text bottom={0} fontSize="24px" fontWeight="bold" color="#ffffff">
             {name}
           </Text>
-          <Text bottom={0} fontSize="20px" fontWeight="bold" color="#ffffff">
-            {commentCnt}
-          </Text>
+          <Flex gap="8px" alignItems="center">
+            <Box style={{ marginTop: 0 }}>💬</Box>
+            <Text bottom={0} fontSize="20px" fontWeight="bold" color="#ffffff">
+              {commentCnt}
+            </Text>
+          </Flex>
         </Flex>
       </Flex>
       <Stack
