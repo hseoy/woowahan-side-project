@@ -28,6 +28,7 @@ type FormControlProps<TFieldValues extends FieldValues> = {
   onChangeValue?: (value: string) => void;
   requiredMsg?: string;
   renderLabelRight?: React.ReactNode;
+  renderInputRight?: React.ReactNode;
   rules: UseControllerProps['rules'];
   inputProps?: InputProps;
   selectProps?: SelectProps;
@@ -44,6 +45,7 @@ function FormControl<TFieldValues extends FieldValues>({
   onChangeValue,
   requiredMsg,
   renderLabelRight,
+  renderInputRight,
   rules,
   inputProps: inputUserProps,
   selectProps: selectUserProps,
@@ -87,36 +89,40 @@ function FormControl<TFieldValues extends FieldValues>({
         </FormLabel>
         {renderLabelRight}
       </Flex>
-      {inputType === 'input' ? (
-        <Input
-          {...inputProps}
-          {...inputUserProps}
-          name={name}
-          ref={ref}
-          placeholder={placeholder}
-          onChange={onChangeHandler}
-          value={value || ''}
-          focusBorderColor="mint.500"
-          type={type}
-        />
-      ) : (
-        <Select
-          {...inputProps}
-          {...selectUserProps}
-          name={name}
-          ref={ref}
-          placeholder={placeholder}
-          onChange={onChangeHandler}
-          value={value || ''}
-          focusBorderColor="mint.500"
-        >
-          {selectOptions.map(option => (
-            <option key={option.value} value={option.value}>
-              {option.name}
-            </option>
-          ))}
-        </Select>
-      )}
+      <Flex>
+        {inputType === 'input' ? (
+          <Input
+            {...inputProps}
+            {...inputUserProps}
+            name={name}
+            ref={ref}
+            placeholder={placeholder}
+            onChange={onChangeHandler}
+            value={value || ''}
+            focusBorderColor="mint.500"
+            type={type}
+          />
+        ) : (
+          <Select
+            {...inputProps}
+            {...selectUserProps}
+            name={name}
+            ref={ref}
+            placeholder={placeholder}
+            onChange={onChangeHandler}
+            value={value || ''}
+            focusBorderColor="mint.500"
+          >
+            {selectOptions.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.name}
+              </option>
+            ))}
+          </Select>
+        )}
+        {renderInputRight}
+      </Flex>
+
       {error && <FormErrorMessage>{error?.message}</FormErrorMessage>}
     </ChakraFormControl>
   );

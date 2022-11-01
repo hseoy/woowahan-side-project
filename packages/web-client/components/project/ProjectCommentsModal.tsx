@@ -289,26 +289,33 @@ function ProjectCommentsModal({
             )}
 
             <form onSubmit={handleSubmit(onSubmit)}>
-              <TextControl
-                name="message"
-                requiredMsg={
-                  user
-                    ? `${user?.username}님께서 피드백을 남겨주시면 개발자분들께서 정말 힘이 날 거에요!`
-                    : `피드백을 남겨주시면 개발자분들께서 정말 힘이 날 거에요!`
-                }
-                label="프로젝트 개발자분들께 피드백을 전달해요"
-                control={control}
-                placeholder="피드백은 큰 힘이 됩니다!"
-                isRequired
-                maxLength={255}
-                renderLabelRight={
-                  <CheckboxControl
-                    name="isAnonymous"
-                    label="익명"
-                    control={control}
-                  />
-                }
-              />
+              <Flex>
+                <TextControl
+                  name="message"
+                  requiredMsg={
+                    user
+                      ? `${user?.username}님께서 피드백을 남겨주시면 개발자분들께서 정말 힘이 날 거에요!`
+                      : `피드백을 남겨주시면 개발자분들께서 정말 힘이 날 거에요!`
+                  }
+                  label="프로젝트 개발자분들께 피드백을 전달해요"
+                  control={control}
+                  placeholder="피드백은 큰 힘이 됩니다!"
+                  isRequired
+                  maxLength={255}
+                  renderLabelRight={
+                    <CheckboxControl
+                      name="isAnonymous"
+                      label="익명"
+                      control={control}
+                    />
+                  }
+                  renderInputRight={
+                    <Button colorScheme="mint" type="submit" marginLeft="5px">
+                      전달
+                    </Button>
+                  }
+                />
+              </Flex>
             </form>
             <Text fontFamily="dohyeon" color="gray.600" padding="10px 0">
               지금까지 {comments.length}개의 피드백이 달렸어요!

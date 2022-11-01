@@ -10,6 +10,7 @@ type TextControlProps<TFieldValues extends FieldValues> = {
   onChangeValue?: (value: string) => void;
   requiredMsg?: string;
   renderLabelRight?: React.ReactNode;
+  renderInputRight?: React.ReactNode;
 } & InputProps;
 
 function TextControl<TFieldValues extends FieldValues>({
@@ -20,6 +21,7 @@ function TextControl<TFieldValues extends FieldValues>({
   onChangeValue,
   requiredMsg,
   renderLabelRight,
+  renderInputRight,
   ...inputProps
 }: TextControlProps<TFieldValues>): JSX.Element {
   return (
@@ -32,6 +34,7 @@ function TextControl<TFieldValues extends FieldValues>({
         onChangeValue,
         requiredMsg,
         renderLabelRight,
+        renderInputRight,
         inputProps,
         rules: { required: inputProps.isRequired },
       }}
