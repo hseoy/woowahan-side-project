@@ -3,7 +3,9 @@ import {
   FormControl as ChakraFormControl,
   FormErrorMessage,
   FormLabel,
+  InputProps,
   Select,
+  SelectProps,
 } from '@chakra-ui/react';
 import React from 'react';
 import {
@@ -13,7 +15,7 @@ import {
   useController,
   UseControllerProps,
 } from 'react-hook-form';
-import Input from '../common/Input';
+import Input from './Input';
 
 type FormControlProps<TFieldValues extends FieldValues> = {
   name: Path<TFieldValues>;
@@ -26,7 +28,10 @@ type FormControlProps<TFieldValues extends FieldValues> = {
   onChangeValue?: (value: string) => void;
   requiredMsg?: string;
   renderLabelRight?: React.ReactNode;
-} & UseControllerProps['rules'];
+  rules: UseControllerProps['rules'];
+  inputProps?: InputProps;
+  selectProps?: SelectProps;
+};
 
 function FormControl<TFieldValues extends FieldValues>({
   name,
@@ -39,7 +44,9 @@ function FormControl<TFieldValues extends FieldValues>({
   onChangeValue,
   requiredMsg,
   renderLabelRight,
-  ...rules
+  rules,
+  inputProps: inputUserProps,
+  selectProps: selectUserProps,
 }: FormControlProps<TFieldValues>): JSX.Element {
   const {
     field: { ref, onChange: onControlChange, value, ...inputProps },
@@ -50,9 +57,9 @@ function FormControl<TFieldValues extends FieldValues>({
     rules: {
       ...rules,
       required:
-        rules.required === true
+        rules?.required === true
           ? requiredMsg || `${label} 입력이 누락되었습니다`
-          : rules.required,
+          : rules?.required,
     },
   });
 
@@ -67,7 +74,7 @@ function FormControl<TFieldValues extends FieldValues>({
 
   return (
     <ChakraFormControl
-      isRequired={!!rules.required}
+      isRequired={!!rules?.required}
       isInvalid={!!error?.message}
     >
       <Flex
@@ -83,6 +90,7 @@ function FormControl<TFieldValues extends FieldValues>({
       {inputType === 'input' ? (
         <Input
           {...inputProps}
+          {...inputUserProps}
           name={name}
           ref={ref}
           placeholder={placeholder}
@@ -94,6 +102,7 @@ function FormControl<TFieldValues extends FieldValues>({
       ) : (
         <Select
           {...inputProps}
+          {...selectUserProps}
           name={name}
           ref={ref}
           placeholder={placeholder}

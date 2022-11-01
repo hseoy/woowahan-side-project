@@ -299,7 +299,8 @@ function ProjectCommentsModal({
                 label="프로젝트 개발자분들께 피드백을 전달해요"
                 control={control}
                 placeholder="피드백은 큰 힘이 됩니다!"
-                required
+                isRequired
+                maxLength={255}
                 renderLabelRight={
                   <CheckboxControl
                     name="isAnonymous"

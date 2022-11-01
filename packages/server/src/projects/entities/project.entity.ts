@@ -24,7 +24,7 @@ export class Project {
   @Column({ type: 'varchar', length: 45 })
   name: string;
 
-  @Column({ type: 'varchar', length: 200 })
+  @Column({ type: 'varchar', length: 500 })
   description: string;
 
   @Column({ type: 'enum', enum: ['app', 'web', 'etc'] })
