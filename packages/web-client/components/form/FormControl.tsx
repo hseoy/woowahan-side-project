@@ -3,7 +3,6 @@ import {
   FormControl as ChakraFormControl,
   FormErrorMessage,
   FormLabel,
-  Input,
   Select,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -14,6 +13,7 @@ import {
   useController,
   UseControllerProps,
 } from 'react-hook-form';
+import Input from '../common/Input';
 
 type FormControlProps<TFieldValues extends FieldValues> = {
   name: Path<TFieldValues>;

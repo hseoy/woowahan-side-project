@@ -42,7 +42,7 @@ function ProjectCommentsModal({
   onClose,
 }: ProjectCommentsModalProps): JSX.Element {
   const [comments, setComments] = useState<CommentListDto>([]);
-  const { handleSubmit, reset, control } = useForm({
+  const { handleSubmit, reset, setValue, control } = useForm({
     mode: 'onChange',
     defaultValues: { message: '', isAnonymous: false },
   });
@@ -100,7 +100,7 @@ function ProjectCommentsModal({
         isClosable: true,
       });
     }
-    reset();
+    setValue('message', '');
   };
 
   const onRemoveProjectItem = async () => {

@@ -1,4 +1,4 @@
-import { Checkbox, Flex } from '@chakra-ui/react';
+import { Checkbox, Flex, FormControl } from '@chakra-ui/react';
 import React from 'react';
 import {
   Control,
@@ -41,16 +41,18 @@ function CheckboxControl<TFieldValues extends FieldValues>({
 
   return (
     <Flex>
-      <Checkbox
-        {...inputProps}
-        name={name}
-        ref={ref}
-        onChange={onChangeHandler}
-        isChecked={value || false}
-        colorScheme="mint"
-      >
-        {label}
-      </Checkbox>
+      <FormControl>
+        <Checkbox
+          {...inputProps}
+          name={name}
+          ref={ref}
+          onChange={onChangeHandler}
+          isChecked={value || false}
+          colorScheme="mint"
+        >
+          {label}
+        </Checkbox>
+      </FormControl>
     </Flex>
   );
 }
