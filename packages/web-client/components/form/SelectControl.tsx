@@ -1,9 +1,5 @@
-import {
-  Control,
-  Path,
-  FieldValues,
-  UseControllerProps,
-} from 'react-hook-form';
+import { SelectProps } from '@chakra-ui/react';
+import { Control, Path, FieldValues } from 'react-hook-form';
 import FormControl from './FormControl';
 
 type SelectControlProps<TFieldValues extends FieldValues> = {
@@ -13,12 +9,40 @@ type SelectControlProps<TFieldValues extends FieldValues> = {
   placeholder?: string;
   selectOptions: { name: string; value: string }[];
   onChangeValue?: (value: string) => void;
-} & UseControllerProps['rules'];
+  renderLabelRight?: React.ReactNode;
+  requiredMsg?: string;
+} & SelectProps;
 
-function SelectControl<TFieldValues extends FieldValues>(
-  props: SelectControlProps<TFieldValues>,
-): JSX.Element {
-  return <FormControl {...props} inputType="select" />;
+function SelectControl<TFieldValues extends FieldValues>({
+  name,
+  control,
+  label,
+  placeholder,
+  onChangeValue,
+  requiredMsg,
+  renderLabelRight,
+  selectOptions,
+  ...selectProps
+}: SelectControlProps<TFieldValues>): JSX.Element {
+  return (
+    <FormControl
+      {...{
+        name,
+        control,
+        label,
+        placeholder,
+        onChangeValue,
+        requiredMsg,
+        renderLabelRight,
+        selectProps,
+        selectOptions,
+      }}
+      inputType="select"
+      rules={{
+        required: selectProps.isRequired,
+      }}
+    />
+  );
 }
 
 export default SelectControl;

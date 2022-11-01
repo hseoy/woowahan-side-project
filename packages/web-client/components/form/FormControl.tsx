@@ -1,9 +1,11 @@
 import {
+  Flex,
   FormControl as ChakraFormControl,
   FormErrorMessage,
   FormLabel,
-  Input,
+  InputProps,
   Select,
+  SelectProps,
 } from '@chakra-ui/react';
 import React from 'react';
 import {
@@ -13,6 +15,7 @@ import {
   useController,
   UseControllerProps,
 } from 'react-hook-form';
+import Input from './Input';
 
 type FormControlProps<TFieldValues extends FieldValues> = {
   name: Path<TFieldValues>;
@@ -24,7 +27,12 @@ type FormControlProps<TFieldValues extends FieldValues> = {
   selectOptions?: { name: string; value: string }[];
   onChangeValue?: (value: string) => void;
   requiredMsg?: string;
-} & UseControllerProps['rules'];
+  renderLabelRight?: React.ReactNode;
+  renderInputRight?: React.ReactNode;
+  rules: UseControllerProps['rules'];
+  inputProps?: InputProps;
+  selectProps?: SelectProps;
+};
 
 function FormControl<TFieldValues extends FieldValues>({
   name,
@@ -36,7 +44,11 @@ function FormControl<TFieldValues extends FieldValues>({
   selectOptions = [],
   onChangeValue,
   requiredMsg,
-  ...rules
+  renderLabelRight,
+  renderInputRight,
+  rules,
+  inputProps: inputUserProps,
+  selectProps: selectUserProps,
 }: FormControlProps<TFieldValues>): JSX.Element {
   const {
     field: { ref, onChange: onControlChange, value, ...inputProps },
@@ -47,9 +59,9 @@ function FormControl<TFieldValues extends FieldValues>({
     rules: {
       ...rules,
       required:
-        rules.required === true
+        rules?.required === true
           ? requiredMsg || `${label} 입력이 누락되었습니다`
-          : rules.required,
+          : rules?.required,
     },
   });
 
@@ -64,38 +76,53 @@ function FormControl<TFieldValues extends FieldValues>({
 
   return (
     <ChakraFormControl
-      isRequired={!!rules.required}
+      isRequired={!!rules?.required}
       isInvalid={!!error?.message}
     >
-      <FormLabel htmlFor={name}>{label}</FormLabel>
-      {inputType === 'input' ? (
-        <Input
-          {...inputProps}
-          name={name}
-          ref={ref}
-          placeholder={placeholder}
-          onChange={onChangeHandler}
-          value={value || ''}
-          focusBorderColor="mint.500"
-          type={type}
-        />
-      ) : (
-        <Select
-          {...inputProps}
-          name={name}
-          ref={ref}
-          placeholder={placeholder}
-          onChange={onChangeHandler}
-          value={value || ''}
-          focusBorderColor="mint.500"
-        >
-          {selectOptions.map(option => (
-            <option key={option.value} value={option.value}>
-              {option.name}
-            </option>
-          ))}
-        </Select>
-      )}
+      <Flex
+        alignItems="center"
+        justifyContent="space-between"
+        marginBottom="8px"
+      >
+        <FormLabel htmlFor={name} margin="0px">
+          {label}
+        </FormLabel>
+        {renderLabelRight}
+      </Flex>
+      <Flex>
+        {inputType === 'input' ? (
+          <Input
+            {...inputProps}
+            {...inputUserProps}
+            name={name}
+            ref={ref}
+            placeholder={placeholder}
+            onChange={onChangeHandler}
+            value={value || ''}
+            focusBorderColor="mint.500"
+            type={type}
+          />
+        ) : (
+          <Select
+            {...inputProps}
+            {...selectUserProps}
+            name={name}
+            ref={ref}
+            placeholder={placeholder}
+            onChange={onChangeHandler}
+            value={value || ''}
+            focusBorderColor="mint.500"
+          >
+            {selectOptions.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.name}
+              </option>
+            ))}
+          </Select>
+        )}
+        {renderInputRight}
+      </Flex>
+
       {error && <FormErrorMessage>{error?.message}</FormErrorMessage>}
     </ChakraFormControl>
   );

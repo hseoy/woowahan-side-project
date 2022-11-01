@@ -1,9 +1,5 @@
-import {
-  Control,
-  Path,
-  FieldValues,
-  UseControllerProps,
-} from 'react-hook-form';
+import { InputProps } from '@chakra-ui/react';
+import { Control, Path, FieldValues } from 'react-hook-form';
 import FormControl from './FormControl';
 
 type GithubUrlControlProps<TFieldValues extends FieldValues> = {
@@ -12,19 +8,40 @@ type GithubUrlControlProps<TFieldValues extends FieldValues> = {
   label: string;
   placeholder?: string;
   onChangeValue?: (value: string) => void;
-} & Omit<UseControllerProps['rules'], 'pattern'>;
+  requiredMsg?: string;
+  renderLabelRight?: React.ReactNode;
+} & InputProps;
 
-function GithubUrlControl<TFieldValues extends FieldValues>(
-  props: GithubUrlControlProps<TFieldValues>,
-): JSX.Element {
+function GithubUrlControl<TFieldValues extends FieldValues>({
+  name,
+  control,
+  label,
+  placeholder,
+  onChangeValue,
+  requiredMsg,
+  renderLabelRight,
+  ...inputProps
+}: GithubUrlControlProps<TFieldValues>): JSX.Element {
   const githubUrlPattern = /https:\/\/github.com[:/](.*)/g;
 
   return (
     <FormControl
-      {...props}
-      pattern={{
-        value: githubUrlPattern,
-        message: 'Github URL이 아닙니다',
+      {...{
+        name,
+        control,
+        label,
+        placeholder,
+        onChangeValue,
+        requiredMsg,
+        renderLabelRight,
+        inputProps,
+      }}
+      rules={{
+        required: inputProps.isRequired,
+        pattern: {
+          value: githubUrlPattern,
+          message: 'Github URL이 아닙니다',
+        },
       }}
     />
   );

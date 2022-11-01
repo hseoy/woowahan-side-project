@@ -186,7 +186,7 @@ function ProjectItemModifyModal(): JSX.Element {
                   name="platform"
                   label="배포 방법"
                   control={control}
-                  required
+                  isRequired
                   selectOptions={platformSelectOptions}
                   onChangeValue={onChangePlatform}
                 />
@@ -195,20 +195,23 @@ function ProjectItemModifyModal(): JSX.Element {
                   label="프로젝트명"
                   control={control}
                   placeholder="프로젝트명을 입력해주세요"
-                  required
+                  isRequired
+                  maxLength={40}
                 />
                 <TextControl
                   name="description"
                   label="프로젝트 설명"
                   control={control}
                   placeholder="프로젝트 설명을 입력해주세요"
-                  required
+                  isRequired
+                  maxLength={500}
                 />
                 <GithubUrlControl
                   name="githubLink"
                   label="깃허브 링크"
                   control={control}
                   placeholder="깃허브 링크를 입력해주세요"
+                  maxLength={2083}
                 />
                 {deployPlatform === 'web' && (
                   <UrlControl
@@ -216,7 +219,8 @@ function ProjectItemModifyModal(): JSX.Element {
                     label="웹 배포 링크"
                     control={control}
                     placeholder="웹 배포 링크"
-                    required
+                    isRequired
+                    maxLength={2083}
                   />
                 )}
                 {(deployPlatform === 'android' ||
@@ -226,7 +230,8 @@ function ProjectItemModifyModal(): JSX.Element {
                     label="안드로이드 배포 링크"
                     control={control}
                     placeholder="안드로이드 앱 다운로드 링크"
-                    required
+                    isRequired
+                    maxLength={2083}
                   />
                 )}
                 {(deployPlatform === 'ios' || deployPlatform === 'mobile') && (
@@ -235,7 +240,8 @@ function ProjectItemModifyModal(): JSX.Element {
                     label="IOS 배포 링크"
                     control={control}
                     placeholder="IOS 앱 다운로드 링크"
-                    required
+                    isRequired
+                    maxLength={2083}
                   />
                 )}
                 {deployPlatform === 'etc' && (
@@ -244,7 +250,8 @@ function ProjectItemModifyModal(): JSX.Element {
                     label="배포 링크"
                     control={control}
                     placeholder="프로젝트 배포 링크"
-                    required
+                    isRequired
+                    maxLength={2083}
                   />
                 )}
               </Stack>

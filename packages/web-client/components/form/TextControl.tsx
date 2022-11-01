@@ -1,9 +1,5 @@
-import {
-  Control,
-  Path,
-  FieldValues,
-  UseControllerProps,
-} from 'react-hook-form';
+import { InputProps } from '@chakra-ui/react';
+import { Control, Path, FieldValues } from 'react-hook-form';
 import FormControl from './FormControl';
 
 type TextControlProps<TFieldValues extends FieldValues> = {
@@ -13,12 +9,37 @@ type TextControlProps<TFieldValues extends FieldValues> = {
   placeholder?: string;
   onChangeValue?: (value: string) => void;
   requiredMsg?: string;
-} & UseControllerProps['rules'];
+  renderLabelRight?: React.ReactNode;
+  renderInputRight?: React.ReactNode;
+} & InputProps;
 
-function TextControl<TFieldValues extends FieldValues>(
-  props: TextControlProps<TFieldValues>,
-): JSX.Element {
-  return <FormControl {...props} />;
+function TextControl<TFieldValues extends FieldValues>({
+  name,
+  control,
+  label,
+  placeholder,
+  onChangeValue,
+  requiredMsg,
+  renderLabelRight,
+  renderInputRight,
+  ...inputProps
+}: TextControlProps<TFieldValues>): JSX.Element {
+  return (
+    <FormControl
+      {...{
+        name,
+        control,
+        label,
+        placeholder,
+        onChangeValue,
+        requiredMsg,
+        renderLabelRight,
+        renderInputRight,
+        inputProps,
+        rules: { required: inputProps.isRequired },
+      }}
+    />
+  );
 }
 
 export default TextControl;

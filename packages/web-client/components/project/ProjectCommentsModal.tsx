@@ -29,6 +29,8 @@ import useProjectList from '@/hooks/use-project-list';
 import useAuth from '@/hooks/use-auth';
 import CommentDeleteAlert from '../alert/CommentDeleteAlert';
 import ProjectDeleteAlert from '../alert/ProjectDeleteAlert';
+import CheckboxControl from '../form/CheckboxControl';
+import PlatformDeployLink from './PlatformDeployLink';
 
 type ProjectCommentsModalProps = {
   isOpen: boolean;
@@ -41,9 +43,9 @@ function ProjectCommentsModal({
   onClose,
 }: ProjectCommentsModalProps): JSX.Element {
   const [comments, setComments] = useState<CommentListDto>([]);
-  const { handleSubmit, reset, control } = useForm({
+  const { handleSubmit, reset, setValue, control } = useForm({
     mode: 'onChange',
-    defaultValues: { message: '' },
+    defaultValues: { message: '', isAnonymous: false },
   });
   const { removeProjectItem, modifyProjectItemState } = useProjectList();
   const toast = useToast();
@@ -76,13 +78,19 @@ function ProjectCommentsModal({
     }
   };
 
-  const onSubmit = async ({ message }: { message: string }) => {
+  const onSubmit = async ({
+    message,
+    isAnonymous,
+  }: {
+    message: string;
+    isAnonymous: boolean;
+  }) => {
     if (!project) return;
     try {
       const data: CreateCommentDto = {
         message,
         projectId: project.id,
-        isAnonymous: false,
+        isAnonymous,
       };
       await requestCreateComment(data);
       await requestComments();
@@ -93,7 +101,7 @@ function ProjectCommentsModal({
         isClosable: true,
       });
     }
-    reset();
+    setValue('message', '');
   };
 
   const onRemoveProjectItem = async () => {
@@ -223,29 +231,21 @@ function ProjectCommentsModal({
                   padding="15px 20px"
                   alignItems="baseline"
                 >
-                  <Flex alignItems="center" gap="12px">
-                    <Text
-                      bottom={0}
-                      fontSize="24px"
-                      fontWeight="bold"
-                      color="#ffffff"
-                      marginRight="10px"
-                    >
-                      {project?.name}
-                    </Text>
+                  <Flex alignItems="center">
                     {project?.authorProfileImg ? (
                       <Avatar
                         style={{ marginTop: 0 }}
                         src={project?.authorProfileImg}
                         size="sm"
                         referrerPolicy="no-referrer"
+                        marginRight="8px"
                       />
                     ) : null}
                     <Text
                       style={{ marginTop: 0 }}
                       fontSize="16px"
                       fontWeight="bold"
-                      color="#ffffff"
+                      color="white"
                     >
                       {project?.authorUsername}
                     </Text>
@@ -254,9 +254,19 @@ function ProjectCommentsModal({
               </Flex>
             </Stack>
 
-            <Box padding="10px 0 20px">
+            <Stack padding="10px 0 20px">
+              <Text
+                bottom={0}
+                fontSize="24px"
+                fontWeight="bold"
+                marginRight="10px"
+              >
+                {project?.name}
+              </Text>
               <Text color="gray.500">{project?.description}</Text>
-            </Box>
+              <PlatformDeployLink {...project} />
+            </Stack>
+
             {user?.id === project?.authorUserId && (
               <Box paddingBottom="25px">
                 <Tooltip
@@ -282,18 +292,33 @@ function ProjectCommentsModal({
             )}
 
             <form onSubmit={handleSubmit(onSubmit)}>
-              <TextControl
-                name="message"
-                requiredMsg={
-                  user
-                    ? `${user?.username}님께서 피드백을 남겨주시면 개발자분들께서 정말 힘이 날 거에요!`
-                    : `피드백을 남겨주시면 개발자분들께서 정말 힘이 날 거에요!`
-                }
-                label="프로젝트 개발자분들께 피드백을 전달해요"
-                control={control}
-                placeholder="피드백은 큰 힘이 됩니다!"
-                required
-              />
+              <Flex>
+                <TextControl
+                  name="message"
+                  requiredMsg={
+                    user
+                      ? `${user?.username}님께서 피드백을 남겨주시면 개발자분들께서 정말 힘이 날 거에요!`
+                      : `피드백을 남겨주시면 개발자분들께서 정말 힘이 날 거에요!`
+                  }
+                  label="프로젝트 개발자분들께 피드백을 전달해요"
+                  control={control}
+                  placeholder="피드백은 큰 힘이 됩니다!"
+                  isRequired
+                  maxLength={255}
+                  renderLabelRight={
+                    <CheckboxControl
+                      name="isAnonymous"
+                      label="익명"
+                      control={control}
+                    />
+                  }
+                  renderInputRight={
+                    <Button colorScheme="mint" type="submit" marginLeft="5px">
+                      전달
+                    </Button>
+                  }
+                />
+              </Flex>
             </form>
             <Text fontFamily="dohyeon" color="gray.600" padding="10px 0">
               지금까지 {comments.length}개의 피드백이 달렸어요!
@@ -301,7 +326,6 @@ function ProjectCommentsModal({
             <Stack overflowY="auto" padding="10px 10px">
               {comments.map(comment => (
                 <CommentBlock
-                  // authorName="Hello"
                   {...comment}
                   key={comment.id}
                   onClickDelete={onOpenCommentDeleteAlert}

@@ -1,8 +1,8 @@
-import { Flex, Stack, Text, Box, Avatar } from '@chakra-ui/react';
+import { Flex, Stack, Text, Box, Avatar, Icon } from '@chakra-ui/react';
 import Image from 'next/image';
-// import ChatRightFill from '@/assets/svg/chat-right-fill.svg';
 import styled from '@emotion/styled';
 import React from 'react';
+import IconFeedback from '@/assets/svg/fluent_comment_filled.svg';
 import { mockImage } from '@/mock';
 import { ProjectItemDto } from '@/apis/projects';
 import PlatformDeployLink from './PlatformDeployLink';
@@ -51,7 +51,6 @@ export default function ProjectBlock({
     likeList,
     etcDeployLink,
     commentCnt,
-    isWsp,
     backgroundImg = undefined,
   } = project;
 
@@ -112,12 +111,26 @@ export default function ProjectBlock({
           alignItems="center"
           justifyContent="space-between"
         >
-          <Text bottom={0} fontSize="24px" fontWeight="bold" color="#ffffff">
+          <Text
+            bottom={0}
+            fontSize="24px"
+            fontWeight="bold"
+            color="#ffffff"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+            overflow="hidden"
+          >
             {name}
           </Text>
-          <Flex gap="8px" alignItems="center">
-            <Box style={{ marginTop: 0 }}>💬</Box>
-            <Text bottom={0} fontSize="20px" fontWeight="bold" color="#ffffff">
+          <Flex alignItems="center">
+            <Icon
+              as={IconFeedback}
+              width="24px"
+              height="24px"
+              color="#ffffff"
+              marginRight="4px"
+            />
+            <Text bottom={0} fontSize="18px" fontWeight="bold" color="#ffffff">
               {commentCnt}
             </Text>
           </Flex>
@@ -173,11 +186,7 @@ export default function ProjectBlock({
           style={{ marginTop: 9, marginLeft: 9 }}
           position="absolute"
         >
-          <LinkSelectContainer
-            isWsp={isWsp}
-            likeList={likeList}
-            projectId={id}
-          />
+          <LinkSelectContainer likeList={likeList} projectId={id} />
         </Box>
       )}
     </Container>

@@ -13,7 +13,6 @@ import Tooltip from '../common/Tooltip';
 type LinkSelectContainerProps = {
   projectId: number;
   likeList: LikeDto[];
-  isWsp: boolean;
 };
 
 const likeEnumList: LikeEnum[] = [
@@ -28,7 +27,6 @@ const likeEnumList: LikeEnum[] = [
 export default function LinkSelectContainer({
   projectId,
   likeList,
-  isWsp,
 }: LinkSelectContainerProps): JSX.Element {
   const { projectList, setProjectList } = useProjectList();
 
@@ -121,27 +119,20 @@ export default function LinkSelectContainer({
       alignItems="center"
       onClick={e => e.stopPropagation()}
     >
-      {likeEnumList
-        .filter(item => {
-          if (!isWsp) {
-            return item === LikeEnum.LIKE;
-          }
-          return true;
-        })
-        .map((like, _) => (
-          <Tooltip key={like} content={<Text>{like}</Text>}>
-            <Icon
-              as={IconMapper[like]}
-              borderRadius="50%"
-              onClick={() => handleLike(like)}
-              // backdropFilter="blur(10px)"
-              filter={isSelected(like) ? undefined : 'grayscale(1)'}
-              transition="0.2s all ease"
-              width="32px"
-              height="32px"
-            />
-          </Tooltip>
-        ))}
+      {likeEnumList.map(like => (
+        <Tooltip key={like} content={<Text>{like}</Text>}>
+          <Icon
+            as={IconMapper[like]}
+            borderRadius="50%"
+            onClick={() => handleLike(like)}
+            // backdropFilter="blur(10px)"
+            filter={isSelected(like) ? undefined : 'grayscale(1)'}
+            transition="0.2s all ease"
+            width="32px"
+            height="32px"
+          />
+        </Tooltip>
+      ))}
     </Flex>
   );
 }
