@@ -37,12 +37,7 @@ function UserMenu({ isLoading }: UserMenuProps): JSX.Element {
   return (
     <Menu>
       <MenuButton>
-        <Avatar
-          src={user.profileImg}
-          size="sm"
-          referrerPolicy="no-referrer"
-          boxShadow="rgb(0, 0, 0, 0.5) 0px 0px 8px"
-        />
+        <Avatar src={user.profileImg} size="md" referrerPolicy="no-referrer" />
       </MenuButton>
       <MenuList zIndex={zIndexes.userMenu}>
         <MenuGroup title="Project">
