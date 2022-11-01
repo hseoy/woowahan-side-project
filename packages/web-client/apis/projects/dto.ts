@@ -15,7 +15,7 @@ export type ProjectDto = {
   updatedAt: Date;
   authorUsername: string;
   authorUserId: number;
-  authorProfileImg?: number;
+  authorProfileImg?: string;
   likeList: LikeDto[];
   commentCnt: number;
   contributorList: { profileImg?: string; username: string }[];

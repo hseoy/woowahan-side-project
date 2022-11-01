@@ -1,4 +1,4 @@
-import { Flex, Stack, Text, Box } from '@chakra-ui/react';
+import { Flex, Stack, Text, Box, Avatar } from '@chakra-ui/react';
 import Image from 'next/image';
 // import ChatRightFill from '@/assets/svg/chat-right-fill.svg';
 import styled from '@emotion/styled';
@@ -43,6 +43,7 @@ export default function ProjectBlock({
     authorUsername,
     name,
     description,
+    authorProfileImg,
     githubLink,
     androidDeployLink,
     iosDeployLink,
@@ -125,11 +126,26 @@ export default function ProjectBlock({
         height="fit-content"
         style={{ marginTop: 0 }}
       >
-        <Flex justifyContent="space-between">
+        <Flex style={{ marginTop: 0 }} justifyContent="space-between">
           {/* 제작자  */}
-          <Text fontSize="16px" fontWeight="bold" color="brandPrimary">
-            {authorUsername}
-          </Text>
+          <Flex alignItems="center" gap="12px">
+            {authorProfileImg ? (
+              <Avatar
+                style={{ marginTop: 0 }}
+                src={authorProfileImg}
+                size="sm"
+                referrerPolicy="no-referrer"
+              />
+            ) : null}
+            <Text
+              style={{ marginTop: 0 }}
+              fontSize="16px"
+              fontWeight="bold"
+              color="brandPrimary"
+            >
+              {authorUsername}
+            </Text>
+          </Flex>
 
           {/* 플랫폼 아이콘 */}
           <PlatformDeployLink

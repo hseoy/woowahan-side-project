@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   Drawer,
@@ -222,18 +223,33 @@ function ProjectCommentsModal({
                   padding="15px 20px"
                   alignItems="baseline"
                 >
-                  <Text
-                    bottom={0}
-                    fontSize="24px"
-                    fontWeight="bold"
-                    color="#ffffff"
-                    marginRight="10px"
-                  >
-                    {project?.name}
-                  </Text>
-                  <Text bottom={0} fontWeight="bold" color="#ffffff">
-                    {project?.authorUsername}
-                  </Text>
+                  <Flex alignItems="center" gap="12px">
+                    <Text
+                      bottom={0}
+                      fontSize="24px"
+                      fontWeight="bold"
+                      color="#ffffff"
+                      marginRight="10px"
+                    >
+                      {project?.name}
+                    </Text>
+                    {project?.authorProfileImg ? (
+                      <Avatar
+                        style={{ marginTop: 0 }}
+                        src={project?.authorProfileImg}
+                        size="sm"
+                        referrerPolicy="no-referrer"
+                      />
+                    ) : null}
+                    <Text
+                      style={{ marginTop: 0 }}
+                      fontSize="16px"
+                      fontWeight="bold"
+                      color="#ffffff"
+                    >
+                      {project?.authorUsername}
+                    </Text>
+                  </Flex>
                 </Flex>
               </Flex>
             </Stack>
