@@ -150,7 +150,7 @@ function ProjectListContainer(): JSX.Element {
             zIndex={zIndexes.projectListHeading}
           >
             <Heading as="h2" fontSize="24px">
-              우아한 형제들 구성원들의 프로젝트들 👇
+              우아한형제들 구성원들의 프로젝트들 👇
             </Heading>
           </Box>
           <Flex
