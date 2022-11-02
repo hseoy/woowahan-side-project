@@ -11,7 +11,7 @@ export const diffDate = (date1: Date, date2: Date) => {
     year: dateBig.getFullYear() - dateSmall.getFullYear(),
     month: dateBig.getMonth() - dateSmall.getMonth(),
     day: dateBig.getDate() - dateSmall.getDate(),
-    hour: dateBig.getHours() - dateSmall.getHours() - 9, // 한국 시간을 기준으로 하기 위해 9시간 더함.
+    hour: dateBig.getHours() - dateSmall.getHours(),
     minutes: dateBig.getMinutes() - dateSmall.getMinutes(),
     seconds: dateBig.getSeconds() - dateSmall.getSeconds(),
   };
