@@ -7,6 +7,18 @@ export const diffDate = (date1: Date, date2: Date) => {
     dateSmall = date1;
   }
 
+  console.log(
+    { dateBig: dateBig.toString(), dateSmall: dateSmall.toString() },
+    {
+      year: dateBig.getFullYear() - dateSmall.getFullYear(),
+      month: dateBig.getMonth() - dateSmall.getMonth(),
+      day: dateBig.getDate() - dateSmall.getDate(),
+      hour: dateBig.getHours() - dateSmall.getHours(),
+      minutes: dateBig.getMinutes() - dateSmall.getMinutes(),
+      seconds: dateBig.getSeconds() - dateSmall.getSeconds(),
+    },
+  );
+
   return {
     year: dateBig.getFullYear() - dateSmall.getFullYear(),
     month: dateBig.getMonth() - dateSmall.getMonth(),
