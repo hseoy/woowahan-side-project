@@ -173,6 +173,7 @@ importers:
       '@types/react-dom': 18.0.0
       '@woowahan-side-project/http-client': link:../http-client
       axios: ^1.1.2
+      dayjs: ^1.11.6
       eslint-config-next: 12.1.5
       form-data: ^4.0.0
       framer-motion: ^6
@@ -188,6 +189,7 @@ importers:
       '@emotion/styled': 11.10.4_zjwcyojnygqvnkkyeblaf67erm
       '@woowahan-side-project/http-client': link:../http-client
       axios: 1.1.3
+      dayjs: 1.11.6
       form-data: 4.0.0
       framer-motion: 6.5.1_zpnidt7m3osuk7shl3s4oenomq
       next: 12.1.5_zpnidt7m3osuk7shl3s4oenomq
@@ -5583,6 +5585,10 @@ packages:
   /date-fns/2.29.3:
     resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
     engines: {node: '>=0.11'}
+    dev: false
+
+  /dayjs/1.11.6:
+    resolution: {integrity: sha512-zZbY5giJAinCG+7AGaw0wIhNZ6J8AhWuSXKvuc1KAyMiRsvGQWqh4L+MomvhdAYjN+lqvVCMq1I41e3YHvXkyQ==}
     dev: false
 
   /debug/2.6.9:

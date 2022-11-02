@@ -15,6 +15,7 @@
     "@emotion/styled": "^11",
     "@woowahan-side-project/http-client": "link:../http-client",
     "axios": "^1.1.2",
+    "dayjs": "^1.11.6",
     "form-data": "^4.0.0",
     "framer-motion": "^6",
     "next": "12.1.5",

@@ -1,27 +1,29 @@
-export const diffDate = (date1: Date, date2: Date) => {
-  let dateBig = date1;
-  let dateSmall = date2;
+import dayjs, { Dayjs } from 'dayjs';
 
-  if (dateSmall.getTime() - dateBig.getTime() > 0) {
+export const diffDate = (date1: Dayjs, date2: Dayjs) => {
+  let dateBig = date1.locale('ko');
+  let dateSmall = date2.locale('ko');
+
+  if (dateBig.isBefore(dateSmall)) {
     dateBig = date2;
     dateSmall = date1;
   }
 
   return {
-    year: dateBig.getFullYear() - dateSmall.getFullYear(),
-    month: dateBig.getMonth() - dateSmall.getMonth(),
-    day: dateBig.getDate() - dateSmall.getDate(),
-    hour: dateBig.getHours() - dateSmall.getHours() - 9, // 한국 시간을 기준으로 하기 위해 9시간 더함.
-    minutes: dateBig.getMinutes() - dateSmall.getMinutes(),
-    seconds: dateBig.getSeconds() - dateSmall.getSeconds(),
+    year: dateBig.get('year') - dateSmall.get('year'),
+    month: dateBig.get('month') - dateSmall.get('month'),
+    day: dateBig.get('day') - dateSmall.get('day'),
+    hour: dateBig.get('hour') - dateSmall.get('hour'), // 한국 시간을 기준으로 하기 위해 9시간 더함.
+    minutes: dateBig.get('minutes') - dateSmall.get('minutes'),
+    seconds: dateBig.get('seconds') - dateSmall.get('seconds'),
   };
 };
 
 export const timeUnits = ['년', '달', '일', '시간', '분', '초'];
 
 export const getTimeSince = (date: string) => {
-  const nowDate = new Date();
-  const diffDateInfo = diffDate(nowDate, new Date(date));
+  const nowDate = dayjs();
+  const diffDateInfo = diffDate(nowDate, dayjs(date));
 
   const timeSince = Object.values(diffDateInfo)
     .map((value, i) => ({ value, i }))
